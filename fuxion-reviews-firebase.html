@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reseñas EN VIVO - FuXion Madrid</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #ff4d00;
+            --secondary: #1a1a1a;
+            --accent: #ffa500;
+            --light: #f8f8f8;
+            --border: #e0e0e0;
+            --text: #333;
+            --text-light: #666;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
+            color: var(--text);
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* HEADER */
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+            animation: slideDown 0.6s ease;
+        }
+
+        .header h1 {
+            font-size: 42px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 8px;
+            font-family: 'Sora', sans-serif;
+        }
+
+        .header p {
+            font-size: 16px;
+            color: var(--text-light);
+            margin-bottom: 20px;
+        }
+
+        /* LAYOUT DOS COLUMNAS */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        /* FORMULARIO */
+        .form-section {
+            background: white;
+            padding: 32px;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            position: sticky;
+            top: 20px;
+            height: fit-content;
+            animation: slideLeft 0.6s ease;
+        }
+
+        .form-section h2 {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 24px;
+            color: var(--secondary);
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: var(--text);
+        }
+
+        .form-group select,
+        .form-group textarea,
+        .form-group input[type="tel"] {
+            width: 100%;
+            padding: 11px 12px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .form-group select:focus,
+        .form-group textarea:focus,
+        .form-group input[type="tel"]:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(255, 77, 0, 0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        /* UPLOAD FOTO */
+        .photo-upload {
+            border: 2px dashed var(--border);
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: rgba(255, 77, 0, 0.02);
+        }
+
+        .photo-upload:hover {
+            border-color: var(--primary);
+            background: rgba(255, 77, 0, 0.05);
+        }
+
+        .photo-upload input {
+            display: none;
+        }
+
+        .photo-upload-text {
+            font-size: 13px;
+            color: var(--text-light);
+            margin-bottom: 8px;
+        }
+
+        .photo-upload-icon {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .photo-preview {
+            margin-top: 12px;
+            position: relative;
+        }
+
+        .photo-preview img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            max-height: 200px;
+        }
+
+        .photo-remove {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: var(--error);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 28px;
+            height: 28px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .photo-remove:hover {
+            background: darkred;
+        }
+
+        /* RATING VISUAL */
+        .rating-group {
+            margin-bottom: 18px;
+        }
+
+        .rating-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 500;
+            margin-bottom: 10px;
+            color: var(--text);
+        }
+
+        .stars {
+            display: flex;
+            gap: 8px;
+            font-size: 28px;
+        }
+
+        .star {
+            cursor: pointer;
+            color: #ddd;
+            transition: all 0.2s ease;
+        }
+
+        .star:hover,
+        .star.active {
+            color: var(--primary);
+            transform: scale(1.15);
+        }
+
+        /* BOTÓN */
+        .submit-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .submit-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(255, 77, 0, 0.3);
+        }
+
+        .submit-btn:active:not(:disabled) {
+            transform: translateY(0);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        /* ESTADÍSTICAS */
+        .stats-section {
+            background: white;
+            padding: 24px;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            margin-bottom: 30px;
+            animation: slideRight 0.6s ease;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+
+        .stat-card {
+            text-align: center;
+            padding: 16px;
+            background: linear-gradient(135deg, rgba(255, 77, 0, 0.05) 0%, rgba(255, 165, 0, 0.05) 100%);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 77, 0, 0.15);
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: var(--text-light);
+            margin-top: 4px;
+            text-transform: uppercase;
+            font-weight: 500;
+        }
+
+        /* RESEÑAS */
+        .reviews-section h2 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: var(--secondary);
+        }
+
+        .reviews-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .review-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            border-left: 4px solid var(--primary);
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+            animation: slideUp 0.5s ease;
+            transition: all 0.3s ease;
+        }
+
+        .review-card:hover {
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+
+        .review-product {
+            font-weight: 600;
+            color: var(--secondary);
+            font-size: 15px;
+        }
+
+        .review-time {
+            font-size: 12px;
+            color: var(--text-light);
+        }
+
+        .review-stars {
+            color: var(--primary);
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .review-comment {
+            color: var(--text);
+            font-size: 14px;
+            line-height: 1.5;
+            margin-bottom: 8px;
+        }
+
+        .review-photo {
+            margin: 12px 0;
+        }
+
+        .review-photo img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            max-height: 300px;
+        }
+
+        .review-whatsapp {
+            font-size: 12px;
+            color: var(--success);
+            font-weight: 500;
+        }
+
+        /* EMPTY STATE */
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-light);
+        }
+
+        .empty-state-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+
+        .empty-state p {
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+
+        /* FOOTER */
+        .footer {
+            text-align: center;
+            margin-top: 60px;
+            padding: 30px 20px;
+            color: var(--text-light);
+            font-size: 14px;
+            border-top: 1px solid var(--border);
+        }
+
+        /* ANIMACIONES */
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideRight {
+            from {
+                opacity: 0;
+                transform: translateX(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-section {
+                position: relative;
+                top: 0;
+            }
+
+            .header h1 {
+                font-size: 32px;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .review-header {
+                flex-direction: column;
+                gap: 8px;
+            }
+        }
+
+        /* SUCCESS MESSAGE */
+        .success-message {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--success);
+            color: white;
+            padding: 14px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            animation: slideDown 0.4s ease;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+        }
+
+        .success-message.hide {
+            animation: slideUp 0.4s ease reverse;
+        }
+
+        .error-message {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--error);
+            color: white;
+            padding: 14px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            animation: slideDown 0.4s ease;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+        }
+
+        .loading {
+            display: inline-block;
+            width: 4px;
+            height: 4px;
+            background: currentColor;
+            border-radius: 50%;
+            margin: 0 2px;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- HEADER -->
+        <div class="header">
+            <h1>✨ Reseñas EN VIVO</h1>
+            <p>Comparte tu experiencia con las bebidas FuXion en Madrid</p>
+        </div>
+
+        <!-- MAIN GRID -->
+        <div class="main-grid">
+            <!-- FORMULARIO -->
+            <div class="form-section">
+                <h2>Deja tu reseña</h2>
+
+                <form id="reviewForm">
+                    <!-- Producto -->
+                    <div class="form-group">
+                        <label for="product">¿Qué producto probaste?</label>
+                        <select id="product" required>
+                            <option value="">-- Selecciona un producto --</option>
+                            <option value="ON">ON - Bebida Energética</option>
+                            <option value="XS">XS - Bebida Sabor</option>
+                            <option value="Café">Café con Colágeno</option>
+                            <option value="Recovery">Recovery - Post-entreno</option>
+                            <option value="Otros">Otro producto FuXion</option>
+                        </select>
+                    </div>
+
+                    <!-- Rating -->
+                    <div class="rating-group">
+                        <label>¿Qué te pareció?</label>
+                        <div class="stars" id="ratingStars">
+                            <span class="star" data-value="1">★</span>
+                            <span class="star" data-value="2">★</span>
+                            <span class="star" data-value="3">★</span>
+                            <span class="star" data-value="4">★</span>
+                            <span class="star" data-value="5">★</span>
+                        </div>
+                    </div>
+
+                    <!-- Foto -->
+                    <div class="form-group">
+                        <label>Sube una foto (opcional)</label>
+                        <div class="photo-upload" id="photoUpload">
+                            <input type="file" id="photoInput" accept="image/*">
+                            <div class="photo-upload-icon">📸</div>
+                            <div class="photo-upload-text">Haz clic para subir una foto</div>
+                            <small style="color: var(--text-light); font-size: 11px;">JPG, PNG, máx 5MB</small>
+                        </div>
+                        <div class="photo-preview" id="photoPreview"></div>
+                    </div>
+
+                    <!-- Comentario -->
+                    <div class="form-group">
+                        <label for="comment">Tu comentario (opcional pero apreciado)</label>
+                        <textarea id="comment" placeholder="¿Qué te gustó? ¿Qué sabor tiene? ¿Lo recomendarías?"></textarea>
+                    </div>
+
+                    <!-- WhatsApp -->
+                    <div class="form-group">
+                        <label for="whatsapp">WhatsApp (opcional, para más info)</label>
+                        <input type="tel" id="whatsapp" class="form-group" placeholder="+34 6XX XXX XXX">
+                        <div style="font-size: 12px; color: var(--text-light); margin-top: 4px;">Solo si quieres recibir más información sobre FuXion</div>
+                    </div>
+
+                    <!-- Submit -->
+                    <button type="submit" class="submit-btn" id="submitBtn">Enviar reseña</button>
+                </form>
+            </div>
+
+            <!-- COLUMNA DERECHA: STATS + RESEÑAS -->
+            <div>
+                <!-- ESTADÍSTICAS -->
+                <div class="stats-section">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-value" id="totalReviews">0</div>
+                            <div class="stat-label">Reseñas totales</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="avgRating">0.0</div>
+                            <div class="stat-label">Promedio ⭐</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="contactRequests">0</div>
+                            <div class="stat-label">Contatos generados</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RESEÑAS -->
+                <div class="reviews-section">
+                    <h2>Últimas reseñas</h2>
+                    <div class="reviews-list" id="reviewsList">
+                        <div class="empty-state">
+                            <div class="empty-state-icon">📝</div>
+                            <p>Cargando reseñas<span class="loading"></span><span class="loading"></span><span class="loading"></span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="footer">
+        <p>FuXion Madrid • Degustaciones EN VIVO • Las mejores bebidas de salud</p>
+        <p style="margin-top: 8px; font-size: 12px;">© 2026 Adrian Ward Gorbitz</p>
+    </div>
+
+    <!-- FIREBASE -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js"></script>
+
+    <script>
+        // FIREBASE CONFIG
+        const firebaseConfig = {
+            apiKey: "AIzaSyBZ1iquQo-rcaI25-eStS8ZhwYI-lugCLk",
+            authDomain: "degustaciones.firebaseapp.com",
+            projectId: "degustaciones",
+            storageBucket: "degustaciones.firebasestorage.app",
+            messagingSenderId: "80590754347",
+            appId: "1:80590754347:web:982cd91a00ddccc7f1106e"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const storage = firebase.storage();
+
+        // STATE
+        let selectedRating = 0;
+        let selectedPhoto = null;
+        let isSubmitting = false;
+
+        // PHOTO UPLOAD
+        document.getElementById('photoUpload').addEventListener('click', () => {
+            document.getElementById('photoInput').click();
+        });
+
+        document.getElementById('photoInput').addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                if (file.size > 5 * 1024 * 1024) {
+                    showError('La foto no debe superar 5MB');
+                    return;
+                }
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    selectedPhoto = file;
+                    const preview = document.getElementById('photoPreview');
+                    preview.innerHTML = `
+                        <img src="${e.target.result}" alt="preview">
+                        <button type="button" class="photo-remove" onclick="removePhoto()">×</button>
+                    `;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        function removePhoto() {
+            selectedPhoto = null;
+            document.getElementById('photoInput').value = '';
+            document.getElementById('photoPreview').innerHTML = '';
+        }
+
+        // MANEJAR RATING
+        document.querySelectorAll('.star').forEach(star => {
+            star.addEventListener('click', () => {
+                selectedRating = parseInt(star.dataset.value);
+                document.querySelectorAll('.star').forEach(s => s.classList.remove('active'));
+                document.querySelectorAll('.star').forEach((s, i) => {
+                    if (i < selectedRating) s.classList.add('active');
+                });
+            });
+        });
+
+        // ENVIAR RESEÑA
+        document.getElementById('reviewForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            if (selectedRating === 0) {
+                showError('Por favor, selecciona una calificación');
+                return;
+            }
+
+            const product = document.getElementById('product').value;
+            const comment = document.getElementById('comment').value;
+            const whatsapp = document.getElementById('whatsapp').value;
+
+            if (!product) {
+                showError('Por favor, selecciona un producto');
+                return;
+            }
+
+            isSubmitting = true;
+            document.getElementById('submitBtn').disabled = true;
+            document.getElementById('submitBtn').textContent = 'Enviando...';
+
+            try {
+                let photoUrl = null;
+
+                // SUBIR FOTO A FIREBASE STORAGE
+                if (selectedPhoto) {
+                    const storageRef = storage.ref(`reviews/${Date.now()}_${selectedPhoto.name}`);
+                    const uploadTask = await storageRef.put(selectedPhoto);
+                    photoUrl = await uploadTask.ref.getDownloadURL();
+                }
+
+                // CREAR DOCUMENTO EN FIRESTORE
+                const review = {
+                    product,
+                    rating: selectedRating,
+                    comment,
+                    whatsapp: whatsapp ? whatsapp : null,
+                    photoUrl: photoUrl,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                    createdAt: new Date().toISOString()
+                };
+
+                await db.collection('reviews').add(review);
+
+                // ENVIAR NOTIFICACIONES
+                try {
+                    // EMAIL VÍA FORMSPREE
+                    await fetch('https://formspree.io/f/mwvwdkzd', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            product: product,
+                            rating: selectedRating,
+                            comment: comment,
+                            whatsapp: whatsapp,
+                            photoUrl: photoUrl,
+                            timestamp: new Date().toLocaleString('es-ES', { timeZone: 'Europe/Madrid' })
+                        })
+                    });
+
+                    // WhatsApp VÍA ULTRAMSG (gratis, sin código backend)
+                    const whatsappMessage = `
+🎉 *NUEVA RESEÑA EN EL DASHBOARD*
+
+📱 Producto: ${product}
+⭐ Rating: ${'★'.repeat(selectedRating)}${'☆'.repeat(5-selectedRating)}
+💬 Comentario: ${comment || '(sin comentario)'}
+📸 Foto: ${photoUrl ? 'Sí' : 'No'}
+📞 WhatsApp: ${whatsapp || '(no proporcionado)'}
+🕐 Hora: ${new Date().toLocaleTimeString('es-ES', { timeZone: 'Europe/Madrid' })}
+                    `;
+
+                    // Intenta enviar a WhatsApp (opcional, si falla no bloquea)
+                    fetch('https://api.ultramsg.com/instance123456/messages/chat', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded'
+                        },
+                        body: new URLSearchParams({
+                            token: 'your_token', // Sin esto funciona el email
+                            to: '+34602141310',
+                            body: whatsappMessage
+                        })
+                    }).catch(() => {}); // Ignora errores de WhatsApp
+
+                } catch (error) {
+                    console.log('Notificación enviada (email)', error);
+                }
+
+                // RESETEAR FORMULARIO
+                document.getElementById('reviewForm').reset();
+                selectedRating = 0;
+                selectedPhoto = null;
+                document.getElementById('photoInput').value = '';
+                document.getElementById('photoPreview').innerHTML = '';
+                document.querySelectorAll('.star').forEach(s => s.classList.remove('active'));
+
+                showSuccess('✓ Reseña enviada. ¡Gracias!');
+            } catch (error) {
+                console.error('Error:', error);
+                showError('Error al enviar la reseña. Intenta de nuevo.');
+            } finally {
+                isSubmitting = false;
+                document.getElementById('submitBtn').disabled = false;
+                document.getElementById('submitBtn').textContent = 'Enviar reseña';
+            }
+        });
+
+        // CARGAR RESEÑAS EN TIEMPO REAL
+        function loadReviews() {
+            db.collection('reviews')
+                .orderBy('timestamp', 'desc')
+                .limit(50)
+                .onSnapshot((snapshot) => {
+                    const reviewsList = document.getElementById('reviewsList');
+
+                    if (snapshot.empty) {
+                        reviewsList.innerHTML = `
+                            <div class="empty-state">
+                                <div class="empty-state-icon">📝</div>
+                                <p>Sé el primero en dejar tu reseña</p>
+                                <p style="font-size: 13px;">Tu opinión importa y ayuda a otros a descubrir FuXion</p>
+                            </div>
+                        `;
+                        updateStats([]);
+                        return;
+                    }
+
+                    const reviews = snapshot.docs.map(doc => ({
+                        id: doc.id,
+                        ...doc.data()
+                    }));
+
+                    reviewsList.innerHTML = reviews.map(review => `
+                        <div class="review-card">
+                            <div class="review-header">
+                                <div>
+                                    <div class="review-product">${escapeHtml(review.product)}</div>
+                                    <div class="review-time">${formatTime(review.timestamp)}</div>
+                                </div>
+                            </div>
+                            <div class="review-stars">${'★'.repeat(review.rating)}${'☆'.repeat(5 - review.rating)}</div>
+                            ${review.comment ? `<div class="review-comment">"${escapeHtml(review.comment)}"</div>` : ''}
+                            ${review.photoUrl ? `
+                                <div class="review-photo">
+                                    <img src="${review.photoUrl}" alt="foto reseña" loading="lazy">
+                                </div>
+                            ` : ''}
+                            ${review.whatsapp ? `<div class="review-whatsapp">✓ Contacto generado</div>` : ''}
+                        </div>
+                    `).join('');
+
+                    updateStats(reviews);
+                });
+        }
+
+        // ACTUALIZAR ESTADÍSTICAS
+        function updateStats(reviews) {
+            const totalReviews = reviews.length;
+            const avgRating = reviews.length > 0
+                ? (reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length).toFixed(1)
+                : 0;
+            const contactRequests = reviews.filter(r => r.whatsapp).length;
+
+            document.getElementById('totalReviews').textContent = totalReviews;
+            document.getElementById('avgRating').textContent = avgRating;
+            document.getElementById('contactRequests').textContent = contactRequests;
+        }
+
+        // FORMATEAR TIEMPO
+        function formatTime(timestamp) {
+            if (!timestamp) return 'Hace unos momentos';
+            const date = new Date(timestamp.toDate());
+            const now = new Date();
+            const diff = now - date;
+
+            const minutes = Math.floor(diff / 60000);
+            const hours = Math.floor(diff / 3600000);
+            const days = Math.floor(diff / 86400000);
+
+            if (minutes < 1) return 'Hace unos segundos';
+            if (minutes < 60) return `Hace ${minutes}m`;
+            if (hours < 24) return `Hace ${hours}h`;
+            if (days < 7) return `Hace ${days}d`;
+
+            return date.toLocaleDateString('es-ES');
+        }
+
+        // ESCAPAR HTML
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // MENSAJES
+        function showSuccess(message) {
+            const msg = document.createElement('div');
+            msg.className = 'success-message';
+            msg.textContent = message;
+            document.body.appendChild(msg);
+
+            setTimeout(() => {
+                msg.classList.add('hide');
+                setTimeout(() => msg.remove(), 400);
+            }, 3000);
+        }
+
+        function showError(message) {
+            const msg = document.createElement('div');
+            msg.className = 'error-message';
+            msg.textContent = message;
+            document.body.appendChild(msg);
+
+            setTimeout(() => {
+                msg.classList.add('hide');
+                setTimeout(() => msg.remove(), 400);
+            }, 3000);
+        }
+
+        // CARGAR AL INICIAR
+        loadReviews();
+    </script>
+</body>
+</html>
