@@ -262,7 +262,10 @@
       <input type="text" id="name" required autocomplete="name">
 
       <label>WhatsApp</label>
-      <input type="tel" id="whatsapp" placeholder="+34 602 14 13 10" autocomplete="tel">
+      <div style="display: flex; align-items: center; border: 1px solid #ddd; border-radius: 6px; overflow: hidden;">
+        <span style="padding: 8px; background: #f5f5f5; font-weight: 600;">+</span>
+        <input type="tel" id="whatsapp" placeholder="34 602 14 13 10" autocomplete="tel" style="flex: 1; border: none; padding: 8px; margin: 0;">
+      </div>
 
       <label>Email</label>
       <input type="email" id="email" placeholder="tu@email.com" autocomplete="email">
@@ -475,7 +478,8 @@
       }
 
       if (instagram && !instagram.startsWith('@')) instagram = '@' + instagram;
-      if (whatsapp && !whatsapp.startsWith('+')) whatsapp = '+' + whatsapp;
+      // El + de WhatsApp ya está visual, solo trim el valor
+      const whatsappFormatted = whatsapp ? '+' + whatsapp : null;
 
       btn.disabled = true;
       btn.textContent = 'Enviando...';
@@ -502,7 +506,7 @@
         await db.collection('reviews').add({
           name, email: email || null, instagram: instagram || null,
           products, rating: parseInt(rating), comment,
-          whatsapp: whatsapp || null,
+          whatsapp: whatsappFormatted,
           photoUrls: photoUrls.length > 0 ? photoUrls : null,
           timestamp: new Date(),
           createdAt: new Date().toISOString()
