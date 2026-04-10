@@ -3,65 +3,82 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FuXion - Mis Ventas</title>
+    <title>FuXion - Panel Adrian</title>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background: #f5f5f5; font-family: -apple-system, sans-serif; padding-top: 180px; }
+        body { background: #f5f5f5; font-family: -apple-system, sans-serif; padding-top: 170px; }
         
+        /* Header Azul */
         .header-fixed { position: fixed; top: 0; left: 0; right: 0; background: #2563eb; color: white; padding: 20px; text-align: center; z-index: 1000; }
         
-        /* Botón para abrir tu registro de ventas */
-        .cta-button { position: fixed; top: 110px; left: 0; right: 0; background: #10b981; color: white; padding: 15px; text-align:center; font-weight: bold; cursor: pointer; z-index: 999; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        /* Botón de Registro Verde */
+        .cta-button { position: fixed; top: 105px; left: 0; right: 0; background: #10b981; color: white; padding: 15px; text-align:center; font-weight: bold; cursor: pointer; z-index: 999; border: none; width: 100%; font-size: 15px; }
         
-        /* Grid de 2 columnas */
+        /* Grid de 2 Columnas Estilo Imagen */
         .reviews-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 12px; }
-        .review-card { background: white; border-radius: 12px; padding: 10px; border: 1px solid #eee; }
-        .review-card img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 8px; background: #eee; }
+        .review-card { background: white; border-radius: 12px; padding: 10px; border: 1px solid #eee; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .review-card img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 8px; background: #f0f0f0; }
         
-        /* Drawer (Formulario desplegable) */
-        .drawer { position: fixed; bottom: -100%; left: 0; right: 0; background: white; z-index: 2000; transition: 0.4s; border-radius: 20px 20px 0 0; padding: 25px; box-shadow: 0 -5px 20px rgba(0,0,0,0.2); max-height: 85vh; overflow-y: auto; }
+        /* Drawer Formulario */
+        .drawer { position: fixed; bottom: -100%; left: 0; right: 0; background: white; z-index: 2000; transition: 0.4s ease-out; border-radius: 20px 20px 0 0; padding: 25px; box-shadow: 0 -5px 20px rgba(0,0,0,0.2); max-height: 85vh; overflow-y: auto; }
         .drawer.active { bottom: 0; }
-        .form-input { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 10px; font-size: 16px; }
-        .btn-send { width: 100%; padding: 16px; background: #10b981; color: white; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 16px; }
+        .form-input { width: 100%; padding: 14px; margin: 8px 0; border: 1px solid #ddd; border-radius: 10px; font-size: 16px; outline: none; }
+        .btn-send { width: 100%; padding: 16px; background: #10b981; color: white; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 16px; margin-top: 10px; }
     </style>
 </head>
 <body>
 
 <div class="header-fixed">
-    <h2>FuXion Degustaciones</h2>
-    <p>Panel de Control Personal</p>
+    <h2 style="font-size: 20px;">FuXion Degustaciones</h2>
+    <p style="font-size: 13px; opacity: 0.9;">Panel Adrian - Registro Venta</p>
 </div>
 
-<div class="cta-button" onclick="document.getElementById('drawer').classList.add('active')">
+<button class="cta-button" onclick="document.getElementById('drawer').classList.add('active')">
     🚀 REGISTRAR CLIENTE / ENVIAR WHATSAPP
-</div>
+</button>
 
 <div class="reviews-grid" id="reviewsGrid">
-    </div>
+    <p style="grid-column: 1/3; text-align: center; padding: 20px; color: #666;">Cargando fotos...</p>
+</div>
 
 <div id="drawer" class="drawer">
-    <h3 style="margin-bottom:15px; color:#10b981;">Registro de Prospecto</h3>
+    <h3 style="margin-bottom:15px; color:#10b981; text-align: center;">Datos del Prospecto</h3>
     <form id="leadForm">
         <input type="text" id="l_name" class="form-input" placeholder="Nombre del cliente" required>
         <input type="tel" id="l_whatsapp" class="form-input" placeholder="WhatsApp (Ej: 34600000000)" required>
         <input type="email" id="l_email" class="form-input" placeholder="Email (Opcional)">
         
+        <label style="font-size: 12px; font-weight: bold; color: #666; margin-left: 5px;">Bebida degustada:</label>
         <select id="l_prod" class="form-input">
             <option value="VITA XTRA T+">VITA XTRA T+</option>
             <option value="THERMO T3">THERMO T3</option>
             <option value="PRUNEX1">PRUNEX1</option>
             <option value="ON">ON</option>
+            <option value="NO STRESS">NO STRESS</option>
+            <option value="FLORA LIV">FLORA LIV</option>
+            <option value="BERRY BALANCE">BERRY BALANCE</option>
+            <option value="BEAUTY IN">BEAUTY IN</option>
+            <option value="OCN">OCN</option>
+            <option value="GOLDEN FLX">GOLDEN FLX</option>
+            <option value="PROBAL">PROBAL</option>
+            <option value="PROTEIN ACTIVE">PROTEIN ACTIVE</option>
+            <option value="POST SPORT">POST SPORT</option>
+            <option value="PRE SPORT">PRE SPORT</option>
+            <option value="BIOPRO+ TECT">BIOPRO+ TECT</option>
+            <option value="ALPHA BALANCE">ALPHA BALANCE</option>
+            <option value="CAFÉ & CAFÉ">CAFÉ & CAFÉ</option>
+            <option value="CAFÉ CAFÉ FIT">CAFÉ CAFÉ FIT</option>
         </select>
 
-        <button type="submit" id="btnSubmit" class="btn-send">REGISTRAR Y ENVIAR WHATSAPP</button>
+        <button type="submit" id="btnSubmit" class="btn-send">ENVIAR CATÁLOGO (ULTRAMSG)</button>
     </form>
-    <button onclick="document.getElementById('drawer').classList.remove('active')" style="width:100%; margin-top:15px; background:none; border:none; color:gray; font-size:14px;">Cerrar sin guardar</button>
+    <button onclick="document.getElementById('drawer').classList.remove('active')" style="width:100%; margin-top:15px; background:none; border:none; color:gray; font-size:14px;">Cancelar</button>
 </div>
 
 <script>
-    // Tu configuración exacta de Firebase
+    // Configuración Firebase (Adrian)
     const firebaseConfig = {
         apiKey: "AIzaSyBZ1iquQo-rcaI25-eStS8ZhwYI-lugCLk",
         authDomain: "degustaciones.firebaseapp.com",
@@ -73,26 +90,32 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
-    // 1. CARGAR LA GALERÍA (Desde la colección 'reviews')
+    // 1. CARGAR GALERÍA (Desde 'reviews')
     async function loadReviews() {
         const grid = document.getElementById('reviewsGrid');
         try {
             const snap = await db.collection('reviews').orderBy('createdAt', 'desc').get();
             grid.innerHTML = '';
+            
             snap.forEach(doc => {
                 const d = doc.data();
+                // Buscamos cualquier nombre de campo para la imagen (photoUrl o photo)
                 const img = d.photoUrl || d.photo || d.imageUrl || "";
+                
                 grid.innerHTML += `
                     <div class="review-card">
-                        ${img ? `<img src="${img}">` : `<div style="aspect-ratio:1; background:#eee; border-radius:8px;"></div>`}
+                        ${img ? `<img src="${img}" onerror="this.parentElement.style.display='none'">` : `<div style="aspect-ratio:1; background:#eee; border-radius:8px; display:flex; align-items:center; justify-content:center; color:#ccc;">📸</div>`}
                         <div style="font-weight:bold; font-size:13px; margin-top:8px;">${d.name || 'Anónimo'}</div>
-                        <div style="font-size:11px; color:#2563eb;">${d.products ? d.products[0] : 'FuXion'}</div>
+                        <div style="font-size:11px; color:#2563eb; font-weight: 600;">${d.products ? d.products[0] : 'Producto'}</div>
                     </div>`;
             });
-        } catch (e) { console.error(e); }
+        } catch (e) { 
+            console.error(e);
+            grid.innerHTML = '<p style="grid-column: 1/3; text-align: center;">Error al cargar datos.</p>';
+        }
     }
 
-    // 2. ENVIAR LEAD (A la colección 'leads' y a Google Apps Script)
+    // 2. ENVIAR REGISTRO (Lead + Google Script)
     document.getElementById('leadForm').onsubmit = async (e) => {
         e.preventDefault();
         const btn = document.getElementById('btnSubmit');
@@ -108,22 +131,25 @@
         };
 
         try {
-            // Guardar en tu colección privada
+            // Guardar en colección de prospectos
             await db.collection('leads').add(data);
 
-            // ENVIAR A TU GOOGLE SCRIPT (Cambia la URL por la tuya)
-            await fetch('TU_URL_DE_GOOGLE_APPS_SCRIPT_AQUI', {
+            // ENVIAR A GOOGLE APPS SCRIPT (ULTRAMSG)
+            // IMPORTANTE: Pon aquí tu URL de Google Script
+            const scriptURL = 'TU_URL_DE_GOOGLE_APPS_SCRIPT_AQUI';
+            
+            await fetch(scriptURL, {
                 method: 'POST',
                 mode: 'no-cors',
                 body: JSON.stringify(data)
             });
 
-            alert("¡Cliente registrado y WhatsApp enviado!");
+            alert("¡Éxito! Cliente registrado y WhatsApp enviado.");
             location.reload();
         } catch (err) {
-            alert("Error al registrar");
+            alert("Error al procesar el envío.");
             btn.disabled = false;
-            btn.innerText = "REGISTRAR Y ENVIAR WHATSAPP";
+            btn.innerText = "ENVIAR CATÁLOGO (ULTRAMSG)";
         }
     };
 
