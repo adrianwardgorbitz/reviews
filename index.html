@@ -349,26 +349,39 @@ const db = firebase.firestore();
       card.className = 'review-card';
       
      // DISPARADOR PARA GOOGLE SCRIPT (Optimizado)
-try {
-  const formData = new URLSearchParams();
-  formData.append('name', name);
-  formData.append('email', email);
-  formData.append('whatsapp', whatsappFormatted);
-  formData.append('products', JSON.stringify(products));
-  formData.append('comment', comment);
-  
-  await fetch(window.googleScriptUrl, {
-    method: 'POST',
-    mode: 'no-cors',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded'
-    },
-    body: formData
-  });
-  
-  console.log('Datos enviados al script correctamente');
-} catch (error) {
-  console.log('Script error:', error);
+function createReviewCard(data) {
+      const card = document.createElement('div');
+      card.className = 'review-card';
+      
+      const photoUrls = data.photoUrls || (data.photoUrl ? [data.photoUrl] : []);
+      const productsStr = Array.isArray(data.products) ? data.products.join(' ') : (data.products || '');
+      
+      card.setAttribute('data-products', productsStr.toLowerCase());
+      card.setAttribute('data-photo', photoUrls.length > 0 ? 'true' : 'false');
+
+      const instaLink = data.instagram ? `<a href="https://instagram.com/${data.instagram.replace('@', '')}" target="_blank" class="review-instagram">${data.instagram}</a>` : '';
+      
+      // Si tienes formatProducts en config.js, úsalo, si no, usa la variable normal
+      const prodsText = window.formatProducts ? window.formatProducts(data.products) : productsStr;
+
+      const photoHtml = photoUrls.length > 0 
+        ? `<div class="review-photos">${photoUrls.map(url => `<img src="${url}" alt="Foto">`).join('')}</div>` 
+        : '';
+      
+      const stars = '⭐'.repeat(data.rating || 0);
+
+      card.innerHTML = `
+        <div class="review-name">${data.name} ${instaLink}</div>
+        ${prodsText ? `<div style="font-size: 12px; color: #666; margin-bottom: 6px;">${prodsText}</div>` : ''}
+        <div class="review-meta"><span class="review-rating">${stars}</span></div>
+        ${photoHtml}
+        <p class="review-text">"${data.comment || ''}"</p>
+      `;
+
+      card.addEventListener('click', () => openReviewModal(data, photoUrls, prodsText, instaLink, 'Reciente', stars));
+
+      return card;
+    }
 } 
         ? `<div class="review-photos">${photoUrls.map(url => `<img src="${url}" alt="Foto">`).join('')}</div>` 
         : '';
