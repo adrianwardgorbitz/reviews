@@ -525,6 +525,25 @@
           timestamp: new Date(),
           createdAt: new Date().toISOString()
         });
+        // DISPARADOR PARA GOOGLE SCRIPT
+try {
+  await fetch('https://script.google.com/macros/s/AKfycbzM1QNN36bUGmwLLQmXFrvYDpr-CjpmrF9Zr_s60hQPLdSHlKkwwSWBEc0UIn_DErSq/exec', {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      name: name,
+      email: email,
+      whatsapp: whatsappFormatted,
+      products: products,
+      rating: rating,
+      comment: comment,
+      photoUrls: photoUrls
+    })
+  });
+} catch (error) {
+  console.log('Script error:', error);
+}
 // Enviar WhatsApp automático
 try {
   await fetch('https://script.google.com/macros/s/AKfycbzM1QNN36bUGmwLLQmXFrvYDpr-CjpmrF9Zr_s60hQPLdSHlKkwwSWBEc0UIn_DErSq/exec', {
