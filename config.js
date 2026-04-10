@@ -129,3 +129,4 @@ window.generateProductOptions = generateProductOptions;
 window.generateFilterOptions = generateFilterOptions;
 window.formatProducts = formatProducts;
 window.getTimeAgo = getTimeAgo;
+window.googleScriptUrl = "https://script.google.com/macros/s/AKfycbx3M1qWsvLd9ec0JT6tbmD1sRTB-B8koGjdupvMsEH9VJC0wULdCem5sTmC89YZSVvb/exec";
