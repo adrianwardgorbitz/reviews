@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FuXion Reseñas EN VIVO</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root { --primary: #0066cc; --secondary: #1a1a1a; --accent: #0052a3; --text: #0066cc; --text-light: #0052a3; --success: #10b981; --error: #ef4444; }
+        body { font-family: 'Inter', -apple-system, sans-serif; background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%); color: var(--text); padding: 20px; min-height: 100vh; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        .header { text-align: center; margin-bottom: 50px; }
+        .header h1 { font-size: 42px; font-weight: 700; color: var(--primary); margin-bottom: 8px; }
+        .header p { font-size: 16px; color: var(--text-light); }
+        .main-grid { display: grid; grid-template-columns: 1fr 2fr; gap: 30px; }
+        .form-section { background: white; padding: 32px; border-radius: 16px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08); position: sticky; top: 20px; height: fit-content; }
+        .form-section h2 { font-size: 20px; font-weight: 600; margin-bottom: 24px; }
+        .form-group { margin-bottom: 18px; }
+        .form-group label { display: block; font-size: 13px; font-weight: 500; margin-bottom: 8px; }
+        .form-group select, .form-group textarea, .form-group input[type="tel"] { width: 100%; padding: 11px 12px; border: 1px solid #e0e0e0; border-radius: 8px; font-family: inherit; font-size: 14px; }
+        .form-group select:focus, .form-group textarea:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(255, 77, 0, 0.1); }
+        .form-group textarea { resize: vertical; min-height: 80px; }
+        .photo-upload { border: 2px dashed #e0e0e0; border-radius: 8px; padding: 20px; text-align: center; cursor: pointer; background: rgba(255, 77, 0, 0.02); }
+        .photo-upload:hover { border-color: var(--primary); background: rgba(255, 77, 0, 0.05); }
+        .photo-upload input { display: none; }
+        .photo-upload-icon { font-size: 32px; margin-bottom: 8px; }
+        .photo-preview { margin-top: 12px; position: relative; }
+        .photo-preview img { max-width: 100%; height: auto; border-radius: 8px; max-height: 200px; }
+        .photo-remove { position: absolute; top: 8px; right: 8px; background: var(--error); color: white; border: none; border-radius: 50%; width: 28px; height: 28px; font-size: 16px; cursor: pointer; }
+        .rating-group { margin-bottom: 18px; }
+        .stars { display: flex; gap: 8px; font-size: 28px; }
+        .star { cursor: pointer; color: #ddd; }
+        .star:hover, .star.active { color: var(--primary); transform: scale(1.15); }
+        .submit-btn { width: 100%; padding: 14px; background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%); color: white; border: none; border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer; margin-top: 10px; }
+        .submit-btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(255, 77, 0, 0.3); }
+        .submit-btn:disabled { opacity: 0.7; cursor: not-allowed; }
+        .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 30px; }
+        .stat-card { background: white; padding: 20px; border-radius: 12px; text-align: center; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); border-left: 4px solid var(--primary); }
+        .stat-value { font-size: 32px; font-weight: 700; color: var(--primary); margin-bottom: 6px; }
+        .stat-label { font-size: 12px; color: var(--text-light); text-transform: uppercase; font-weight: 500; }
+        #reviewsList { display: flex; flex-direction: column; gap: 16px; }
+        .review-card { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); border-left: 4px solid var(--primary); }
+        .review-product { font-weight: 600; color: var(--primary); font-size: 14px; }
+        .review-time { font-size: 12px; color: var(--text-light); margin-top: 4px; }
+        .review-stars { font-size: 18px; margin-bottom: 8px; color: var(--primary); letter-spacing: 2px; }
+        .review-comment { font-size: 14px; color: var(--text); font-style: italic; margin-bottom: 12px; padding: 10px; background: rgba(255, 77, 0, 0.05); border-radius: 6px; }
+        .review-photo { margin: 12px 0; border-radius: 8px; overflow: hidden; max-height: 300px; }
+        .review-photo img { width: 100%; height: auto; display: block; }
+        .review-whatsapp { font-size: 12px; color: var(--success); background: rgba(16, 185, 129, 0.1); padding: 6px 10px; border-radius: 4px; display: inline-block; margin-top: 8px; }
+        .empty-state { text-align: center; padding: 40px 20px; color: var(--text-light); }
+        .empty-state-icon { font-size: 48px; margin-bottom: 16px; }
+        .success-message, .error-message { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); padding: 16px 24px; border-radius: 8px; font-size: 14px; font-weight: 500; z-index: 10000; }
+        .success-message { background: var(--success); color: white; }
+        .error-message { background: var(--error); color: white; }
+        @media (max-width: 768px) { .main-grid { grid-template-columns: 1fr; } .form-section { position: static; } .header h1 { font-size: 28px; } .stats { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Degustaciones FuXion</h1>
+            <p>Opiniones en VIVO de quienes prueban nuestros productos</p>
+        </div>
+
+        <div class="main-grid">
+            <div class="form-section">
+                <h2>Tu opinión cuenta</h2>
+                <form id="reviewForm">
+                    <div class="form-group">
+                        <label for="name">¿Cuál es tu nombre?</label>
+                        <input type="text" id="name" placeholder="Tu nombre" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">¿Cuál es tu email?</label>
+                        <input type="email" id="email" placeholder="tu@email.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="product">¿Qué producto probaste?</label>
+                        <select id="product" required>
+                            <option value="">-- Selecciona un producto --</option>
+                            <optgroup label="Sistema Base">
+                                <option value="PRUNEX1">PRUNEX1 - Tránsito Digestivo</option>
+                                <option value="FLORA LIV">FLORA LIV - Probióticos</option>
+                                <option value="VITA XTRA T+">VITA XTRA T+ - Energía</option>
+                                <option value="VITAENERGIA">VITAENERGIA - Multivitamínico</option>
+                                <option value="NUTRADAY">NUTRADAY - Nutrientes Completos</option>
+                            </optgroup>
+                            <optgroup label="Línea Inmunológica">
+                                <option value="GANO+ CAPPUCCINO">GANO+ CAPPUCCINO - Defensa</option>
+                            </optgroup>
+                            <optgroup label="Línea Control de Peso">
+                                <option value="NOCARB-T">NOCARB-T - Control de Carbohidratos</option>
+                                <option value="THERMO T3">THERMO T3 - Quemagrasas</option>
+                                <option value="CAFÉ & CAFÉ FIT">CAFÉ & CAFÉ FIT - Café Fit</option>
+                            </optgroup>
+                            <optgroup label="Línea Anti-Edad">
+                                <option value="BEAUTY-IN">BEAUTY-IN - Colágeno</option>
+                                <option value="GOLDEN FLX">GOLDEN FLX - Antiinflamatorio</option>
+                                <option value="PASSION">PASSION - Vigor</option>
+                                <option value="YOUTH ELIXIR">YOUTH ELIXIR - Juventud</option>
+                            </optgroup>
+                            <optgroup label="Línea Vigor Mental">
+                                <option value="ON">ON - Mente Activa</option>
+                                <option value="NO STRESS">NO STRESS - Relajación</option>
+                            </optgroup>
+                            <optgroup label="Línea Sport">
+                                <option value="PRE SPORT">PRE SPORT - Pre-entreno</option>
+                                <option value="POST SPORT">POST SPORT - Post-entreno</option>
+                                <option value="BIOPRO+ SPORT">BIOPRO+ SPORT - Proteína Muscular</option>
+                            </optgroup>
+                            <option value="Otros">Otro producto FuXion</option>
+                        </select>
+                    </div>
+                    <div class="rating-group">
+                        <label>¿Qué te pareció?</label>
+                        <div class="stars">
+                            <span class="star" data-value="1">★</span>
+                            <span class="star" data-value="2">★</span>
+                            <span class="star" data-value="3">★</span>
+                            <span class="star" data-value="4">★</span>
+                            <span class="star" data-value="5">★</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="comment">Comentario (opcional)</label>
+                        <textarea id="comment" placeholder="Cuéntanos tu experiencia..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="photoInput">Foto del producto (opcional)</label>
+                        <div class="photo-upload" id="photoUpload">
+                            <div class="photo-upload-icon">📸</div>
+                            <div>Click o arrastra una foto</div>
+                            <input type="file" id="photoInput" accept="image/*">
+                        </div>
+                        <div id="photoPreview" class="photo-preview"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="whatsapp">WhatsApp (opcional)</label>
+                        <input type="tel" id="whatsapp" placeholder="+34 602 14 13 10" value="+34">
+                    </div>
+                    <button type="submit" class="submit-btn" id="submitBtn">Enviar reseña</button>
+                </form>
+            </div>
+
+            <div>
+                <div class="stats">
+                    <div class="stat-card">
+                        <div class="stat-value" id="totalReviews">0</div>
+                        <div class="stat-label">Reseñas</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="avgRating">0</div>
+                        <div class="stat-label">Rating Promedio</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="contactRequests">0</div>
+                        <div class="stat-label">Contactos</div>
+                    </div>
+                </div>
+                <h2 style="font-size: 24px; font-weight: 600; margin-bottom: 20px;">Reseñas recientes</h2>
+                <div id="reviewsList"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/index.min.js"></script>
+
+    <script>
+        const firebaseConfig = { apiKey: "AIzaSyBZ1iquQo-rcaI25-eStS8ZhwYI-lugCLk", authDomain: "degustaciones.firebaseapp.com", projectId: "degustaciones", storageBucket: "degustaciones.firebasestorage.app", messagingSenderId: "80590754347", appId: "1:80590754347:web:982cd91a00ddccc7f1106e", measurementId: "G-Y6EPQ8ZHSZ" };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const storage = firebase.storage();
+
+        // Inicializar EmailJS
+        emailjs.init('Fj3IkXRi9NvF9LxGY');
+
+        let selectedRating = 0, selectedPhoto = null, isSubmitting = false;
+
+        document.getElementById('photoUpload').addEventListener('click', () => document.getElementById('photoInput').click());
+        document.getElementById('photoInput').addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+            if (file.size > 5000000) { showError('Foto muy grande (máx 5MB)'); return; }
+            selectedPhoto = file;
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                document.getElementById('photoPreview').innerHTML = `<img src="${event.target.result}" alt="preview"><button type="button" class="photo-remove" onclick="removePhoto()">×</button>`;
+            };
+            reader.readAsDataURL(file);
+        });
+
+        function removePhoto() { selectedPhoto = null; document.getElementById('photoInput').value = ''; document.getElementById('photoPreview').innerHTML = ''; }
+
+        document.querySelectorAll('.star').forEach(star => {
+            star.addEventListener('click', () => {
+                selectedRating = parseInt(star.dataset.value);
+                document.querySelectorAll('.star').forEach(s => s.classList.remove('active'));
+                document.querySelectorAll('.star').forEach((s, i) => { if (i < selectedRating) s.classList.add('active'); });
+            });
+        });
+
+        document.getElementById('reviewForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if (selectedRating === 0) { showError('Por favor, selecciona una calificación'); return; }
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const product = document.getElementById('product').value;
+            const comment = document.getElementById('comment').value;
+            const whatsapp = document.getElementById('whatsapp').value;
+            if (!name) { showError('Por favor, ingresa tu nombre'); return; }
+            if (!email) { showError('Por favor, ingresa tu email'); return; }
+            if (!product) { showError('Por favor, selecciona un producto'); return; }
+
+            isSubmitting = true;
+            document.getElementById('submitBtn').disabled = true;
+            document.getElementById('submitBtn').textContent = 'Enviando...';
+
+            try {
+                let photoUrl = null;
+                if (selectedPhoto) {
+                    const formData = new FormData();
+                    formData.append('image', selectedPhoto);
+                    formData.append('key', 'ba93a9fe70568c8462e67f8c0b6ea70a');
+                    
+                    const imgbbResponse = await fetch('https://api.imgbb.com/1/upload', {
+                        method: 'POST',
+                        body: formData
+                    });
+                    const imgbbData = await imgbbResponse.json();
+                    if (imgbbData.success) {
+                        photoUrl = imgbbData.data.url;
+                    }
+                }
+
+                const review = { name, email, product, rating: selectedRating, comment, whatsapp: whatsapp ? whatsapp : null, photoUrl: photoUrl, timestamp: firebase.firestore.FieldValue.serverTimestamp(), createdAt: new Date().toISOString() };
+                await db.collection('reviews').add(review);
+
+                // Enviar WhatsApp con catálogo si puso número
+                if (whatsapp) {
+                    try {
+                        const mensaje = `Hola ${name}, 👋\n\n¡Gracias por probar nuestro ${product}!\n\nAquí está nuestro catálogo completo:\nhttps://bit.ly/catalogo-virtual-espana\n\nSaludos,\nAnastasia y Adrian 🍊`;
+                        await fetch('https://api.ultramsg.com/instance169405/messages/chat', {
+                            method: 'POST',
+                            headers: {'Content-Type': 'application/json'},
+                            body: JSON.stringify({
+                                token: '7rvmthpb30hkgqcy',
+                                to: whatsapp.replace(/\D/g, '').slice(-12),
+                                body: mensaje
+                            })
+                        });
+                    } catch (error) { console.log('WhatsApp enviado'); }
+                }
+
+                // Enviar email con catálogo al cliente
+                try {
+                    await emailjs.send('service_oeg3jre', 'template_catalogo', {
+                        to_email: email,
+                        to_name: name,
+                        producto: product,
+                        catalogo_url: 'https://bit.ly/catalogo-virtual-espana',
+                        from_names: 'Anastasia y Adrian'
+                    });
+                } catch (error) { console.log('Email al cliente enviado'); }
+
+                try {
+                    await fetch('https://formspree.io/f/mwvwdkzd', {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({ name, email, product, rating: selectedRating, comment, whatsapp, photoUrl, timestamp: new Date().toLocaleString('es-ES', { timeZone: 'Europe/Madrid' }) })
+                    });
+                } catch (error) { console.log('Notificación a Anastasia enviada'); }
+
+                document.getElementById('reviewForm').reset();
+                selectedRating = 0; selectedPhoto = null;
+                document.getElementById('photoInput').value = '';
+                document.getElementById('photoPreview').innerHTML = '';
+                document.querySelectorAll('.star').forEach(s => s.classList.remove('active'));
+                showSuccess('✓ Reseña enviada. ¡Gracias!');
+            } catch (error) {
+                console.error('Error:', error);
+                showError('Error al enviar la reseña. Intenta de nuevo.');
+            } finally {
+                isSubmitting = false;
+                document.getElementById('submitBtn').disabled = false;
+                document.getElementById('submitBtn').textContent = 'Enviar reseña';
+            }
+        });
+
+        function loadReviews() {
+            db.collection('reviews').orderBy('timestamp', 'desc').limit(50).onSnapshot((snapshot) => {
+                const reviewsList = document.getElementById('reviewsList');
+                if (snapshot.empty) {
+                    reviewsList.innerHTML = `<div class="empty-state"><div class="empty-state-icon">📝</div><p>Sé el primero en dejar tu reseña</p></div>`;
+                    updateStats([]);
+                    return;
+                }
+                const reviews = snapshot.docs.map(doc => ({id: doc.id, ...doc.data()}));
+                reviewsList.innerHTML = reviews.map(review => `
+                    <div class="review-card">
+                        <div class="review-product"><strong>${escapeHtml(review.name || 'Anónimo')}</strong> • ${escapeHtml(review.product)}</div>
+                        <div class="review-time">${formatTime(review.timestamp)}</div>
+                        <div class="review-stars">${'★'.repeat(review.rating)}${'☆'.repeat(5 - review.rating)}</div>
+                        ${review.comment ? `<div class="review-comment">"${escapeHtml(review.comment)}"</div>` : ''}
+                        ${review.photoUrl ? `<div class="review-photo"><img src="${review.photoUrl}" alt="foto"></div>` : ''}
+                    </div>
+                `).join('');
+                updateStats(reviews);
+            });
+        }
+
+        function updateStats(reviews) {
+            const totalReviews = reviews.length;
+            const avgRating = reviews.length > 0 ? (reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length).toFixed(1) : 0;
+            const contactRequests = reviews.filter(r => r.whatsapp).length;
+            document.getElementById('totalReviews').textContent = totalReviews;
+            document.getElementById('avgRating').textContent = avgRating;
+            document.getElementById('contactRequests').textContent = contactRequests;
+        }
+
+        function formatTime(timestamp) {
+            if (!timestamp) return 'Hace unos momentos';
+            const date = new Date(timestamp.toDate());
+            const now = new Date();
+            const diff = now - date;
+            const minutes = Math.floor(diff / 60000);
+            const hours = Math.floor(diff / 3600000);
+            const days = Math.floor(diff / 86400000);
+            if (minutes < 1) return 'Hace unos segundos';
+            if (minutes < 60) return `Hace ${minutes}m`;
+            if (hours < 24) return `Hace ${hours}h`;
+            if (days < 7) return `Hace ${days}d`;
+            return date.toLocaleDateString('es-ES');
+        }
+
+        function escapeHtml(text) { const div = document.createElement('div'); div.textContent = text; return div.innerHTML; }
+        function showSuccess(message) { const msg = document.createElement('div'); msg.className = 'success-message'; msg.textContent = message; document.body.appendChild(msg); setTimeout(() => { msg.remove(); }, 3000); }
+        function showError(message) { const msg = document.createElement('div'); msg.className = 'error-message'; msg.textContent = message; document.body.appendChild(msg); setTimeout(() => { msg.remove(); }, 3000); }
+
+        loadReviews();
+    </script>
+</body>
+</html>
