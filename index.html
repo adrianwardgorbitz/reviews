@@ -283,13 +283,8 @@
 
         function updateStats(reviews) {
             const totalReviews = reviews.length;
-            const avgRating = reviews.length > 0 ? (reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length).toFixed(1) : 0;
-            const contactRequests = reviews.filter(r => r.whatsapp).length;
             document.getElementById('totalReviews').textContent = totalReviews;
-            document.getElementById('avgRating').textContent = avgRating;
-            document.getElementById('contactRequests').textContent = contactRequests;
         }
-
         function formatTime(timestamp) {
             if (!timestamp) return 'Hace unos momentos';
             const date = new Date(timestamp.toDate());
