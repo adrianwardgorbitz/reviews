@@ -481,7 +481,7 @@
       }
 
       if (instagram && !instagram.startsWith('@')) instagram = '@' + instagram;
-      if (whatsapp && !whatsapp.startsWith('+')) whatsapp = '+' + whatsapp;
+      
 
       btn.disabled = true;
       btn.textContent = 'Enviando...';
@@ -506,9 +506,9 @@
         }
 
         await db.collection('reviews').add({
-          name, email: email || null, instagram: instagram || null,
+          name, instagram: instagram || null,
           products, rating: parseInt(rating), comment,
-          whatsapp: whatsapp || null,
+        || null,
           photoUrls: photoUrls.length > 0 ? photoUrls : null,
           timestamp: new Date(),
           createdAt: new Date().toISOString()
