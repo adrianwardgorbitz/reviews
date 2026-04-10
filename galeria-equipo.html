@@ -580,14 +580,27 @@
         }
 
         await db.collection('reviews').add({
-          name, email: email || null, instagram: instagram || null,
+          name, 
+          email: email || null, instagram: instagram || null,
           products, rating: parseInt(rating), comment,
           whatsapp: whatsappFormatted,
           photoUrls: photoUrls.length > 0 ? photoUrls : null,
           timestamp: new Date(),
           createdAt: new Date().toISOString()
         });
+const sd = new URLSearchParams();
+sd.append('name', name);
+sd.append('email', email || '');
+sd.append('whatsapp', whatsapp || '');
+sd.append('products', JSON.stringify(products));
+sd.append('comment', comment);
 
+await fetch('https://script.google.com/macros/s/AKfycbzM1QNN36bUGmwLLQmXFrvYDpr-CjpmrF9Zr_s60hQPLdSHlKkwwSWBEc0UIn_DErSq/exec', {
+  method: 'POST',
+  mode: 'no-cors',
+  headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+  body: sd
+});
         btn.textContent = '✅';
         setTimeout(() => {
           alert('¡Reseña enviada!');
