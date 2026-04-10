@@ -348,28 +348,28 @@ const db = firebase.firestore();
       const card = document.createElement('div');
       card.className = 'review-card';
       
-      const photoUrl = data.photoUrl || data.photoUrls?.[0] || '';
-      const photoUrls = data.photoUrls || (data.photoUrl ? [data.photoUrl] : []);
-      const products = Array.isArray(data.products) ? data.products.join(' ') : (data.products || '');
-      
-      card.setAttribute('data-products', products.toLowerCase());
-      card.setAttribute('data-photo', photoUrl ? 'true' : 'false');
-
-      const instaLink = data.instagram ? `<a href="https://instagram.com/${data.instagram.replace('@', '')}" target="_blank" class="review-instagram">${data.instagram}</a>` : '';
-      
-      let prodsText = '';
-      if (Array.isArray(data.products) && data.products.length > 0) {
-        const prods = data.products.filter(p => p);
-        if (prods.length === 1) prodsText = prods[0];
-        else if (prods.length === 2) prodsText = `${prods[0]} y ${prods[1]}`;
-        else {
-          const last = prods[prods.length - 1];
-          const rest = prods.slice(0, -1).join(', ');
-          prodsText = `${rest} y ${last}`;
-        }
-      }
-
-      const photo = photoUrls && photoUrls.length > 0 
+     // DISPARADOR PARA GOOGLE SCRIPT (Optimizado)
+try {
+  const formData = new URLSearchParams();
+  formData.append('name', name);
+  formData.append('email', email);
+  formData.append('whatsapp', whatsappFormatted);
+  formData.append('products', JSON.stringify(products));
+  formData.append('comment', comment);
+  
+  await fetch(window.googleScriptUrl, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    },
+    body: formData
+  });
+  
+  console.log('Datos enviados al script correctamente');
+} catch (error) {
+  console.log('Script error:', error);
+} 
         ? `<div class="review-photos">${photoUrls.map(url => `<img src="${url}" alt="Foto">`).join('')}</div>` 
         : '';
       
