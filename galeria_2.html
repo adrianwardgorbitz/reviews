@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Degustaciones FuXion</title>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #f5f5f5; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #333; padding-top: 200px; }
+    .header-fixed { position: fixed; top: 0; left: 0; right: 0; background: #2563eb; color: white; padding: 20px; text-align: center; z-index: 100; box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3); }
+    .header-fixed h2 { font-size: 24px; margin: 0 0 8px 0; font-weight: 600; }
+    .header-fixed p { font-size: 14px; margin: 0; opacity: 0.95; }
+    .cta-button { position: fixed; top: 120px; left: 0; right: 0; background: #f5f5f5; padding: 12px 20px; text-align: center; font-size: 14px; font-weight: 600; color: #333; z-index: 99; border-bottom: 1px solid #eee; cursor: pointer; }
+    .cta-button:hover { background: #ececec; }
+    .filters { background: white; padding: 15px 20px; display: flex; gap: 10px; flex-wrap: wrap; border-bottom: 1px solid #eee; }
+    .filters input, .filters select { padding: 8px 12px; border: 1px solid #ddd; border-radius: 20px; font-size: 13px; }
+    .filters input { flex: 1; min-width: 150px; }
+    .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 15px 20px; background: white; }
+    .stat { padding: 12px; background: #f9f9f9; border-radius: 6px; text-align: center; }
+    .stat-label { font-size: 11px; color: #666; margin-bottom: 5px; }
+    .stat-value { font-size: 20px; color: #2563eb; font-weight: 600; }
+    .reviews-grid { display: grid; grid-template-columns: 1fr 1fr !important; gap: 15px; padding: 20px; max-width: 1400px; margin: 0 auto; }
+    .review-card { background: #f9f9f9; padding: 12px; border-radius: 8px; border: 1px solid #eee; cursor: pointer; transition: all 0.2s; }
+    .review-card:hover { border-color: #2563eb; box-shadow: 0 2px 8px rgba(37, 99, 235, 0.1); }
+    .review-name { font-weight: 600; font-size: 14px; margin-bottom: 6px; }
+    .review-instagram { font-weight: 400; color: #666; font-size: 13px; }
+    .review-meta { font-size: 12px; color: #666; margin-bottom: 10px; display: flex; gap: 8px; }
+    .review-rating { color: #f59e0b; letter-spacing: 2px; }
+    .product-badge { display: inline-block; background: #dbeafe; color: #2563eb; padding: 3px 10px; border-radius: 4px; font-size: 11px; font-weight: 600; margin-right: 4px; margin-bottom: 6px; }
+    .review-photos { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin: 8px 0; }
+    .review-photo { width: 100%; aspect-ratio: 1; border-radius: 6px; overflow: hidden; background: #eee; }
+    .review-photo img { width: 100%; height: 100%; object-fit: cover; }
+    .review-text { font-size: 13px; line-height: 1.5; color: #555; font-style: italic; }
+    .review-no-photo { font-size: 12px; color: #999; margin-bottom: 8px; }
+    .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.4); }
+    .modal.active { display: flex; align-items: center; justify-content: center; }
+    .modal-content { background-color: white; padding: 30px; border-radius: 12px; width: 90%; max-width: 500px; max-height: 90vh; overflow-y: auto; box-shadow: 0 4px 20px rgba(0,0,0,0.3); }
+    .modal-close { position: absolute; top: 15px; right: 20px; font-size: 28px; font-weight: bold; color: #999; cursor: pointer; border: none; background: none; }
+    .modal-close:hover { color: #333; }
+    .dropdown-form { position: fixed; bottom: -500px; left: 0; right: 0; background: white; z-index: 1000; transition: bottom 0.3s ease; box-shadow: 0 -2px 10px rgba(0,0,0,0.1); max-height: 500px; overflow-y: auto; }
+    .dropdown-form.active { bottom: 0; }
+    .dropdown-form-header { padding: 15px 20px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
+    .dropdown-form-header h3 { margin: 0; color: #2563eb; }
+    .dropdown-form-close { font-size: 24px; cursor: pointer; color: #999; border: none; background: none; }
+    .dropdown-form-close:hover { color: #333; }
+  </style>
+</head>
+<body>
+  <!-- HEADER FIJO -->
+  <div class="header-fixed">
+    <h2>Degustaciones FuXion</h2>
+    <p>Opiniones en VIVO de quienes prueban nuestros productos</p>
+  </div>
+
+  <!-- CTA FIJO -->
+  <div class="cta-button" onclick="openDropdown()">✏️ Haz click para llenar tu reseña</div>
+
+  <!-- DROPDOWN FORM -->
+  <div id="formDropdown" class="dropdown-form">
+    <div class="dropdown-form-header">
+      <h3>Tu opinión cuenta</h3>
+      <button class="dropdown-form-close" onclick="closeDropdown()">×</button>
+    </div>
+    <div style="padding: 20px;">
+      <p style="font-size: 12px; color: #666; margin-bottom: 15px;">Ayuda a otros a descubrir nuestros productos</p>
+      <form id="reviewForm" style="font-size: 13px;">
+        <div style="margin-bottom: 12px;">
+          <label style="display: block; font-weight: 600; margin-bottom: 5px;">Nombre *</label>
+          <input type="text" id="name" placeholder="Tu nombre" required autocomplete="name" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px;">
+        </div>
+        <div style="margin-bottom: 12px;">
+          <label style="display: block; font-weight: 600; margin-bottom: 5px;">WhatsApp</label>
+          <div style="display: flex; align-items: center; border: 1px solid #ddd; border-radius: 6px; overflow: hidden;">
+            <span style="padding: 8px; background: #f5f5f5; font-weight: 600;">+</span>
+            <input type="tel" id="whatsapp" placeholder="34 602 14 13 10" autocomplete="tel" style="flex: 1; padding: 8px; border: none; font-size: 13px;">
+          </div>
+        </div>
+        <div style="margin-bottom: 12px;">
+          <label style="display: block; font-weight: 600; margin-bottom: 5px;">Email</label>
+          <input type="email" id="email" placeholder="tu@email.com" autocomplete="email" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px;">
+        </div>
+        <div style="margin-bottom: 12px;">
+          <label style="display: block; font-weight: 600; margin-bottom: 5px;">Instagram</label>
+          <div style="display: flex; align-items: center; border: 1px solid #ddd; border-radius: 6px; overflow: hidden;">
+            <span style="padding: 8px; background: #f5f5f5; font-weight: 600;">@</span>
+            <input type="text" id="instagram" placeholder="tuusuario" autocomplete="username" style="flex: 1; padding: 8px; border: none; font-size: 13px;">
+          </div>
+        </div>
+        <div style="margin-bottom: 12px;">
+          <label style="display: block; font-weight: 600; margin-bottom: 5px;">Productos *</label>
+          <select id="product" required multiple style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px; min-height: 100px;">
+            <optgroup label="Sistema Base">
+              <option value="PRUNEX1">PRUNEX1</option>
+              <option value="FLORA LIV">FLORA LIV</option>
+              <option value="VITA XTRA T+">VITA XTRA T+</option>
+              <option value="VITAENERGIA">VITAENERGIA</option>
+              <option value="NUTRADAY">NUTRADAY</option>
+            </optgroup>
+            <optgroup label="Línea Inmunológica">
+              <option value="GANO+ CAPPUCCINO">GANO+ CAPPUCCINO</option>
+            </optgroup>
+            <optgroup label="Línea Control de Peso">
+              <option value="NOCARB-T">NOCARB-T</option>
+              <option value="THERMO T3">THERMO T3</option>
+              <option value="CAFÉ & CAFÉ FIT">CAFÉ & CAFÉ FIT</option>
+            </optgroup>
+            <optgroup label="Línea Anti-Edad">
+              <option value="BEAUTY-IN">BEAUTY-IN</option>
+              <option value="GOLDEN FLX">GOLDEN FLX</option>
+              <option value="PASSION">PASSION</option>
+              <option value="YOUTH ELIXIR">YOUTH ELIXIR</option>
+            </optgroup>
+            <optgroup label="Línea Vigor Mental">
+              <option value="ON">ON</option>
+              <option value="NO STRESS">NO STRESS</option>
+            </optgroup>
+            <optgroup label="Línea Sport">
+              <option value="PRE SPORT">PRE SPORT</option>
+              <option value="POST SPORT">POST SPORT</option>
+              <option value="BIOPRO+ SPORT">BIOPRO+ SPORT</option>
+            </optgroup>
+            <option value="Otros">Otros</option>
+          </select>
+          <small style="color: #999; display: block; margin-top: 4px;">Ctrl+Click para seleccionar múltiples</small>
+        </div>
+        <div style="margin-bottom: 12px;">
+          <label style="display: block; font-weight: 600; margin-bottom: 5px;">Hasta 3 fotos (opcional)</label>
+          <input type="file" id="photos" accept="image/*" multiple style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px;">
+          <small style="color: #999; display: block; margin-top: 4px;">Máx 5MB cada una</small>
+        </div>
+        <div style="margin-bottom: 12px;">
+          <label style="display: block; font-weight: 600; margin-bottom: 5px;">Rating *</label>
+          <div style="display: flex; gap: 5px; font-size: 20px;">
+            <span style="cursor: pointer;" onclick="setRating(1)">⭐</span>
+            <span style="cursor: pointer;" onclick="setRating(2)">⭐</span>
+            <span style="cursor: pointer;" onclick="setRating(3)">⭐</span>
+            <span style="cursor: pointer;" onclick="setRating(4)">⭐</span>
+            <span style="cursor: pointer;" onclick="setRating(5)">⭐</span>
+          </div>
+          <input type="hidden" id="rating" value="0">
+        </div>
+        <div style="margin-bottom: 12px;">
+          <label style="display: block; font-weight: 600; margin-bottom: 5px;">Comentario</label>
+          <textarea id="comment" placeholder="Tu opinión..." style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px; min-height: 60px;"></textarea>
+        </div>
+        <button type="submit" style="width: 100%; padding: 10px; background: #2563eb; color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 13px;">Enviar Reseña</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- FILTROS -->
+  <div class="filters">
+    <input type="text" id="cityFilter" placeholder="Filtrar por ciudad...">
+    <select id="productFilter">
+      <option value="">Seleccionar bebidas</option>
+      <option value="VITA XTRA T+">VITA XTRA T+</option>
+      <option value="ON">ON</option>
+      <option value="GOLDEN FLX">GOLDEN FLX</option>
+      <option value="FLORA LIV">FLORA LIV</option>
+      <option value="PRE SPORT">PRE SPORT</option>
+      <option value="POST SPORT">POST SPORT</option>
+      <option value="BEAUTY-IN">BEAUTY-IN</option>
+    </select>
+    <label style="display: flex; align-items: center; gap: 6px; font-size: 13px; cursor: pointer; margin-left: auto; white-space: nowrap;">
+      <input type="checkbox" id="photoFilter" style="margin: 0;">
+      <span>Solo con foto</span>
+    </label>
+  </div>
+
+  <!-- ESTADÍSTICAS -->
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-label">Total de Reseñas</div>
+      <div class="stat-value" id="totalCount">0</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Con Foto</div>
+      <div class="stat-value" id="photoCount">0</div>
+    </div>
+  </div>
+
+  <!-- RESEÑAS -->
+  <div class="reviews-grid" id="reviewsGrid">
+    <div class="loading">Cargando reseñas...</div>
+  </div>
+
+  <script>
+    // Firebase Config
+    const firebaseConfig = {
+      apiKey: "AIzaSyBZ1iquQo-rcaI25-eStS8ZhwYI-lugCLk",
+      authDomain: "degustaciones.firebaseapp.com",
+      projectId: "degustaciones",
+      storageBucket: "degustaciones.firebasestorage.app",
+      messagingSenderId: "80590754347",
+      appId: "1:80590754347:web:982cd91a00ddccc7f1106e"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    const reviewsGrid = document.getElementById('reviewsGrid');
+    let allReviews = [];
+
+    // Crear tarjeta de reseña
+    function createReviewCard(data) {
+      const card = document.createElement('div');
+      card.className = 'review-card';
+      
+      const products = Array.isArray(data.products) ? data.products.join(' ') : (data.products || '');
+      const photoUrl = data.photoUrl || data.photoUrls?.[0] || '';
+      
+      card.setAttribute('data-city', (data.city || '').toLowerCase());
+      card.setAttribute('data-photo', photoUrl ? 'true' : 'false');
+      card.setAttribute('data-products', products.toLowerCase());
+
+      const instagramHTML = data.instagram ? `<span class="review-instagram">${data.instagram}</span>` : '';
+      
+      // Formatear productos: "A, B y C"
+      let productsDisplay = '';
+      if (Array.isArray(data.products) && data.products.length > 0) {
+        const prods = data.products.filter(p => p);
+        if (prods.length === 1) {
+          productsDisplay = prods[0];
+        } else if (prods.length === 2) {
+          productsDisplay = `${prods[0]} y ${prods[1]}`;
+        } else {
+          const lastProd = prods[prods.length - 1];
+          const otherProds = prods.slice(0, -1).join(', ');
+          productsDisplay = `${otherProds} y ${lastProd}`;
+        }
+      }
+      
+      const productBadges = (Array.isArray(data.products) ? data.products : [data.products || ''])
+        .filter(p => p)
+        .map(p => `<span class="product-badge">${p}</span>`)
+        .join('');
+
+      let photosHTML = '';
+      if (photoUrl) {
+        photosHTML = `<div class="review-photos"><div class="review-photo"><img src="${photoUrl}" alt="Foto"></div></div>`;
+      } else {
+        photosHTML = '<p class="review-no-photo">Sin foto compartida</p>';
+      }
+
+      const timestamp = data.timestamp || data.createdAt;
+      let timeAgo = 'Hace poco';
+      if (timestamp) {
+        const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
+        const minutes = Math.floor((new Date() - date) / 60000);
+        if (minutes < 60) timeAgo = `Hace ${minutes}m`;
+        else if (minutes < 1440) timeAgo = `Hace ${Math.floor(minutes / 60)}h`;
+        else timeAgo = `Hace ${Math.floor(minutes / 1440)}d`;
+      }
+
+      const stars = '⭐'.repeat(data.rating || 0);
+
+      card.innerHTML = `
+        <div class="review-name">${data.name} ${instagramHTML}</div>
+        ${productsDisplay ? `<div style="font-size: 12px; color: #666; margin-bottom: 6px; font-weight: 500;">${productsDisplay}</div>` : ''}
+        <div class="review-meta">
+          <span>📍 ${data.city || 'Sin ciudad'}</span>
+          <span>•</span>
+          <span>${timeAgo}</span>
+          <span class="review-rating">${stars}</span>
+        </div>
+        <div style="margin-bottom: 8px;">${productBadges}</div>
+        ${photosHTML}
+        <p class="review-text">"${data.comment || 'Sin comentarios'}"</p>
+      `;
+
+      return card;
+    }
+
+    // Cargar reseñas de Firebase
+    async function loadReviews() {
+      try {
+        const snapshot = await db.collection('reviews').orderBy('timestamp', 'desc').limit(50).get();
+        
+        allReviews = [];
+        reviewsGrid.innerHTML = '';
+
+        snapshot.forEach(doc => {
+          const data = doc.data();
+          allReviews.push(data);
+          reviewsGrid.appendChild(createReviewCard(data));
+        });
+
+        // Actualizar estadísticas
+        document.getElementById('totalCount').textContent = allReviews.length;
+        const withPhoto = allReviews.filter(r => r.photoUrl || r.photoUrls?.[0]).length;
+        document.getElementById('photoCount').textContent = withPhoto;
+
+        if (allReviews.length === 0) {
+          reviewsGrid.innerHTML = '<div class="loading">No hay reseñas aún. ¡Sé el primero!</div>';
+        }
+
+        setupFilters();
+      } catch (error) {
+        console.error('Error cargando reseñas:', error);
+        reviewsGrid.innerHTML = '<div class="loading">Error cargando reseñas. Intenta más tarde.</div>';
+      }
+    }
+
+    // Filtros
+    function setupFilters() {
+      const cityInput = document.getElementById('cityFilter');
+      const productSelect = document.getElementById('productFilter');
+      const photoCheckbox = document.getElementById('photoFilter');
+      const reviewCards = document.querySelectorAll('.review-card');
+
+      function applyFilters() {
+        const cityFilter = cityInput.value.toLowerCase();
+        const productFilter = productSelect.value.toLowerCase();
+        const photoOnly = photoCheckbox.checked;
+
+        reviewCards.forEach(card => {
+          let show = true;
+          if (cityFilter) {
+            const city = card.getAttribute('data-city') || '';
+            show = show && city.includes(cityFilter);
+          }
+          if (productFilter) {
+            const products = card.getAttribute('data-products') || '';
+            show = show && products.includes(productFilter);
+          }
+          if (photoOnly) {
+            const hasPhoto = card.getAttribute('data-photo') === 'true';
+            show = show && hasPhoto;
+          }
+          card.style.display = show ? 'block' : 'none';
+        });
+      }
+
+      cityInput.addEventListener('input', applyFilters);
+      productSelect.addEventListener('change', applyFilters);
+      photoCheckbox.addEventListener('change', applyFilters);
+    }
+
+    // Cargar reseñas al iniciar
+    loadReviews();
+
+    // Funciones de Dropdown
+    function openDropdown() {
+      document.getElementById('formDropdown').classList.add('active');
+    }
+
+    function closeDropdown() {
+      document.getElementById('formDropdown').classList.remove('active');
+    }
+
+    function setRating(rating) {
+      document.getElementById('rating').value = rating;
+    }
+
+    // Manejo del formulario
+    document.getElementById('reviewForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
+      const productSelect = document.getElementById('product');
+      const products = Array.from(productSelect.selectedOptions).map(o => o.value);
+      const rating = document.getElementById('rating').value;
+      const comment = document.getElementById('comment').value;
+      let instagram = document.getElementById('instagram').value.trim();
+      let whatsapp = document.getElementById('whatsapp').value.trim();
+      const photosInput = document.getElementById('photos');
+      const photos = photosInput.files;
+
+      // Validar que al menos un producto esté seleccionado
+      if (products.length === 0) {
+        alert('Por favor selecciona al menos un producto');
+        return;
+      }
+
+      // Agregar @ automáticamente si falta
+      if (instagram && !instagram.startsWith('@')) { 
+        instagram = '@' + instagram; 
+      }
+
+      // Agregar + al WhatsApp
+      if (whatsapp && !whatsapp.startsWith('+')) {
+        whatsapp = '+' + whatsapp;
+      }
+
+      if (rating === '0') {
+        alert('Por favor selecciona un rating');
+        return;
+      }
+
+      try {
+        let photoUrls = [];
+
+        // Subir fotos a ImgBB
+        if (photos.length > 0) {
+          if (photos.length > 3) {
+            alert('Máximo 3 fotos permitidas');
+            return;
+          }
+
+          for (let i = 0; i < photos.length; i++) {
+            if (photos[i].size > 5000000) {
+              alert(`Foto ${i + 1} muy grande (máx 5MB)`);
+              return;
+            }
+
+            const formData = new FormData();
+            formData.append('image', photos[i]);
+            formData.append('key', 'ba93a9fe70568c8462e67f8c0b6ea70a');
+
+            const imgbbResponse = await fetch('https://api.imgbb.com/1/upload', {
+              method: 'POST',
+              body: formData
+            });
+            const imgbbData = await imgbbResponse.json();
+            if (imgbbData.success) {
+              photoUrls.push(imgbbData.data.url);
+            }
+          }
+        }
+
+        // Guardar en Firebase
+        const review = {
+          name,
+          email: email || null,
+          instagram: instagram || null,
+          products: products,
+          rating: parseInt(rating),
+          comment,
+          whatsapp: whatsapp || null,
+          photoUrls: photoUrls.length > 0 ? photoUrls : null,
+          timestamp: new Date(),
+          createdAt: new Date().toISOString()
+        };
+
+        await db.collection('reviews').add(review);
+
+        // Enviar a Google Apps Script
+        try {
+          await fetch('https://script.google.com/macros/s/AKfycbxuVtAxgoyRJVBPa6KIwi_LzR3-zOhJJylY5lKXmNRScFwobrg08nafwcsJ4-WVpyRv/exec', {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ 
+              name, 
+              email: email || null,
+              instagram: instagram || null,
+              products: products, 
+              rating: parseInt(rating), 
+              comment, 
+              whatsapp: whatsapp || null,
+              photoUrls: photoUrls.length > 0 ? photoUrls : null
+            })
+          });
+        } catch (error) { 
+          console.log('Notificaciones enviadas'); 
+        }
+
+        alert('¡Reseña enviada! Gracias por tu opinión.');
+        document.getElementById('reviewForm').reset();
+        document.getElementById('rating').value = '0';
+        document.getElementById('whatsapp').value = '';
+        closeDropdown();
+        
+        // Recargar reseñas
+        location.reload();
+      } catch (error) {
+        console.error('Error:', error);
+        alert('Error al enviar la reseña: ' + error.message);
+      }
+    });
+  </script>
+</body>
+</html>
