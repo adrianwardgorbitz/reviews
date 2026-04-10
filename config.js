@@ -119,3 +119,13 @@ function getTimeAgo(timestamp) {
   if (mins < 1440) return `Hace ${Math.floor(mins / 60)}h`;
   return `Hace ${Math.floor(mins / 1440)}d`;
 }
+// EXPORTAR AL OBJETO GLOBAL (Para que los HTML lo vean)
+window.firebaseConfig = firebaseConfig;
+window.PRODUCTOS = PRODUCTOS;
+window.IMGBB_KEY = IMGBB_KEY;
+window.ULTRAMSG = ULTRAMSG;
+window.CONTACT = CONTACT;
+window.generateProductOptions = generateProductOptions;
+window.generateFilterOptions = generateFilterOptions;
+window.formatProducts = formatProducts;
+window.getTimeAgo = getTimeAgo;
