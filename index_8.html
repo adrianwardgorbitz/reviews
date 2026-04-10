@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Degustaciones FuXion</title>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #f5f5f5; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #333; padding-top: 200px; }
+    .header-fixed { position: fixed; top: 0; left: 0; right: 0; background: #2563eb; color: white; padding: 20px; text-align: center; z-index: 100; box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3); }
+    .header-fixed h2 { font-size: 24px; margin: 0 0 8px 0; font-weight: 600; }
+    .header-fixed p { font-size: 14px; margin: 0; opacity: 0.95; }
+    .cta-button { position: fixed; top: 120px; left: 0; right: 0; background: #f5f5f5; padding: 12px 20px; text-align: center; font-size: 14px; font-weight: 600; color: #333; z-index: 99; border-bottom: 1px solid #eee; cursor: pointer; }
+    .cta-button:hover { background: #ececec; }
+    .filters { background: white; padding: 15px 20px; display: flex; gap: 10px; flex-wrap: wrap; border-bottom: 1px solid #eee; }
+    .filters input, .filters select { padding: 8px 12px; border: 1px solid #ddd; border-radius: 20px; font-size: 13px; }
+    .filters input { flex: 1; min-width: 150px; }
+    .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 15px 20px; background: white; }
+    .stat { padding: 12px; background: #f9f9f9; border-radius: 6px; text-align: center; }
+    .stat-label { font-size: 11px; color: #666; margin-bottom: 5px; }
+    .stat-value { font-size: 20px; color: #2563eb; font-weight: 600; }
+    .reviews-grid { display: grid; grid-template-columns: 1fr 1fr !important; gap: 15px; padding: 20px; max-width: 1400px; margin: 0 auto; }
+    .review-card { background: #f9f9f9; padding: 12px; border-radius: 8px; border: 1px solid #eee; cursor: pointer; transition: all 0.2s; }
+    .review-card:hover { border-color: #2563eb; box-shadow: 0 2px 8px rgba(37, 99, 235, 0.1); }
+    .review-name { font-weight: 600; font-size: 14px; margin-bottom: 6px; }
+    .review-instagram { font-weight: 400; color: #666; font-size: 13px; }
+    .review-meta { font-size: 12px; color: #666; margin-bottom: 10px; display: flex; gap: 8px; }
+    .review-rating { color: #f59e0b; letter-spacing: 2px; }
+    .product-badge { display: inline-block; background: #dbeafe; color: #2563eb; padding: 3px 10px; border-radius: 4px; font-size: 11px; font-weight: 600; margin-right: 4px; margin-bottom: 6px; }
+    .review-photos { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin: 8px 0; }
+    .review-photo { width: 100%; aspect-ratio: 1; border-radius: 6px; overflow: hidden; background: #eee; }
+    .review-photo img { width: 100%; height: 100%; object-fit: cover; }
+    .review-text { font-size: 13px; line-height: 1.5; color: #555; font-style: italic; }
+    .review-no-photo { font-size: 12px; color: #999; margin-bottom: 8px; }
+    .loading { text-align: center; padding: 40px 20px; color: #999; }
+  </style>
+</head>
+<body>
+  <!-- HEADER FIJO -->
+  <div class="header-fixed">
+    <h2>Degustaciones FuXion</h2>
+    <p>Opiniones en VIVO de quienes prueban nuestros productos</p>
+  </div>
+
+  <!-- CTA FIJO -->
+  <div class="cta-button">✏️ Haz click para llenar tu reseña</div>
+
+  <!-- FILTROS -->
+  <div class="filters">
+    <input type="text" id="cityFilter" placeholder="Filtrar por ciudad...">
+    <select id="productFilter">
+      <option value="">Seleccionar bebidas</option>
+    </select>
+    <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; cursor: pointer;">
+      <input type="checkbox" id="photoFilter">
+      <span>Solo con foto</span>
+    </label>
+  </div>
+
+  <!-- ESTADÍSTICAS -->
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-label">Total de Reseñas</div>
+      <div class="stat-value" id="totalCount">0</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Con Foto</div>
+      <div class="stat-value" id="photoCount">0</div>
+    </div>
+  </div>
+
+  <!-- RESEÑAS -->
+  <div class="reviews-grid" id="reviewsGrid">
+    <div class="loading">Cargando reseñas desde Firebase...</div>
+  </div>
+
+  <script>
+    // Firebase Config
+    const firebaseConfig = {
+      apiKey: "AIzaSyBZ1iquQo-rcaI25-eStS8ZhwYI-lugCLk",
+      authDomain: "degustaciones.firebaseapp.com",
+      projectId: "degustaciones",
+      storageBucket: "degustaciones.firebasestorage.app",
+      messagingSenderId: "80590754347",
+      appId: "1:80590754347:web:982cd91a00ddccc7f1106e"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    const reviewsGrid = document.getElementById('reviewsGrid');
+    const productFilter = document.getElementById('productFilter');
+    let allReviews = [];
+    let allProducts = new Set();
+
+    function createReviewCard(data) {
+      const card = document.createElement('div');
+      card.className = 'review-card';
+      
+      const products = Array.isArray(data.products) ? data.products : (data.product ? [data.product] : []);
+      const photoUrl = data.photoUrl || (Array.isArray(data.photoUrls) ? data.photoUrls[0] : '');
+      const city = data.city || 'Sin ciudad';
+      
+      card.setAttribute('data-city', city.toLowerCase());
+      card.setAttribute('data-photo', photoUrl ? 'true' : 'false');
+      card.setAttribute('data-products', products.map(p => p.toLowerCase()).join(' '));
+
+      const instagramHTML = data.instagram ? `<span class="review-instagram">${data.instagram}</span>` : '';
+      const productBadges = products
+        .filter(p => p)
+        .map(p => `<span class="product-badge">${p}</span>`)
+        .join('');
+
+      let photosHTML = '';
+      if (photoUrl) {
+        photosHTML = `<div class="review-photos"><div class="review-photo"><img src="${photoUrl}" alt="Foto" onerror="this.style.display='none'"></div></div>`;
+      } else {
+        photosHTML = '<p class="review-no-photo">Sin foto compartida</p>';
+      }
+
+      const timestamp = data.timestamp || data.createdAt;
+      let timeAgo = 'Hace poco';
+      if (timestamp) {
+        try {
+          const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
+          const minutes = Math.floor((new Date() - date) / 60000);
+          if (minutes < 60) timeAgo = `Hace ${minutes}m`;
+          else if (minutes < 1440) timeAgo = `Hace ${Math.floor(minutes / 60)}h`;
+          else timeAgo = `Hace ${Math.floor(minutes / 1440)}d`;
+        } catch (e) {
+          console.log('Error procesando timestamp');
+        }
+      }
+
+      const stars = '⭐'.repeat(data.rating || 0);
+
+      card.innerHTML = `
+        <div class="review-name">${data.name || 'Anónimo'} ${instagramHTML}</div>
+        <div class="review-meta">
+          <span>📍 ${city}</span>
+          <span>•</span>
+          <span>${timeAgo}</span>
+          <span class="review-rating">${stars}</span>
+        </div>
+        <div style="margin-bottom: 8px;">${productBadges}</div>
+        ${photosHTML}
+        <p class="review-text">"${data.comment || 'Sin comentarios'}"</p>
+      `;
+
+      return card;
+    }
+
+    async function loadReviews() {
+      try {
+        console.log('Conectando a Firebase...');
+        const snapshot = await db.collection('reviews').orderBy('createdAt', 'desc').limit(100).get();
+        
+        console.log('Documentos encontrados:', snapshot.size);
+        
+        allReviews = [];
+        allProducts.clear();
+        reviewsGrid.innerHTML = '';
+
+        snapshot.forEach(doc => {
+          const data = doc.data();
+          console.log('Reseña:', data);
+          allReviews.push(data);
+          
+          // Agregar productos al select
+          if (Array.isArray(data.products)) {
+            data.products.forEach(p => allProducts.add(p));
+          } else if (data.product) {
+            allProducts.add(data.product);
+          }
+          
+          reviewsGrid.appendChild(createReviewCard(data));
+        });
+
+        // Llenar select de productos
+        allProducts.forEach(product => {
+          const option = document.createElement('option');
+          option.value = product.toLowerCase();
+          option.textContent = product;
+          productFilter.appendChild(option);
+        });
+
+        document.getElementById('totalCount').textContent = allReviews.length;
+        const withPhoto = allReviews.filter(r => r.photoUrl || (Array.isArray(r.photoUrls) && r.photoUrls[0])).length;
+        document.getElementById('photoCount').textContent = withPhoto;
+
+        if (allReviews.length === 0) {
+          reviewsGrid.innerHTML = '<div class="loading">No hay reseñas aún. ¡Sé el primero en compartir!</div>';
+        }
+
+        setupFilters();
+      } catch (error) {
+        console.error('Error:', error);
+        reviewsGrid.innerHTML = `<div class="loading">Error cargando reseñas: ${error.message}</div>`;
+      }
+    }
+
+    function setupFilters() {
+      const cityInput = document.getElementById('cityFilter');
+      const photoCheckbox = document.getElementById('photoFilter');
+      const reviewCards = document.querySelectorAll('.review-card');
+
+      function applyFilters() {
+        const cityFilter = cityInput.value.toLowerCase();
+        const productFilter = productFilter.value.toLowerCase();
+        const photoOnly = photoCheckbox.checked;
+
+        reviewCards.forEach(card => {
+          let show = true;
+          if (cityFilter) {
+            const city = card.getAttribute('data-city') || '';
+            show = show && city.includes(cityFilter);
+          }
+          if (productFilter) {
+            const products = card.getAttribute('data-products') || '';
+            show = show && products.includes(productFilter);
+          }
+          if (photoOnly) {
+            const hasPhoto = card.getAttribute('data-photo') === 'true';
+            show = show && hasPhoto;
+          }
+          card.style.display = show ? 'block' : 'none';
+        });
+      }
+
+      cityInput.addEventListener('input', applyFilters);
+      document.getElementById('productFilter').addEventListener('change', applyFilters);
+      photoCheckbox.addEventListener('change', applyFilters);
+    }
+
+    loadReviews();
+  </script>
+</body>
+</html>
