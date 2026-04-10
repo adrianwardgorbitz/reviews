@@ -508,7 +508,7 @@ try {
             if (photo.size > 5000000) throw new Error('Foto muy grande');
             const formData = new FormData();
             formData.append('image', photo);
-            formData.append('key', 'ba93a9fe70568c8462e67f8c0b6ea70a');
+            formData.append('key', window.IMGBB_KEY);
             const res = await fetch('https://api.imgbb.com/1/upload', { method: 'POST', body: formData });
             const data = await res.json();
             return data.success ? data.data.url : null;
