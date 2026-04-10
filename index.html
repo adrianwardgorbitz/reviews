@@ -3,89 +3,37 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Registro de Clientes - FuXion</title>
+  <title>Degustaciones FuXion - Mi Panel</title>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
   <style>
-    body { background: #f0f4f8; font-family: -apple-system, sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
-    .card { background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); width: 90%; max-width: 400px; }
-    h2 { color: #1e40af; text-align: center; margin-bottom: 20px; }
-    label { display: block; font-size: 12px; font-weight: bold; color: #666; margin-top: 15px; }
-    input, select { width: 100%; padding: 12px; margin-top: 5px; border: 1px solid #ddd; border-radius: 10px; font-size: 14px; }
-    .btn { width: 100%; padding: 16px; background: #10b981; color: white; border: none; border-radius: 10px; font-weight: bold; margin-top: 25px; cursor: pointer; font-size: 16px; }
-    .btn:disabled { background: #ccc; }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #f5f5f5; font-family: -apple-system, sans-serif; padding-top: 200px; }
+    .header-fixed { position: fixed; top: 0; left: 0; right: 0; background: #2563eb; color: white; padding: 20px; text-align: center; z-index: 100; }
+    .cta-button { position: fixed; top: 120px; left: 0; right: 0; background: #f5f5f5; padding: 12px 20px; text-align: center; font-size: 14px; font-weight: 600; z-index: 99; border-bottom: 1px solid #eee; cursor: pointer; }
+    .filters { background: white; padding: 15px; display: flex; gap: 10px; flex-wrap: wrap; border-bottom: 1px solid #eee; }
+    .filters input, .filters select { padding: 8px 12px; border: 1px solid #ddd; border-radius: 20px; font-size: 13px; }
+    .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 15px; background: white; }
+    .stat { padding: 12px; background: #f9f9f9; border-radius: 6px; text-align: center; }
+    .stat-value { font-size: 20px; color: #2563eb; font-weight: 600; }
+    .reviews-grid { display: grid; grid-template-columns: 1fr 1fr !important; gap: 15px; padding: 20px; }
+    .review-card { background: #f9f9f9; padding: 12px; border-radius: 8px; border: 1px solid #eee; }
+    .review-photo img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 6px; }
+    
+    /* Drawer Estilo Moderno */
+    .drawer { position: fixed; bottom: -100%; left: 0; right: 0; background: white; z-index: 200; transition: 0.4s; border-radius: 20px 20px 0 0; padding: 25px; box-shadow: 0 -5px 20px rgba(0,0,0,0.2); max-height: 80vh; overflow-y: auto; }
+    .drawer.active { bottom: 0; }
+    .form-input { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 10px; }
+    .btn-submit { width: 100%; padding: 16px; background: #10b981; color: white; border: none; border-radius: 10px; font-weight: bold; margin-top: 15px; }
   </style>
 </head>
 <body>
-  <div class="card">
-    <h2>🚀 Nuevo Prospecto</h2>
-    <form id="leadForm">
-      <label>Nombre del Cliente</label>
-      <input type="text" id="name" required>
-      
-      <label>WhatsApp (Sin el +)</label>
-      <input type="tel" id="whatsapp" placeholder="34600111222" required>
-
-      <label>Correo Electrónico</label>
-      <input type="email" id="email">
-
-      <label>Producto Degustado</label>
-      <select id="product">
-        <option value="VITA XTRA T+">VITA XTRA T+</option>
-        <option value="THERMO T3">THERMO T3</option>
-        <option value="PRUNEX1">PRUNEX1</option>
-        <option value="ON">ON</option>
-      </select>
-
-      <button type="submit" id="submitBtn" class="btn">REGISTRAR Y ENVIAR CATÁLOGO</button>
-    </form>
+  <div class="header-fixed">
+    <h2>Mi Panel FuXion</h2>
+    <p>Ventas y Prueba Social</p>
   </div>
 
-  <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyBZ1iquQo-rcaI25-eStS8ZhwYI-lugCLk",
-      authDomain: "degustaciones.firebaseapp.com",
-      projectId: "degustaciones",
-      storageBucket: "degustaciones.firebasestorage.app",
-      messagingSenderId: "80590754347",
-      appId: "1:80590754347:web:982cd91a00ddccc7f1106e"
-    };
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
+  <div class="cta-button" onclick="document.getElementById('drawer').classList.add('active')">🚀 Registrar Cliente y Enviar WhatsApp</div>
 
-    document.getElementById('leadForm').onsubmit = async (e) => {
-      e.preventDefault();
-      const btn = document.getElementById('submitBtn');
-      btn.disabled = true;
-      btn.innerText = "Enviando...";
-
-      const data = {
-        name: document.getElementById('name').value,
-        whatsapp: document.getElementById('whatsapp').value,
-        email: document.getElementById('email').value,
-        products: [document.getElementById('product').value],
-        createdAt: new Date()
-      };
-
-      try {
-        // 1. Guardar en tu colección PRIVADA de prospectos
-        await db.collection('leads').add(data);
-
-        // 2. Enviar al Google Script (UltraMsg + Email Anastasia)
-        await fetch('TU_URL_DE_GOOGLE_SCRIPT', {
-          method: 'POST',
-          mode: 'no-cors',
-          body: JSON.stringify(data)
-        });
-
-        alert("¡Cliente registrado! WhatsApp enviado con éxito.");
-        location.reload();
-      } catch (err) {
-        alert("Error al registrar");
-        btn.disabled = false;
-        btn.innerText = "REGISTRAR Y ENVIAR CATÁLOGO";
-      }
-    };
-  </script>
-</body>
-</html>
+  <div class="filters">
+    <input
