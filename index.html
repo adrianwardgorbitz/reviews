@@ -16,7 +16,7 @@
         /* Botón de Registro Verde */
         .cta-button { position: fixed; top: 105px; left: 0; right: 0; background: #10b981; color: white; padding: 15px; text-align:center; font-weight: bold; cursor: pointer; z-index: 999; border: none; width: 100%; font-size: 15px; }
         
-        /* Grid de 2 Columnas Estilo Imagen */
+        /* Grid de 2 Columnas */
         .reviews-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 12px; }
         .review-card { background: white; border-radius: 12px; padding: 10px; border: 1px solid #eee; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
         .review-card img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 8px; background: #f0f0f0; }
@@ -52,23 +52,24 @@
         
         <label style="font-size: 12px; font-weight: bold; color: #666; margin-left: 5px;">Bebida degustada:</label>
         <select id="l_prod" class="form-input">
-            <option value="VITA XTRA T+">VITA XTRA T+</option>
-            <option value="THERMO T3">THERMO T3</option>
             <option value="PRUNEX1">PRUNEX1</option>
+            <option value="FLORA LIV">FLORA LIV</option>
+            <option value="VITA XTRA T+">VITA XTRA T+</option>
+            <option value="VITAENERGIA">VITAENERGIA</option>
+            <option value="NUTRADAY">NUTRADAY</option>
+            <option value="GANO+ CAPPUCCINO">GANO+ CAPPUCCINO</option>
+            <option value="NOCARB-T">NOCARB-T</option>
+            <option value="THERMO T3">THERMO T3</option>
+            <option value="CAFÉ & CAFÉ FIT">CAFÉ & CAFÉ FIT</option>
+            <option value="BEAUTY-IN">BEAUTY-IN</option>
+            <option value="GOLDEN FLX">GOLDEN FLX</option>
+            <option value="PASSION">PASSION</option>
+            <option value="YOUTH ELIXIR">YOUTH ELIXIR</option>
             <option value="ON">ON</option>
             <option value="NO STRESS">NO STRESS</option>
-            <option value="FLORA LIV">FLORA LIV</option>
-            <option value="BERRY BALANCE">BERRY BALANCE</option>
-            <option value="BEAUTY IN">BEAUTY IN</option>
-            <option value="OCN">OCN</option>
-            <option value="GOLDEN FLX">GOLDEN FLX</option>
-            <option value="PROBAL">PROBAL</option>
-            <option value="PROTEIN ACTIVE">PROTEIN ACTIVE</option>
-            <option value="POST SPORT">POST SPORT</option>
             <option value="PRE SPORT">PRE SPORT</option>
-            <option value="BIOPRO+ TECT">BIOPRO+ TECT</option>
-            <option value="ALPHA BALANCE">ALPHA BALANCE</option>
-            <option value="CAFÉ CAFÉ FIT">CAFÉ CAFÉ FIT</option>
+            <option value="POST SPORT">POST SPORT</option>
+            <option value="BIOPRO+ SPORT">BIOPRO+ SPORT</option>
         </select>
 
         <button type="submit" id="btnSubmit" class="btn-send">ENVIAR CATÁLOGO (ULTRAMSG)</button>
@@ -77,7 +78,7 @@
 </div>
 
 <script>
-    // Configuración Firebase (Adrian)
+    // Configuración Firebase (Tus credenciales)
     const firebaseConfig = {
         apiKey: "AIzaSyBZ1iquQo-rcaI25-eStS8ZhwYI-lugCLk",
         authDomain: "degustaciones.firebaseapp.com",
@@ -89,23 +90,22 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
-    // 1. CARGAR GALERÍA (Desde 'reviews')
+    // 1. CARGAR GALERÍA
     async function loadReviews() {
         const grid = document.getElementById('reviewsGrid');
         try {
-            const snap = await db.collection('reviews').orderBy('createdAt', 'desc').get();
+            const snapshot = await db.collection('reviews').orderBy('timestamp', 'desc').limit(20).get();
             grid.innerHTML = '';
             
-            snap.forEach(doc => {
+            snapshot.forEach(doc => {
                 const d = doc.data();
-                // Buscamos cualquier nombre de campo para la imagen (photoUrl o photo)
-                const img = d.photoUrl || d.photo || d.imageUrl || "";
+                const photoUrl = d.photoUrl || (d.photoUrls && d.photoUrls[0]) || "";
                 
                 grid.innerHTML += `
                     <div class="review-card">
-                        ${img ? `<img src="${img}" onerror="this.parentElement.style.display='none'">` : `<div style="aspect-ratio:1; background:#eee; border-radius:8px; display:flex; align-items:center; justify-content:center; color:#ccc;">📸</div>`}
+                        ${photoUrl ? `<img src="${photoUrl}" onerror="this.parentElement.style.display='none'">` : `<div style="aspect-ratio:1; background:#eee; border-radius:8px; display:flex; align-items:center; justify-content:center; color:#ccc;">📸</div>`}
                         <div style="font-weight:bold; font-size:13px; margin-top:8px;">${d.name || 'Anónimo'}</div>
-                        <div style="font-size:11px; color:#2563eb; font-weight: 600;">${d.products ? d.products[0] : 'Producto'}</div>
+                        <div style="font-size:11px; color:#2563eb; font-weight: 600;">${Array.isArray(d.products) ? d.products[0] : (d.product || 'FuXion')}</div>
                     </div>`;
             });
         } catch (e) { 
@@ -114,7 +114,7 @@
         }
     }
 
-    // 2. ENVIAR REGISTRO (Lead + Google Script)
+    // 2. ENVIAR REGISTRO
     document.getElementById('leadForm').onsubmit = async (e) => {
         e.preventDefault();
         const btn = document.getElementById('btnSubmit');
@@ -126,33 +126,21 @@
             whatsapp: document.getElementById('l_whatsapp').value,
             email: document.getElementById('l_email').value,
             products: [document.getElementById('l_prod').value],
-            createdAt: new Date()
+            createdAt: new Date(),
+            timestamp: new Date()
         };
 
         try {
-            // Guardar en colección de prospectos
             await db.collection('leads').add(data);
-
-            // ENVIAR A GOOGLE APPS SCRIPT (ULTRAMSG)
-            // IMPORTANTE: Pon aquí tu URL de Google Script
-            const scriptURL = 'TU_URL_DE_GOOGLE_APPS_SCRIPT_AQUI';
             
+            // Integración con Google Apps Script (Ultramsg)
+            const scriptURL = 'TU_URL_DE_GOOGLE_APPS_SCRIPT_AQUI';
             await fetch(scriptURL, {
                 method: 'POST',
                 mode: 'no-cors',
                 body: JSON.stringify(data)
             });
 
-            alert("¡Éxito!.");
+            alert("¡Registro exitoso!");
             location.reload();
-        } catch (err) {
-            alert("Error al procesar el envío.");
-            btn.disabled = false;
-            btn.innerText = "ENVIAR CATÁLOGO (ULTRAMSG)";
-        }
-    };
-
-    loadReviews();
-</script>
-</body>
-</html>
+        } catch (err
