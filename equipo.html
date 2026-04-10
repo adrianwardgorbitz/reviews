@@ -3,53 +3,208 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Galería de Degustaciones</title>
+  <title>Galería FuXion - Equipo</title>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
   <style>
-    /* Diseño del grid de 2 columnas que ya tienes en index_7 */
-    body { background: #f5f5f5; font-family: sans-serif; padding-top: 120px; }
-    .header { position: fixed; top: 0; left: 0; right: 0; background: #2563eb; color: white; padding: 15px; text-align: center; z-index: 100; }
-    .reviews-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 15px; }
-    .card { background: white; border-radius: 12px; padding: 10px; border: 1px solid #eee; }
-    .card img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 8px; }
-    .fab { position: fixed; bottom: 20px; right: 20px; background: #2563eb; color: white; width: 60px; height: 60px; border-radius: 50%; border: none; font-size: 30px; box-shadow: 0 5px 15px rgba(0,0,0,0.2); cursor: pointer; }
-    /* Estilos del formulario Drawer... */
+    /* Estilos base de tu index_7.html */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #f5f5f5; font-family: -apple-system, sans-serif; padding-top: 200px; }
+    .header-fixed { position: fixed; top: 0; left: 0; right: 0; background: #2563eb; color: white; padding: 20px; text-align: center; z-index: 100; }
+    .cta-button { position: fixed; top: 120px; left: 0; right: 0; background: #f5f5f5; padding: 12px 20px; text-align: center; font-size: 14px; font-weight: 600; z-index: 99; border-bottom: 1px solid #eee; cursor: pointer; }
+    .filters { background: white; padding: 15px; display: flex; gap: 10px; flex-wrap: wrap; border-bottom: 1px solid #eee; }
+    .filters input, .filters select { padding: 8px 12px; border: 1px solid #ddd; border-radius: 20px; font-size: 13px; }
+    .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 15px; background: white; }
+    .stat { padding: 12px; background: #f9f9f9; border-radius: 6px; text-align: center; }
+    .stat-value { font-size: 20px; color: #2563eb; font-weight: 600; }
+    .reviews-grid { display: grid; grid-template-columns: 1fr 1fr !important; gap: 15px; padding: 15px; }
+    .review-card { background: white; padding: 12px; border-radius: 12px; border: 1px solid #eee; }
+    .review-photo img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 8px; }
+    
+    /* Estrellas Interactivas */
+    .star-input { font-size: 30px; color: #ddd; cursor: pointer; margin: 10px 0; }
+    .star-input span.active { color: #f59e0b; }
+
+    /* Drawer */
+    .drawer { position: fixed; bottom: -100%; left: 0; right: 0; background: white; z-index: 200; transition: 0.4s; border-radius: 20px 20px 0 0; padding: 25px; box-shadow: 0 -5px 20px rgba(0,0,0,0.2); max-height: 85vh; overflow-y: auto; }
+    .drawer.active { bottom: 0; }
+    .form-input { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 10px; font-size: 14px; }
+    .btn-submit { width: 100%; padding: 16px; background: #2563eb; color: white; border: none; border-radius: 10px; font-weight: bold; margin-top: 15px; }
   </style>
 </head>
 <body>
-  <div class="header">
+
+  <div class="header-fixed">
     <h2>Galería FuXion</h2>
-    <p>Prueba social compartida</p>
+    <p>Prueba social para todo el equipo</p>
   </div>
 
-  <div class="reviews-grid" id="grid"></div>
-  <button class="fab" onclick="abrirForm()">+</button>
+  <div class="cta-button" onclick="document.getElementById('drawer').classList.add('active')">✏️ Subir nueva reseña a la galería</div>
+
+  <div class="filters">
+    <input type="text" id="cityFilter" placeholder="Filtrar por ciudad...">
+    <select id="productFilter">
+      <option value="">Todas las bebidas</option>
+      <option value="VITA XTRA T+">VITA XTRA T+</option>
+      <option value="PRUNEX1">PRUNEX1</option>
+      <option value="ON">ON</option>
+    </select>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><div class="stat-value" id="totalCount">0</div><div style="font-size:11px">Total</div></div>
+    <div class="stat"><div class="stat-value" id="photoCount">0</div><div style="font-size:11px">Con Foto</div></div>
+  </div>
+
+  <div class="reviews-grid" id="reviewsGrid"></div>
+
+  <div id="drawer" class="drawer">
+    <h3 style="margin-bottom:15px;">Nueva Reseña Pública</h3>
+    <form id="reviewForm">
+      <input type="text" id="r_name" class="form-input" placeholder="Nombre del cliente" required>
+      <input type="text" id="r_insta" class="form-input" placeholder="Instagram (Opcional)">
+      <input type="text" id="r_city" class="form-input" placeholder="Ciudad (Para filtros)">
+      
+      <div class="star-input" id="starInput">
+        <span data-v="1">☆</span><span data-v="2">☆</span><span data-v="3">☆</span><span data-v="4">☆</span><span data-v="5">☆</span>
+      </div>
+      <input type="hidden" id="r_rating" value="0">
+
+      <select id="r_prod" class="form-input">
+        <option value="VITA XTRA T+">VITA XTRA T+</option>
+        <option value="PRUNEX1">PRUNEX1</option>
+        <option value="ON">ON</option>
+      </select>
+
+      <label style="font-size:12px; color:#666;">Foto de la experiencia:</label>
+      <input type="file" id="r_file" accept="image/*" class="form-input">
+
+      <textarea id="r_comment" class="form-input" placeholder="Comentario..." rows="2"></textarea>
+
+      <button type="submit" id="btnSubmit" class="btn-submit">PUBLICAR EN GALERÍA</button>
+    </form>
+    <button onclick="document.getElementById('drawer').classList.remove('active')" style="width:100%; border:none; background:none; padding:10px; color:gray;">Cancelar</button>
+  </div>
 
   <script>
-    // Misma config de Firebase que el anterior
-    const firebaseConfig = { ... };
+    // Configuración Firebase (la de tu index_7.html)
+    const firebaseConfig = { 
+      apiKey: "AIzaSyBZ1iquQo-rcaI25-eStS8ZhwYI-lugCLk",
+      authDomain: "degustaciones.firebaseapp.com",
+      projectId: "degustaciones",
+      storageBucket: "degustaciones.firebasestorage.app",
+      messagingSenderId: "80590754347",
+      appId: "1:80590754347:web:982cd91a00ddccc7f1106e"
+    };
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
-    // SOLO lee de la colección 'reviews'
-    async function load() {
-      const snap = await db.collection('reviews').orderBy('createdAt','desc').get();
-      const grid = document.getElementById('grid');
-      snap.forEach(doc => {
-        const d = doc.data();
-        grid.innerHTML += `
-          <div class="card">
-            ${d.photoUrl ? `<img src="${d.photoUrl}">` : ''}
-            <div style="font-weight:bold; font-size:14px; margin-top:5px;">${d.name}</div>
-            <div style="color:#f59e0b;">${'⭐'.repeat(d.rating)}</div>
-          </div>`;
-      });
-    }
-    load();
+    let isSubmitting = false;
 
-    // El formulario de esta página SOLO guarda en 'reviews'
-    // SIN usar el Google Script.
+    // Lógica de estrellas
+    document.querySelectorAll('.star-input span').forEach(s => {
+      s.onclick = function() {
+        const val = this.dataset.v;
+        document.getElementById('r_rating').value = val;
+        document.querySelectorAll('.star-input span').forEach((st, i) => {
+          st.innerHTML = i < val ? '⭐' : '☆';
+          st.classList.toggle('active', i < val);
+        });
+      }
+    });
+
+    // Envío de Reseña (Solo a Firestore)
+    document.getElementById('reviewForm').onsubmit = async (e) => {
+      e.preventDefault();
+      if(isSubmitting) return;
+      const rating = document.getElementById('r_rating').value;
+      if(rating == 0) return alert("Por favor elige una calificación");
+
+      isSubmitting = true;
+      const btn = document.getElementById('btnSubmit');
+      btn.innerText = "Subiendo...";
+
+      try {
+        let photoUrl = "";
+        const file = document.getElementById('r_file').files[0];
+        
+        if(file) {
+          const formData = new FormData();
+          formData.append('image', file);
+          formData.append('key', 'ba93a9fe70568c8462e67f8c0b6ea70a'); // Tu API Key de ImgBB
+          const res = await fetch('https://api.imgbb.com/1/upload', { method:'POST', body:formData });
+          const img = await res.json();
+          photoUrl = img.data.url;
+        }
+
+        const review = {
+          name: document.getElementById('r_name').value,
+          instagram: document.getElementById('r_insta').value,
+          city: document.getElementById('r_city').value,
+          rating: parseInt(rating),
+          comment: document.getElementById('r_comment').value,
+          products: [document.getElementById('r_prod').value],
+          photoUrl: photoUrl,
+          createdAt: new Date()
+        };
+
+        await db.collection('reviews').add(review);
+        alert("¡Reseña publicada!");
+        location.reload();
+      } catch (err) {
+        alert("Error al publicar");
+        isSubmitting = false;
+        btn.innerText = "PUBLICAR EN GALERÍA";
+      }
+    };
+
+    // Funciones de carga y filtros (Adaptadas de index_7.html)
+    async function loadReviews() {
+      const snapshot = await db.collection('reviews').orderBy('createdAt', 'desc').get();
+      const grid = document.getElementById('reviewsGrid');
+      grid.innerHTML = '';
+      
+      snapshot.forEach(doc => {
+        const d = doc.data();
+        const card = document.createElement('div');
+        card.className = 'review-card';
+        card.setAttribute('data-city', (d.city || '').toLowerCase());
+        card.setAttribute('data-products', (d.products || []).join(' ').toLowerCase());
+        card.setAttribute('data-photo', d.photoUrl ? 'true' : 'false');
+
+        card.innerHTML = `
+          ${d.photoUrl ? `<div class="review-photo"><img src="${d.photoUrl}"></div>` : ''}
+          <div style="font-weight:600; font-size:14px; margin-top:8px;">${d.name}</div>
+          <div style="color:#f59e0b; font-size:10px; margin:4px 0;">${'⭐'.repeat(d.rating)}</div>
+          <div style="font-size:11px; color:#2563eb; font-weight:600;">${d.products[0]}</div>
+          <p style="font-size:12px; color:#666; font-style:italic; margin-top:5px;">"${d.comment || ''}"</p>
+        `;
+        grid.appendChild(card);
+      });
+      
+      document.getElementById('totalCount').innerText = snapshot.size;
+      document.getElementById('photoCount').innerText = document.querySelectorAll('.review-photo').length;
+      setupFilters();
+    }
+
+    function setupFilters() {
+      const cityIn = document.getElementById('cityFilter');
+      const prodSel = document.getElementById('productFilter');
+      const cards = document.querySelectorAll('.review-card');
+
+      const filter = () => {
+        const cityVal = cityIn.value.toLowerCase();
+        const prodVal = prodSel.value.toLowerCase();
+        cards.forEach(c => {
+          const show = c.dataset.city.includes(cityVal) && c.dataset.products.includes(prodVal);
+          c.style.display = show ? 'block' : 'none';
+        });
+      };
+      cityIn.oninput = filter;
+      prodSel.onchange = filter;
+    }
+
+    loadReviews();
   </script>
 </body>
 </html>
