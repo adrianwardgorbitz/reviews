@@ -1,39 +1,133 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Degustaciones FuXion - Mi Panel</title>
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { background: #f5f5f5; font-family: -apple-system, sans-serif; padding-top: 200px; }
-    .header-fixed { position: fixed; top: 0; left: 0; right: 0; background: #2563eb; color: white; padding: 20px; text-align: center; z-index: 100; }
-    .cta-button { position: fixed; top: 120px; left: 0; right: 0; background: #f5f5f5; padding: 12px 20px; text-align: center; font-size: 14px; font-weight: 600; z-index: 99; border-bottom: 1px solid #eee; cursor: pointer; }
-    .filters { background: white; padding: 15px; display: flex; gap: 10px; flex-wrap: wrap; border-bottom: 1px solid #eee; }
-    .filters input, .filters select { padding: 8px 12px; border: 1px solid #ddd; border-radius: 20px; font-size: 13px; }
-    .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 15px; background: white; }
-    .stat { padding: 12px; background: #f9f9f9; border-radius: 6px; text-align: center; }
-    .stat-value { font-size: 20px; color: #2563eb; font-weight: 600; }
-    .reviews-grid { display: grid; grid-template-columns: 1fr 1fr !important; gap: 15px; padding: 20px; }
-    .review-card { background: #f9f9f9; padding: 12px; border-radius: 8px; border: 1px solid #eee; }
-    .review-photo img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 6px; }
-    
-    /* Drawer Estilo Moderno */
-    .drawer { position: fixed; bottom: -100%; left: 0; right: 0; background: white; z-index: 200; transition: 0.4s; border-radius: 20px 20px 0 0; padding: 25px; box-shadow: 0 -5px 20px rgba(0,0,0,0.2); max-height: 80vh; overflow-y: auto; }
-    .drawer.active { bottom: 0; }
-    .form-input { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 10px; }
-    .btn-submit { width: 100%; padding: 16px; background: #10b981; color: white; border: none; border-radius: 10px; font-weight: bold; margin-top: 15px; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FuXion - Mis Ventas</title>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: #f5f5f5; font-family: -apple-system, sans-serif; padding-top: 180px; }
+        
+        .header-fixed { position: fixed; top: 0; left: 0; right: 0; background: #2563eb; color: white; padding: 20px; text-align: center; z-index: 1000; }
+        
+        /* Botón para abrir tu registro de ventas */
+        .cta-button { position: fixed; top: 110px; left: 0; right: 0; background: #10b981; color: white; padding: 15px; text-align:center; font-weight: bold; cursor: pointer; z-index: 999; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        
+        /* Grid de 2 columnas */
+        .reviews-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 12px; }
+        .review-card { background: white; border-radius: 12px; padding: 10px; border: 1px solid #eee; }
+        .review-card img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 8px; background: #eee; }
+        
+        /* Drawer (Formulario desplegable) */
+        .drawer { position: fixed; bottom: -100%; left: 0; right: 0; background: white; z-index: 2000; transition: 0.4s; border-radius: 20px 20px 0 0; padding: 25px; box-shadow: 0 -5px 20px rgba(0,0,0,0.2); max-height: 85vh; overflow-y: auto; }
+        .drawer.active { bottom: 0; }
+        .form-input { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 10px; font-size: 16px; }
+        .btn-send { width: 100%; padding: 16px; background: #10b981; color: white; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 16px; }
+    </style>
 </head>
 <body>
-  <div class="header-fixed">
-    <h2>Mi Panel FuXion</h2>
-    <p>Ventas y Prueba Social</p>
-  </div>
 
-  <div class="cta-button" onclick="document.getElementById('drawer').classList.add('active')">🚀 Registrar Cliente y Enviar WhatsApp</div>
+<div class="header-fixed">
+    <h2>FuXion Degustaciones</h2>
+    <p>Panel de Control Personal</p>
+</div>
 
-  <div class="filters">
-    <input
+<div class="cta-button" onclick="document.getElementById('drawer').classList.add('active')">
+    🚀 REGISTRAR CLIENTE / ENVIAR WHATSAPP
+</div>
+
+<div class="reviews-grid" id="reviewsGrid">
+    </div>
+
+<div id="drawer" class="drawer">
+    <h3 style="margin-bottom:15px; color:#10b981;">Registro de Prospecto</h3>
+    <form id="leadForm">
+        <input type="text" id="l_name" class="form-input" placeholder="Nombre del cliente" required>
+        <input type="tel" id="l_whatsapp" class="form-input" placeholder="WhatsApp (Ej: 34600000000)" required>
+        <input type="email" id="l_email" class="form-input" placeholder="Email (Opcional)">
+        
+        <select id="l_prod" class="form-input">
+            <option value="VITA XTRA T+">VITA XTRA T+</option>
+            <option value="THERMO T3">THERMO T3</option>
+            <option value="PRUNEX1">PRUNEX1</option>
+            <option value="ON">ON</option>
+        </select>
+
+        <button type="submit" id="btnSubmit" class="btn-send">REGISTRAR Y ENVIAR WHATSAPP</button>
+    </form>
+    <button onclick="document.getElementById('drawer').classList.remove('active')" style="width:100%; margin-top:15px; background:none; border:none; color:gray; font-size:14px;">Cerrar sin guardar</button>
+</div>
+
+<script>
+    // Tu configuración exacta de Firebase
+    const firebaseConfig = {
+        apiKey: "AIzaSyBZ1iquQo-rcaI25-eStS8ZhwYI-lugCLk",
+        authDomain: "degustaciones.firebaseapp.com",
+        projectId: "degustaciones",
+        storageBucket: "degustaciones.firebasestorage.app",
+        messagingSenderId: "80590754347",
+        appId: "1:80590754347:web:982cd91a00ddccc7f1106e"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    // 1. CARGAR LA GALERÍA (Desde la colección 'reviews')
+    async function loadReviews() {
+        const grid = document.getElementById('reviewsGrid');
+        try {
+            const snap = await db.collection('reviews').orderBy('createdAt', 'desc').get();
+            grid.innerHTML = '';
+            snap.forEach(doc => {
+                const d = doc.data();
+                const img = d.photoUrl || d.photo || d.imageUrl || "";
+                grid.innerHTML += `
+                    <div class="review-card">
+                        ${img ? `<img src="${img}">` : `<div style="aspect-ratio:1; background:#eee; border-radius:8px;"></div>`}
+                        <div style="font-weight:bold; font-size:13px; margin-top:8px;">${d.name || 'Anónimo'}</div>
+                        <div style="font-size:11px; color:#2563eb;">${d.products ? d.products[0] : 'FuXion'}</div>
+                    </div>`;
+            });
+        } catch (e) { console.error(e); }
+    }
+
+    // 2. ENVIAR LEAD (A la colección 'leads' y a Google Apps Script)
+    document.getElementById('leadForm').onsubmit = async (e) => {
+        e.preventDefault();
+        const btn = document.getElementById('btnSubmit');
+        btn.innerText = "Enviando...";
+        btn.disabled = true;
+
+        const data = {
+            name: document.getElementById('l_name').value,
+            whatsapp: document.getElementById('l_whatsapp').value,
+            email: document.getElementById('l_email').value,
+            products: [document.getElementById('l_prod').value],
+            createdAt: new Date()
+        };
+
+        try {
+            // Guardar en tu colección privada
+            await db.collection('leads').add(data);
+
+            // ENVIAR A TU GOOGLE SCRIPT (Cambia la URL por la tuya)
+            await fetch('TU_URL_DE_GOOGLE_APPS_SCRIPT_AQUI', {
+                method: 'POST',
+                mode: 'no-cors',
+                body: JSON.stringify(data)
+            });
+
+            alert("¡Cliente registrado y WhatsApp enviado!");
+            location.reload();
+        } catch (err) {
+            alert("Error al registrar");
+            btn.disabled = false;
+            btn.innerText = "REGISTRAR Y ENVIAR WHATSAPP";
+        }
+    };
+
+    loadReviews();
+</script>
+</body>
+</html>
