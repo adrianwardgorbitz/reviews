@@ -525,7 +525,25 @@
           timestamp: new Date(),
           createdAt: new Date().toISOString()
         });
-
+// Enviar WhatsApp automático
+try {
+  await fetch('https://script.googleapis.com/macros/s/AKfycbx3tw7vfLYoMQLUXJUn34QMymVtYd3FLS_eZKWEUHT4hty07Bm80oG5dV0Te-1bSlY7/exec', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      name: name,
+      email: email,
+      instagram: instagram,
+      products: products,
+      rating: rating,
+      comment: comment,
+      whatsapp: whatsappFormatted,
+      photoUrls: photoUrls
+    })
+  });
+} catch (error) {
+  console.log('Script error:', error);
+}
         btn.textContent = '✅';
         setTimeout(() => {
           alert('¡Reseña enviada!');
