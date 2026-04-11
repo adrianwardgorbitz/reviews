@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Reseñas FuXion</title>
   <style>
+    /* CSS COMPLETO */
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f8f9fa; color: #333; }
     
@@ -31,12 +32,15 @@
     .reviews-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 30px; }
     .review-card { background: white; border-radius: 8px; padding: 15px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); cursor: pointer; transition: transform 0.2s; }
     .review-card:hover { transform: translateY(-4px); }
-    .review-name { font-weight: 700; font-size: 14px; margin-bottom: 6px; }
+    
+    .review-name { font-weight: 700; font-size: 14px; margin-bottom: 2px; }
+    .review-instagram { color: #E1306C; font-size: 11px; text-decoration: none; display: block; margin-bottom: 4px; }
+    .review-products-tag { font-size: 10px; color: #2563eb; font-weight: 600; text-transform: uppercase; margin-bottom: 6px; display: block; }
+    
     .review-meta { font-size: 12px; color: #999; margin-bottom: 10px; }
     .review-rating { color: #FFB800; font-weight: 600; }
-    .review-text { font-size: 13px; line-height: 1.5; color: #555; margin-bottom: 10px; font-style: italic; }
+    .review-text { font-size: 13px; line-height: 1.4; color: #555; margin-bottom: 10px; font-style: italic; }
     
-    /* TAMAÑO DE FOTOS CORREGIDO A 100px */
     .review-photos { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 8px; margin: 10px 0; }
     .review-photos img { width: 100%; height: 100px; object-fit: cover; border-radius: 6px; background: #f5f5f5; }
 
@@ -48,9 +52,8 @@
     .form-header button { background: none; border: none; color: white; font-size: 24px; cursor: pointer; }
 
     #reviewForm { padding: 20px; font-size: 13px; }
-    #reviewForm label { display: block; font-weight: 600; margin-bottom: 5px; margin-top: 10px; }
-    #reviewForm input, #reviewForm textarea, #reviewForm select { width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 6px; margin-bottom: 5px; }
-    #reviewForm button { width: 100%; padding: 12px; background: #2563eb; color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; margin-top: 15px; }
+    #reviewForm input, #reviewForm textarea, #reviewForm select { width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 6px; margin-bottom: 10px; }
+    #reviewForm button { width: 100%; padding: 12px; background: #2563eb; color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; }
 
     .stars span { cursor: pointer; color: #e0e0e0; font-size: 30px; }
     .stars span.active { color: #FFB800; }
@@ -58,7 +61,7 @@
     .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); align-items: center; justify-content: center; }
     .modal.active { display: flex; }
     .modal-content { background: white; padding: 25px; border-radius: 12px; max-width: 500px; width: 95%; max-height: 90vh; overflow-y: auto; position: relative; }
-    .modal-close { position: absolute; top: 10px; right: 15px; font-size: 28px; cursor: pointer; color: #333; }
+    .modal-close { position: absolute; top: 10px; right: 15px; font-size: 28px; cursor: pointer; }
     
     .loading { text-align: center; color: #666; padding: 20px; grid-column: span 2; }
   </style>
@@ -90,7 +93,7 @@
       <label class="checkbox-label">
         <input type="checkbox" id="photoFilter"> <span>Solo con foto</span>
       </label>
-      <button onclick="clearFilters()" style="width: 100%; padding: 8px; background: #f0f0f0; border: 1px solid #ddd; border-radius: 6px; cursor: pointer; font-size: 12px;">Limpiar filtros</button>
+      <button onclick="clearFilters()" style="width: 100%; padding: 8px; background: #f0f0f0; border: 1px solid #ddd; border-radius: 6px; cursor: pointer; font-size: 11px;">Limpiar filtros</button>
     </div>
 
     <div class="reviews-grid" id="reviewsGrid"><div class="loading">Cargando experiencias...</div></div>
@@ -101,16 +104,10 @@
   <div class="form-dropdown" id="formDropdown">
     <div class="form-header"><h2>Nueva Reseña</h2><button onclick="closeDropdown()">✕</button></div>
     <form id="reviewForm">
-      <label>Nombre *</label><input type="text" id="name" required placeholder="Tu nombre">
-      
-      <label>WhatsApp</label>
-      <div style="display: flex; align-items: center; border: 1px solid #ddd; border-radius: 6px; overflow: hidden; margin-bottom: 5px;">
-        <span style="padding: 8px; background: #f5f5f5; font-weight: bold;">+</span>
-        <input type="tel" id="whatsapp" placeholder="34 600 000 000" style="flex: 1; border: none; padding: 8px; margin: 0;">
-      </div>
-      
-      <label>Email</label><input type="email" id="email" placeholder="tu@email.com">
-      <label>Instagram</label><input type="text" id="instagram" placeholder="@usuario">
+      <label>Nombre *</label><input type="text" id="name" required>
+      <label>WhatsApp (opcional)</label><input type="tel" id="whatsapp" placeholder="34 600000000">
+      <label>Email (opcional)</label><input type="email" id="email">
+      <label>Instagram (opcional)</label><input type="text" id="instagram" placeholder="@usuario">
       
       <label>Productos *</label>
       <select id="product" required multiple style="min-height: 100px;">
@@ -122,16 +119,16 @@
         <option value="BEAUTY-IN">BEAUTY-IN</option>
       </select>
       
-      <label>Fotos (opcional)</label><input type="file" id="photos" accept="image/*" multiple>
+      <label>Fotos</label><input type="file" id="photos" accept="image/*" multiple>
       
       <label>Rating *</label>
-      <div class="stars" id="starsContainer">
+      <div class="stars" id="starsContainer" style="margin-bottom:15px;">
         <span onclick="setRating(1)">★</span><span onclick="setRating(2)">★</span><span onclick="setRating(3)">★</span><span onclick="setRating(4)">★</span><span onclick="setRating(5)">★</span>
       </div>
       <input type="hidden" id="rating" value="0">
 
-      <label>Reseña *</label><textarea id="comment" required placeholder="Cuéntanos tu experiencia..." style="min-height: 80px;"></textarea>
-      <button type="submit" id="submitBtn">Enviar Reseña</button>
+      <label>Reseña *</label><textarea id="comment" required style="min-height: 80px;"></textarea>
+      <button type="submit" id="submitBtn">Enviar</button>
     </form>
   </div>
 
@@ -168,7 +165,7 @@
       const email = document.getElementById('email').value;
       const photos = document.getElementById('photos').files;
 
-      if (rating === '0') return alert('Por favor selecciona las estrellas');
+      if (rating === '0') return alert('Por favor selecciona estrellas');
       btn.disabled = true;
       btn.textContent = 'Enviando...';
 
@@ -186,7 +183,7 @@
           photoUrls = (await Promise.all(promises)).filter(u => u);
         }
 
-        const waF = wa ? '+' + wa : '';
+        const waF = wa ? (wa.startsWith('+') ? wa : '+' + wa) : '';
         const igF = ig ? (ig.startsWith('@') ? ig : '@' + ig) : '';
 
         await db.collection('reviews').add({
@@ -197,7 +194,6 @@
 
         const sd = new URLSearchParams();
         sd.append('name', name);
-        sd.append('email', email || '');
         sd.append('whatsapp', waF);
         sd.append('products', products.join(', '));
         sd.append('comment', comment);
@@ -235,21 +231,26 @@
         const card = document.createElement('div');
         card.className = 'review-card';
         const stars = '⭐'.repeat(d.rating);
+        const igHtml = d.instagram ? `<span class="review-instagram">${d.instagram}</span>` : '';
+        const prodHtml = `<span class="review-products-tag">${d.products.join(', ')}</span>`;
         const img = d.photoUrls ? `<div class="review-photos"><img src="${d.photoUrls[0]}"></div>` : '';
         
         card.innerHTML = `
           <div class="review-name">${d.name}</div>
+          ${igHtml}
+          ${prodHtml}
           <div class="review-meta"><span class="review-rating">${stars}</span></div>
           ${img}
-          <p class="review-text">"${d.comment.substring(0, 70)}..."</p>
+          <p class="review-text">"${d.comment.substring(0, 50)}..."</p>
         `;
         
         card.onclick = () => {
           document.getElementById('modalContent').innerHTML = `
-            <h2>${d.name}</h2>
-            <p style="color:#2563eb; font-weight:600; margin:10px 0;">${d.products.join(', ')}</p>
-            <div style="font-size:20px; margin-bottom:15px;">${stars}</div>
-            <p style="font-size:15px; line-height:1.6;">${d.comment}</p>
+            <h2 style="margin-bottom:5px;">${d.name}</h2>
+            ${d.instagram ? `<p style="color:#E1306C; font-weight:600; margin-bottom:10px;">${d.instagram}</p>` : ''}
+            <p style="color:#2563eb; font-weight:600;">Productos: ${d.products.join(', ')}</p>
+            <div style="font-size:20px; margin:15px 0;">${stars}</div>
+            <p style="line-height:1.6; color:#444;">${d.comment}</p>
             ${d.photoUrls ? d.photoUrls.map(u => `<img src="${u}" style="width:100%; border-radius:8px; margin-top:15px;">`).join('') : ''}
           `;
           document.getElementById('reviewModal').classList.add('active');
@@ -258,7 +259,6 @@
       });
       document.getElementById('totalCount').textContent = total;
       document.getElementById('photoCount').textContent = conFoto;
-      if (total === 0) grid.innerHTML = '<div class="loading">No hay reseñas.</div>';
     }
 
     function setRating(s) {
