@@ -15,37 +15,53 @@
     .stat-card { background: white; padding: 15px; border-radius: 8px; text-align: center; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
     .stat-number { font-size: 28px; font-weight: 700; color: #2563eb; }
     .stat-label { font-size: 12px; color: #666; margin-top: 5px; }
+    
+    /* Filtros Mejorados */
     .filters { background: white; padding: 15px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); text-align: center; }
     .filters label { display: block; font-weight: 600; margin-bottom: 8px; font-size: 13px; }
-    .filters select { width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px; margin-bottom: 12px; }
-    .checkbox-label { display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; margin-bottom: 12px; font-weight: 600; }
+    .filters select { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; margin-bottom: 12px; background-color: #fff; }
+    
+    .checkbox-label { display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; margin-bottom: 12px; font-weight: 600; font-size: 13px; }
     .reviews-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 30px; align-items: start; }
+    
     .review-card { background: white; border-radius: 8px; padding: 15px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); cursor: pointer; transition: transform 0.2s; height: fit-content; }
     .review-card:hover { transform: translateY(-4px); }
     .review-name { font-weight: 700; font-size: 14px; margin-bottom: 2px; }
-    .review-instagram { color: #E1306C; font-size: 11px; text-decoration: none; display: block; margin-bottom: 4px; font-weight: 600; }
-    .review-products-tag { font-size: 10px; color: #2563eb; font-weight: 600; text-transform: uppercase; margin-bottom: 6px; display: block; }
-    .review-meta { font-size: 12px; color: #999; margin-bottom: 10px; }
-    .review-rating { color: #FFB800; font-weight: 600; }
+    
+    /* Tag de productos ajustada */
+    .review-products-tag { font-size: 10px; color: #2563eb; font-weight: 600; text-transform: uppercase; margin-bottom: 6px; display: block; white-space: normal; line-height: 1.2; }
+    
     .review-text { font-size: 13px; line-height: 1.4; color: #555; margin-bottom: 10px; font-style: italic; }
     .review-photos { width: 100%; margin: 10px 0; display: block; }
     .review-photos img { width: 100%; height: auto; border-radius: 6px; background: #f5f5f5; border: 1px solid #eee; display: block; }
-    .cta-button { position: fixed; bottom: 20px; right: 20px; background: #2563eb; color: white; border: none; padding: 15px 20px; border-radius: 50px; font-weight: 600; cursor: pointer; z-index: 99; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3); }
-    .form-dropdown { position: fixed; bottom: 0; right: 0; width: 100%; max-width: 400px; height: 0; background: white; border-radius: 12px 12px 0 0; box-shadow: 0 -4px 166px rgba(0,0,0,0.15); overflow-y: auto; transition: height 0.3s ease; z-index: 1000; }
+    
+    /* Boton Flotante */
+    .cta-button { position: fixed; bottom: 20px; right: 20px; background: #2563eb; color: white; border: none; padding: 15px 25px; border-radius: 50px; font-weight: 700; cursor: pointer; z-index: 99; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4); font-size: 15px; }
+    
+    /* Form Dropdown */
+    .form-dropdown { position: fixed; bottom: 0; right: 0; width: 100%; max-width: 450px; height: 0; background: white; border-radius: 15px 15px 0 0; box-shadow: 0 -4px 20px rgba(0,0,0,0.2); overflow-y: auto; transition: height 0.3s ease; z-index: 1000; }
     .form-dropdown.active { height: 90vh; }
-    .form-header { padding: 20px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; background: #2563eb; color: white; position: sticky; top: 0; }
+    .form-header { padding: 20px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; background: #2563eb; color: white; position: sticky; top: 0; z-index: 10; }
     .form-header button { background: none; border: none; color: white; font-size: 24px; cursor: pointer; }
-    #reviewForm { padding: 20px; font-size: 13px; }
-    #reviewForm label { font-weight: 700; display: block; margin-top: 10px; }
-    #reviewForm input, #reviewForm textarea, #reviewForm select { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; margin-top: 5px; font-size: 14px; }
-    #reviewForm button#submitBtn { width: 100%; padding: 15px; background: #2563eb; color: white; border: none; border-radius: 6px; font-weight: 700; cursor: pointer; margin-top: 20px; }
+    
+    #reviewForm { padding: 20px; font-size: 14px; }
+    #reviewForm label { font-weight: 700; display: block; margin-top: 15px; }
+    #reviewForm input, #reviewForm textarea, #reviewForm select { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; margin-top: 5px; font-size: 14px; }
+    #reviewForm button#submitBtn { width: 100%; padding: 16px; background: #2563eb; color: white; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; margin-top: 25px; font-size: 16px; }
+    
     .stars span { cursor: pointer; color: #e0e0e0; font-size: 35px; margin-right: 5px; }
     .stars span.active { color: #FFB800; }
-    .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); align-items: center; justify-content: center; }
+    
+    .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); align-items: center; justify-content: center; padding: 10px; }
     .modal.active { display: flex; }
-    .modal-content { background: white; padding: 25px; border-radius: 12px; max-width: 500px; width: 95%; max-height: 90vh; overflow-y: auto; position: relative; }
-    .modal-close { position: absolute; top: 10px; right: 15px; font-size: 28px; cursor: pointer; }
-    .loading { text-align: center; color: #666; padding: 20px; grid-column: span 2; }
+    .modal-content { background: white; padding: 25px; border-radius: 12px; max-width: 500px; width: 100%; max-height: 90vh; overflow-y: auto; position: relative; }
+    .modal-close { position: absolute; top: 10px; right: 15px; font-size: 28px; cursor: pointer; color: #333; }
+    .loading { text-align: center; color: #666; padding: 40px; grid-column: span 2; font-weight: 600; }
+    
+    @media (max-width: 480px) {
+      .reviews-grid { grid-template-columns: 1fr; }
+      .loading { grid-column: span 1; }
+    }
   </style>
 </head>
 <body>
@@ -62,31 +78,50 @@
     </div>
 
     <div class="filters">
-  <label>Filtrar por producto</label>
-  <select id="productFilter">
-    <option value="">Todos los productos</option>
-    <option value="PRUNEX1">PRUNEX1</option>
-    <option value="FLORA LIV">FLORA LIV</option>
-    <option value="VITA XTRA T+">VITA XTRA T+</option>
-    <option value="VITAENERGIA">VITAENERGIA</option>
-    <option value="GANO+ CAPPUCCINO">GANO+ CAPPUCCINO</option>
-    <option value="NOCARB-T">NOCARB-T</option>
-    <option value="THERMO T3">THERMO T3</option>
-    <option value="BEAUTY-IN">BEAUTY-IN</option>
-    <option value="GOLDEN FLX">GOLDEN FLX</option>
-    <option value="ON">ON</option>
-    <option value="NO STRESS">NO STRESS</option>
-    <option value="PRE SPORT">PRE SPORT</option>
-    <option value="POST SPORT">POST SPORT</option>
-  </select>
+      <label>Filtrar por producto</label>
+      <select id="productFilter">
+        <option value="">Todos los productos</option>
+        <optgroup label="Sistema Base">
+          <option value="PRUNEX1">PRUNEX1</option>
+          <option value="FLORA LIV">FLORA LIV</option>
+          <option value="VITA XTRA T+">VITA XTRA T+</option>
+          <option value="VITAENERGIA">VITAENERGIA</option>
+          <option value="NUTRADAY">NUTRADAY</option>
+        </optgroup>
+        <optgroup label="Línea Inmunológica">
+          <option value="GANO+ CAPPUCCINO">GANO+ CAPPUCCINO</option>
+        </optgroup>
+        <optgroup label="Línea Control de Peso">
+          <option value="NOCARB-T">NOCARB-T</option>
+          <option value="THERMO T3">THERMO T3</option>
+          <option value="CAFÉ & CAFÉ FIT">CAFÉ & CAFÉ FIT</option>
+        </optgroup>
+        <optgroup label="Línea Anti-Edad">
+          <option value="BEAUTY-IN">BEAUTY-IN</option>
+          <option value="GOLDEN FLX">GOLDEN FLX</option>
+          <option value="PASSION">PASSION</option>
+          <option value="YOUTH ELIXIR">YOUTH ELIXIR</option>
+        </optgroup>
+        <optgroup label="Línea Vigor Mental">
+          <option value="ON">ON</option>
+          <option value="NO STRESS">NO STRESS</option>
+        </optgroup>
+        <optgroup label="Línea Sport">
+          <option value="PRE SPORT">PRE SPORT</option>
+          <option value="POST SPORT">POST SPORT</option>
+          <option value="BIOPRO+ SPORT">BIOPRO+ SPORT</option>
+        </optgroup>
+      </select>
 
-  <label class="checkbox-label">
-    <input type="checkbox" id="photoFilter"> <span>Solo con foto</span>
-  </label>
-  <button onclick="clearFilters()" style="width: 100%; padding: 8px; background: #f0f0f0; border: 1px solid #ddd; border-radius: 6px; cursor: pointer; font-size: 11px;">Limpiar filtros</button>
-</div>
+      <label class="checkbox-label">
+        <input type="checkbox" id="photoFilter"> <span>Solo con foto</span>
+      </label>
+      <button onclick="clearFilters()" style="width: 100%; padding: 10px; background: #f0f0f0; border: 1px solid #ddd; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 600;">Limpiar filtros</button>
+    </div>
 
-    <div class="reviews-grid" id="reviewsGrid"><div class="loading">Cargando experiencias...</div></div>
+    <div class="reviews-grid" id="reviewsGrid">
+      <div class="loading">Cargando experiencias...</div>
+    </div>
   </div>
 
   <button class="cta-button" onclick="openDropdown()">✏️ Deja tu reseña</button>
@@ -99,14 +134,38 @@
       <label>Email * (para enviarte el catálogo)</label><input type="email" id="email" required placeholder="tu@email.com">
       <label>Instagram (opcional)</label><input type="text" id="instagram" placeholder="@tu_usuario">
       
-      <label>¿Qué productos probaste? *</label>
-      <select id="product" required multiple style="min-height: 120px;">
-        <option value="PRUNEX1">PRUNEX1</option>
-        <option value="FLORA LIV">FLORA LIV</option>
-        <option value="VITA XTRA T+">VITA XTRA T+</option>
-        <option value="THERMO T3">THERMO T3</option>
-        <option value="NOCARB-T">NOCARB-T</option>
-        <option value="BEAUTY-IN">BEAUTY-IN</option>
+      <label>¿Qué productos probaste? * (Mantén presionado para elegir varios)</label>
+      <select id="product" required multiple style="min-height: 150px;">
+        <optgroup label="Sistema Base">
+          <option value="PRUNEX1">PRUNEX1</option>
+          <option value="FLORA LIV">FLORA LIV</option>
+          <option value="VITA XTRA T+">VITA XTRA T+</option>
+          <option value="VITAENERGIA">VITAENERGIA</option>
+          <option value="NUTRADAY">NUTRADAY</option>
+        </optgroup>
+        <optgroup label="Línea Inmunológica">
+          <option value="GANO+ CAPPUCCINO">GANO+ CAPPUCCINO</option>
+        </optgroup>
+        <optgroup label="Línea Control de Peso">
+          <option value="NOCARB-T">NOCARB-T</option>
+          <option value="THERMO T3">THERMO T3</option>
+          <option value="CAFÉ & CAFÉ FIT">CAFÉ & CAFÉ FIT</option>
+        </optgroup>
+        <optgroup label="Línea Anti-Edad">
+          <option value="BEAUTY-IN">BEAUTY-IN</option>
+          <option value="GOLDEN FLX">GOLDEN FLX</option>
+          <option value="PASSION">PASSION</option>
+          <option value="YOUTH ELIXIR">YOUTH ELIXIR</option>
+        </optgroup>
+        <optgroup label="Línea Vigor Mental">
+          <option value="ON">ON</option>
+          <option value="NO STRESS">NO STRESS</option>
+        </optgroup>
+        <optgroup label="Línea Sport">
+          <option value="PRE SPORT">PRE SPORT</option>
+          <option value="POST SPORT">POST SPORT</option>
+          <option value="BIOPRO+ SPORT">BIOPRO+ SPORT</option>
+        </optgroup>
       </select>
       
       <label>Añadir fotos de tu resultado</label>
@@ -119,7 +178,7 @@
       <input type="hidden" id="rating" value="0">
 
       <label>Cuéntanos tu experiencia *</label>
-      <textarea id="comment" required style="min-height: 100px;" placeholder="¿Cómo te sentiste?"></textarea>
+      <textarea id="comment" required style="min-height: 120px;" placeholder="¿Cómo te sentiste?"></textarea>
       
       <button type="submit" id="submitBtn">Enviar Reseña</button>
     </form>
@@ -164,7 +223,6 @@
       btn.textContent = 'Enviando...';
 
       try {
-        // 1. Fotos
         let photoUrls = [];
         if (photos.length > 0) {
           const promises = Array.from(photos).map(async (file) => {
@@ -182,14 +240,13 @@
         const igF = ig ? (ig.startsWith('@') ? ig : '@' + ig) : '';
         const productsText = productsArray.join(', ');
 
-        // 2. Firebase
         await db.collection('reviews').add({
           name, email, instagram: igF, products: productsArray, rating: parseInt(rating), 
           comment, whatsapp: waF, photoUrls: photoUrls.length ? photoUrls : null,
           timestamp: firebase.firestore.FieldValue.serverTimestamp()
         });
 
-        // 3. Google Script (TRUCO DE IMAGEN PARA EVITAR BLOQUEOS)
+        // ENVIO SILENCIOSO A GOOGLE
         const scriptURL = 'https://script.google.com/macros/s/AKfycbxclOkdwn7x80Af4Q3i8h-dnnxthZyzTIeyKb_f4rDHmBGPM5bKakIqSQVxBRUWQcH9EA/exec';
         const params = new URLSearchParams({
             name: name,
@@ -199,17 +256,16 @@
             products: productsText
         }).toString();
 
-        const img = new Image();
-        img.src = `${scriptURL}?${params}`;
+        // Usamos fetch modo no-cors para evitar el salto de pagina
+        fetch(`${scriptURL}?${params}`, { method: 'GET', mode: 'no-cors' });
 
-        // 4. Éxito
         btn.textContent = '✅ ¡Gracias por tu opinión!';
-        setTimeout(() => location.reload(), 2000);
+        setTimeout(() => location.reload(), 2200);
 
       } catch (err) {
         console.error('Error:', err);
         btn.disabled = false;
-        btn.textContent = 'Enviar Reseña';
+        btn.textContent = 'Reintentar Envío';
       }
     });
 
@@ -221,32 +277,51 @@
         const snap = await db.collection('reviews').orderBy('timestamp', 'desc').get();
         grid.innerHTML = '';
         let total = 0, conFoto = 0;
+        
+        if (snap.empty) {
+            grid.innerHTML = '<div class="loading">No hay reseñas todavía. ¡Sé el primero!</div>';
+        }
+
         snap.forEach(doc => {
           const d = doc.data();
           const pList = d.products || [];
           const pUrls = d.photoUrls || null;
           if (prodF && !pList.includes(prodF)) return;
           if (photoF && !pUrls) return;
+          
           total++;
           if (pUrls && pUrls.length > 0) conFoto++;
+          
           const card = document.createElement('div');
           card.className = 'review-card';
           const stars = '⭐'.repeat(d.rating || 5);
+          
+          // Mostramos el comentario completo en la tarjeta
           card.innerHTML = `
             <div class="review-name">${d.name}</div>
             <span class="review-products-tag">${pList.join(', ')}</span>
+            <div style="color:#FFB800; font-size:12px; margin-bottom:8px;">${stars}</div>
             ${pUrls ? `<div class="review-photos"><img src="${pUrls[0]}"></div>` : ''}
-            <p class="review-text">"${(d.comment || '').substring(0, 60)}..."</p>
+            <p class="review-text">"${d.comment}"</p>
           `;
+          
           card.onclick = () => {
-            document.getElementById('modalContent').innerHTML = `<h2>${d.name}</h2><p>${stars}</p><p>${d.comment}</p>${pUrls ? pUrls.map(u => `<img src="${u}" style="width:100%; margin-top:10px;">`).join('') : ''}`;
+            document.getElementById('modalContent').innerHTML = `
+                <h2 style="color:#2563eb; margin-bottom:10px;">${d.name}</h2>
+                <div style="font-size:18px; margin-bottom:10px;">${stars}</div>
+                <p style="font-weight:600; color:#666; font-size:12px; margin-bottom:10px;">PRODUCTOS: ${pList.join(', ')}</p>
+                <p style="font-size:15px; line-height:1.5; background:#f9f9f9; padding:15px; border-radius:8px; border-left:4px solid #2563eb;">${d.comment}</p>
+                ${pUrls ? pUrls.map(u => `<img src="${u}" style="width:100%; border-radius:8px; margin-top:15px; box-shadow:0 2px 8px rgba(0,0,0,0.1);">`).join('') : ''}
+            `;
             document.getElementById('reviewModal').classList.add('active');
           };
           grid.appendChild(card);
         });
         document.getElementById('totalCount').textContent = total;
         document.getElementById('photoCount').textContent = conFoto;
-      } catch (e) {}
+      } catch (e) {
+          console.log(e);
+      }
     }
 
     function setRating(s) {
@@ -257,6 +332,7 @@
     function closeDropdown() { document.getElementById('formDropdown').classList.remove('active'); }
     function closeModal() { document.getElementById('reviewModal').classList.remove('active'); }
     function clearFilters() { document.getElementById('productFilter').value = ''; document.getElementById('photoFilter').checked = false; loadReviews(); }
+    
     document.getElementById('productFilter').onchange = loadReviews;
     document.getElementById('photoFilter').onchange = loadReviews;
     window.onload = loadReviews;
