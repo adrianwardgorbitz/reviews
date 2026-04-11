@@ -99,9 +99,12 @@
           <option value="VITA XTRA T+">VITA XTRA T+</option>
           <option value="VITAENERGIA">VITAENERGIA</option>
           <option value="NUTRADAY">NUTRADAY</option>
+          <option value="BERRYBALANCE">BERRYBALANCE</option>
+          <option value="ALPHABALANCE">ALPHABALANCE</option>
         </optgroup>
         <optgroup label="Línea Inmunológica">
           <option value="GANO+ CAPPUCCINO">GANO+ CAPPUCCINO</option>
+          <option value="VERA+">VERA+</option>
         </optgroup>
         <optgroup label="Línea Control de Peso">
           <option value="NOCARB-T">NOCARB-T</option>
