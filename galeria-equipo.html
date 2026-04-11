@@ -544,7 +544,7 @@
 
       if (instagram && !instagram.startsWith('@')) instagram = '@' + instagram;
       // El + de WhatsApp ya está visual, solo trim el valor
-      const whatsappFormatted = whatsapp ? '+' + whatsapp : null;
+      
 
       btn.disabled = true;
       btn.textContent = 'Enviando...';
@@ -569,9 +569,9 @@
         }
 
         await db.collection('reviews').add({
-          name, email: email || null, instagram: instagram || null,
+          name, || null, instagram: instagram || null,
           products, rating: parseInt(rating), comment,
-          whatsapp: whatsappFormatted,
+        ,
           photoUrls: photoUrls.length > 0 ? photoUrls : null,
           timestamp: new Date(),
           createdAt: new Date().toISOString()
