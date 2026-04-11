@@ -256,22 +256,24 @@
           const stars = '⭐'.repeat(d.rating || 5);
           const card = document.createElement('div');
           card.className = 'review-card';
-          card.innerHTML = `
+card.innerHTML = `
             <div class="review-name">${d.name}</div>
             ${d.instagram ? `<span class="review-instagram">${d.instagram}</span>` : ''}
             <span class="review-products-tag">${pList.join(', ')}</span>
-            <div style="color:#FFB800; font-size:12px; margin-bottom:8px;">${stars}</div>
+            <div style="color:#FFB800; font-size:10px; margin-bottom:5px;">${stars}</div>
             ${pUrls ? `<div class="review-photos"><img src="${pUrls[0]}"></div>` : ''}
-            <p class="review-text">"${d.comment}"</p>
+            <p class="review-text" style="font-size:11px;">"${(d.comment || '').substring(0, 40)}..."</p>
           `;
+          
           card.onclick = () => {
             document.getElementById('modalContent').innerHTML = `
-              <h2 style="color:#2563eb; margin-bottom:5px;">${d.name}</h2>
-              ${d.instagram ? `<p style="color: #E1306C; font-weight: 700; margin-bottom: 10px;">${d.instagram}</p>` : ''}
-              <div style="font-size:18px; margin-bottom:10px;">${stars}</div>
-              <p style="font-weight:600; color:#666; font-size:12px;">PRODUCTOS: ${pList.join(', ')}</p><br>
-              <p style="font-size:15px; line-height:1.5; background:#f9f9f9; padding:15px; border-radius:8px; border-left:4px solid #2563eb;">${d.comment}</p>
-              ${pUrls ? pUrls.map(u => `<img src="${u}" style="width:100%; border-radius:8px; margin-top:15px; box-shadow:0 2px 8px rgba(0,0,0,0.1);">`).join('') : ''}
+                <h2 style="color:#2563eb;">${d.name}</h2>
+                ${d.instagram ? `<p style="color:#E1306C; font-weight:700;">${d.instagram}</p>` : ''}
+                <p style="font-weight:600; font-size:12px; margin-top:10px;">PRODUCTOS: ${pList.join(', ')}</p>
+                <div style="margin: 15px 0; font-size:15px; line-height:1.4; color:#444; background:#f9f9f9; padding:15px; border-radius:8px;">
+                   ${d.comment}
+                </div>
+                ${pUrls ? pUrls.map(u => `<img src="${u}" class="modal-photo">`).join('') : ''}
             `;
             document.getElementById('reviewModal').classList.add('active');
           };
