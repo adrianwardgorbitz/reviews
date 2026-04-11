@@ -61,17 +61,21 @@
       <div class="stat-card"><div class="stat-number" id="photoCount">0</div><div class="stat-label">Con Foto</div></div>
     </div>
 
-    <div class="filters">
-      <label>Buscar por producto</label>
-      <select id="productFilter"><option value="">-- Todos --</option></select>
-      <label>Buscar por nombre</label>
-      <textarea id="comment" required style="min-height: 20px;"></textarea>
-      <label class="checkbox-label">
-        <input type="checkbox" id="photoFilter" style="width: auto;">
-        <span>Solo con foto</span>
-      </label>
-      <button onclick="clearFilters()" style="width: 100%; padding: 8px; background: #f0f0f0; border: 1px solid #ddd; border-radius: 6px; cursor: pointer;">Limpiar</button>
-    </div>
+  <div class="filters">
+  <label>Buscar por producto</label>
+  <select id="productFilter"><option value="">-- Todos --</option></select>
+  
+  <label>Buscar por nombre</label>
+  <input type="text" id="nameFilter" placeholder="Escribe un nombre">
+  
+  <label class="checkbox-label">
+    <input type="checkbox" id="photoFilter" style="width: auto;">
+    <span>Solo con foto</span>
+  </label>
+  
+  <button onclick="filterByName()" style="width: 100%; padding: 8px; background: #2563eb; color: white; border: 1px solid #ddd; border-radius: 6px; cursor: pointer; margin-bottom: 8px;">Filtrar por nombre</button>
+  <button onclick="clearFilters()" style="width: 100%; padding: 8px; background: #f0f0f0; border: 1px solid #ddd; border-radius: 6px; cursor: pointer;">Limpiar todo</button>
+</div>
 
     <div class="reviews-grid" id="reviewsGrid"><div class="loading">Cargando...</div></div>
   </div>
@@ -240,6 +244,27 @@
         document.getElementById('photoCount').textContent = allReviews.filter(r => r.photoUrls?.length).length;
         if (!allReviews.length) grid.innerHTML = '<div class="loading">No hay reseñas</div>';
         setupFilters();
+        function filterByName() {
+  const searchText = document.getElementById('nameFilter').value.toLowerCase();
+  const cards = document.querySelectorAll('.review-card');
+  
+  if (!searchText) {
+    cards.forEach(c => c.style.display = 'block');
+    return;
+  }
+  
+  cards.forEach(card => {
+    const name = card.querySelector('.review-name').textContent.toLowerCase();
+    card.style.display = name.includes(searchText) ? 'block' : 'none';
+  });
+}
+
+function clearFilters() {
+  document.getElementById('productFilter').value = '';
+  document.getElementById('nameFilter').value = '';
+  document.getElementById('photoFilter').checked = false;
+  document.querySelectorAll('.review-card').forEach(c => c.style.display = 'block');
+}
       } catch (e) {
         console.error(e);
         document.getElementById('reviewsGrid').innerHTML = '<div class="loading">Error</div>';
@@ -267,11 +292,12 @@
       pf.innerHTML = opts + Array.from(prods).map(p => `<option value="${p}">${p}</option>`).join('');
     }
 
-    function clearFilters() {
-      document.getElementById('productFilter').value = '';
-      document.getElementById('photoFilter').checked = false;
-      document.querySelectorAll('.review-card').forEach(c => c.style.display = 'block');
-    }
+   function clearFilters() {
+  document.getElementById('productFilter').value = '';
+  document.getElementById('nameFilter').value = '';
+  document.getElementById('photoFilter').checked = false;
+  document.querySelectorAll('.review-card').forEach(c => c.style.display = 'block');
+}
 
     function closeModal() { document.getElementById('reviewModal').classList.remove('active'); }
     function openDropdown() { document.getElementById('formDropdown').classList.add('active'); }
