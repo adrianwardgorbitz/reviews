@@ -16,10 +16,9 @@
     .stat-number { font-size: 28px; font-weight: 700; color: #2563eb; }
     .stat-label { font-size: 12px; color: #666; margin-top: 5px; }
     
-    /* Filtros Mejorados */
     .filters { background: white; padding: 15px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); text-align: center; }
     .filters label { display: block; font-weight: 600; margin-bottom: 8px; font-size: 13px; }
-    .filters select { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; margin-bottom: 12px; background-color: #fff; }
+    .filters select { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; margin-bottom: 12px; }
     
     .checkbox-label { display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; margin-bottom: 12px; font-weight: 600; font-size: 13px; }
     .reviews-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 30px; align-items: start; }
@@ -27,18 +26,13 @@
     .review-card { background: white; border-radius: 8px; padding: 15px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); cursor: pointer; transition: transform 0.2s; height: fit-content; }
     .review-card:hover { transform: translateY(-4px); }
     .review-name { font-weight: 700; font-size: 14px; margin-bottom: 2px; }
-    
-    /* Tag de productos ajustada */
+    .review-instagram { color: #E1306C; font-size: 11px; font-weight: 700; display: block; margin-bottom: 4px; }
     .review-products-tag { font-size: 10px; color: #2563eb; font-weight: 600; text-transform: uppercase; margin-bottom: 6px; display: block; white-space: normal; line-height: 1.2; }
-    
     .review-text { font-size: 13px; line-height: 1.4; color: #555; margin-bottom: 10px; font-style: italic; }
     .review-photos { width: 100%; margin: 10px 0; display: block; }
     .review-photos img { width: 100%; height: auto; border-radius: 6px; background: #f5f5f5; border: 1px solid #eee; display: block; }
     
-    /* Boton Flotante */
     .cta-button { position: fixed; bottom: 20px; right: 20px; background: #2563eb; color: white; border: none; padding: 15px 25px; border-radius: 50px; font-weight: 700; cursor: pointer; z-index: 99; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4); font-size: 15px; }
-    
-    /* Form Dropdown */
     .form-dropdown { position: fixed; bottom: 0; right: 0; width: 100%; max-width: 450px; height: 0; background: white; border-radius: 15px 15px 0 0; box-shadow: 0 -4px 20px rgba(0,0,0,0.2); overflow-y: auto; transition: height 0.3s ease; z-index: 1000; }
     .form-dropdown.active { height: 90vh; }
     .form-header { padding: 20px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; background: #2563eb; color: white; position: sticky; top: 0; z-index: 10; }
@@ -58,10 +52,7 @@
     .modal-close { position: absolute; top: 10px; right: 15px; font-size: 28px; cursor: pointer; color: #333; }
     .loading { text-align: center; color: #666; padding: 40px; grid-column: span 2; font-weight: 600; }
     
-    @media (max-width: 480px) {
-      .reviews-grid { grid-template-columns: 1fr; }
-      .loading { grid-column: span 1; }
-    }
+    @media (max-width: 480px) { .reviews-grid { grid-template-columns: 1fr; } .loading { grid-column: span 1; } }
   </style>
 </head>
 <body>
@@ -112,16 +103,13 @@
           <option value="BIOPRO+ SPORT">BIOPRO+ SPORT</option>
         </optgroup>
       </select>
-
       <label class="checkbox-label">
         <input type="checkbox" id="photoFilter"> <span>Solo con foto</span>
       </label>
       <button onclick="clearFilters()" style="width: 100%; padding: 10px; background: #f0f0f0; border: 1px solid #ddd; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 600;">Limpiar filtros</button>
     </div>
 
-    <div class="reviews-grid" id="reviewsGrid">
-      <div class="loading">Cargando experiencias...</div>
-    </div>
+    <div class="reviews-grid" id="reviewsGrid"><div class="loading">Cargando experiencias...</div></div>
   </div>
 
   <button class="cta-button" onclick="openDropdown()">✏️ Deja tu reseña</button>
@@ -134,62 +122,44 @@
       <label>Email * (para enviarte el catálogo)</label><input type="email" id="email" required placeholder="tu@email.com">
       <label>Instagram (opcional)</label><input type="text" id="instagram" placeholder="@tu_usuario">
       
-      <label>¿Qué productos probaste? * (Mantén presionado para elegir varios)</label>
+      <label>¿Qué productos probaste? * (Mantén Ctrl para varios)</label>
       <select id="product" required multiple style="min-height: 150px;">
-        <optgroup label="Sistema Base">
-          <option value="PRUNEX1">PRUNEX1</option>
-          <option value="FLORA LIV">FLORA LIV</option>
-          <option value="VITA XTRA T+">VITA XTRA T+</option>
-          <option value="VITAENERGIA">VITAENERGIA</option>
-          <option value="NUTRADAY">NUTRADAY</option>
-        </optgroup>
-        <optgroup label="Línea Inmunológica">
-          <option value="GANO+ CAPPUCCINO">GANO+ CAPPUCCINO</option>
-        </optgroup>
-        <optgroup label="Línea Control de Peso">
-          <option value="NOCARB-T">NOCARB-T</option>
-          <option value="THERMO T3">THERMO T3</option>
-          <option value="CAFÉ & CAFÉ FIT">CAFÉ & CAFÉ FIT</option>
-        </optgroup>
-        <optgroup label="Línea Anti-Edad">
-          <option value="BEAUTY-IN">BEAUTY-IN</option>
-          <option value="GOLDEN FLX">GOLDEN FLX</option>
-          <option value="PASSION">PASSION</option>
-          <option value="YOUTH ELIXIR">YOUTH ELIXIR</option>
-        </optgroup>
-        <optgroup label="Línea Vigor Mental">
-          <option value="ON">ON</option>
-          <option value="NO STRESS">NO STRESS</option>
-        </optgroup>
-        <optgroup label="Línea Sport">
-          <option value="PRE SPORT">PRE SPORT</option>
-          <option value="POST SPORT">POST SPORT</option>
-          <option value="BIOPRO+ SPORT">BIOPRO+ SPORT</option>
-        </optgroup>
+        <option value="PRUNEX1">PRUNEX1</option>
+        <option value="FLORA LIV">FLORA LIV</option>
+        <option value="VITA XTRA T+">VITA XTRA T+</option>
+        <option value="VITAENERGIA">VITAENERGIA</option>
+        <option value="NUTRADAY">NUTRADAY</option>
+        <option value="GANO+ CAPPUCCINO">GANO+ CAPPUCCINO</option>
+        <option value="NOCARB-T">NOCARB-T</option>
+        <option value="THERMO T3">THERMO T3</option>
+        <option value="CAFÉ & CAFÉ FIT">CAFÉ & CAFÉ FIT</option>
+        <option value="BEAUTY-IN">BEAUTY-IN</option>
+        <option value="GOLDEN FLX">GOLDEN FLX</option>
+        <option value="PASSION">PASSION</option>
+        <option value="YOUTH ELIXIR">YOUTH ELIXIR</option>
+        <option value="ON">ON</option>
+        <option value="NO STRESS">NO STRESS</option>
+        <option value="PRE SPORT">PRE SPORT</option>
+        <option value="POST SPORT">POST SPORT</option>
+        <option value="BIOPRO+ SPORT">BIOPRO+ SPORT</option>
       </select>
       
-      <label>Añadir fotos de tu resultado</label>
+      <label>Añadir fotos</label>
       <input type="file" id="photos" accept="image/*" multiple>
       
       <label>Tu calificación *</label>
-      <div class="stars" id="starsContainer" style="margin-top: 5px;">
+      <div class="stars" id="starsContainer">
         <span onclick="setRating(1)">★</span><span onclick="setRating(2)">★</span><span onclick="setRating(3)">★</span><span onclick="setRating(4)">★</span><span onclick="setRating(5)">★</span>
       </div>
       <input type="hidden" id="rating" value="0">
 
       <label>Cuéntanos tu experiencia *</label>
       <textarea id="comment" required style="min-height: 120px;" placeholder="¿Cómo te sentiste?"></textarea>
-      
       <button type="submit" id="submitBtn">Enviar Reseña</button>
     </form>
   </div>
 
-  <div class="modal" id="reviewModal">
-    <div class="modal-content">
-      <span class="modal-close" onclick="closeModal()">✕</span>
-      <div id="modalContent"></div>
-    </div>
-  </div>
+  <div class="modal" id="reviewModal"><div class="modal-content"><span class="modal-close" onclick="closeModal()">✕</span><div id="modalContent"></div></div></div>
 
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
@@ -218,20 +188,15 @@
       const photos = document.getElementById('photos').files;
 
       if (rating === '0') return alert('Por favor selecciona las estrellas');
-      
-      btn.disabled = true;
-      btn.textContent = 'Enviando...';
+      btn.disabled = true; btn.textContent = 'Enviando...';
 
       try {
         let photoUrls = [];
         if (photos.length > 0) {
           const promises = Array.from(photos).map(async (file) => {
-            const fd = new FormData();
-            fd.append('image', file);
-            fd.append('key', 'ba93a9fe70568c8462e67f8c0b6ea70a');
+            const fd = new FormData(); fd.append('image', file); fd.append('key', 'ba93a9fe70568c8462e67f8c0b6ea70a');
             const res = await fetch('https://api.imgbb.com/1/upload', { method: 'POST', body: fd });
-            const data = await res.json();
-            return data.success ? data.data.url : null;
+            const data = await res.json(); return data.success ? data.data.url : null;
           });
           photoUrls = (await Promise.all(promises)).filter(u => u);
         }
@@ -246,27 +211,13 @@
           timestamp: firebase.firestore.FieldValue.serverTimestamp()
         });
 
-        // ENVIO SILENCIOSO A GOOGLE
         const scriptURL = 'https://script.google.com/macros/s/AKfycbxclOkdwn7x80Af4Q3i8h-dnnxthZyzTIeyKb_f4rDHmBGPM5bKakIqSQVxBRUWQcH9EA/exec';
-        const params = new URLSearchParams({
-            name: name,
-            email: email,
-            whatsapp: waF,
-            comment: comment,
-            products: productsText
-        }).toString();
-
-        // Usamos fetch modo no-cors para evitar el salto de pagina
+        const params = new URLSearchParams({ name, email, whatsapp: waF, comment, products: productsText }).toString();
         fetch(`${scriptURL}?${params}`, { method: 'GET', mode: 'no-cors' });
 
-        btn.textContent = '✅ ¡Gracias por tu opinión!';
-        setTimeout(() => location.reload(), 2200);
-
-      } catch (err) {
-        console.error('Error:', err);
-        btn.disabled = false;
-        btn.textContent = 'Reintentar Envío';
-      }
+        btn.textContent = '✅ ¡Gracias!';
+        setTimeout(() => location.reload(), 2000);
+      } catch (err) { btn.disabled = false; btn.textContent = 'Reintentar'; }
     });
 
     async function loadReviews() {
@@ -275,43 +226,32 @@
       const photoF = document.getElementById('photoFilter').checked;
       try {
         const snap = await db.collection('reviews').orderBy('timestamp', 'desc').get();
-        grid.innerHTML = '';
-        let total = 0, conFoto = 0;
-        
-        if (snap.empty) {
-            grid.innerHTML = '<div class="loading">No hay reseñas todavía. ¡Sé el primero!</div>';
-        }
-
+        grid.innerHTML = ''; let total = 0, conFoto = 0;
         snap.forEach(doc => {
-          const d = doc.data();
-          const pList = d.products || [];
-          const pUrls = d.photoUrls || null;
+          const d = doc.data(); const pList = d.products || []; const pUrls = d.photoUrls || null;
           if (prodF && !pList.includes(prodF)) return;
           if (photoF && !pUrls) return;
+          total++; if (pUrls && pUrls.length > 0) conFoto++;
           
-          total++;
-          if (pUrls && pUrls.length > 0) conFoto++;
-          
+          const stars = '⭐'.repeat(d.rating || 5);
           const card = document.createElement('div');
           card.className = 'review-card';
-          const stars = '⭐'.repeat(d.rating || 5);
-          
-          // Mostramos el comentario completo en la tarjeta
           card.innerHTML = `
             <div class="review-name">${d.name}</div>
+            ${d.instagram ? `<span class="review-instagram">${d.instagram}</span>` : ''}
             <span class="review-products-tag">${pList.join(', ')}</span>
             <div style="color:#FFB800; font-size:12px; margin-bottom:8px;">${stars}</div>
             ${pUrls ? `<div class="review-photos"><img src="${pUrls[0]}"></div>` : ''}
             <p class="review-text">"${d.comment}"</p>
           `;
-          
           card.onclick = () => {
             document.getElementById('modalContent').innerHTML = `
-                <h2 style="color:#2563eb; margin-bottom:10px;">${d.name}</h2>
-                <div style="font-size:18px; margin-bottom:10px;">${stars}</div>
-                <p style="font-weight:600; color:#666; font-size:12px; margin-bottom:10px;">PRODUCTOS: ${pList.join(', ')}</p>
-                <p style="font-size:15px; line-height:1.5; background:#f9f9f9; padding:15px; border-radius:8px; border-left:4px solid #2563eb;">${d.comment}</p>
-                ${pUrls ? pUrls.map(u => `<img src="${u}" style="width:100%; border-radius:8px; margin-top:15px; box-shadow:0 2px 8px rgba(0,0,0,0.1);">`).join('') : ''}
+              <h2 style="color:#2563eb; margin-bottom:5px;">${d.name}</h2>
+              ${d.instagram ? `<p style="color: #E1306C; font-weight: 700; margin-bottom: 10px;">${d.instagram}</p>` : ''}
+              <div style="font-size:18px; margin-bottom:10px;">${stars}</div>
+              <p style="font-weight:600; color:#666; font-size:12px;">PRODUCTOS: ${pList.join(', ')}</p><br>
+              <p style="font-size:15px; line-height:1.5; background:#f9f9f9; padding:15px; border-radius:8px; border-left:4px solid #2563eb;">${d.comment}</p>
+              ${pUrls ? pUrls.map(u => `<img src="${u}" style="width:100%; border-radius:8px; margin-top:15px; box-shadow:0 2px 8px rgba(0,0,0,0.1);">`).join('') : ''}
             `;
             document.getElementById('reviewModal').classList.add('active');
           };
@@ -319,20 +259,14 @@
         });
         document.getElementById('totalCount').textContent = total;
         document.getElementById('photoCount').textContent = conFoto;
-      } catch (e) {
-          console.log(e);
-      }
+      } catch (e) {}
     }
 
-    function setRating(s) {
-      document.getElementById('rating').value = s;
-      document.querySelectorAll('#starsContainer span').forEach((span, i) => span.classList.toggle('active', i < s));
-    }
+    function setRating(s) { document.getElementById('rating').value = s; document.querySelectorAll('#starsContainer span').forEach((span, i) => span.classList.toggle('active', i < s)); }
     function openDropdown() { document.getElementById('formDropdown').classList.add('active'); }
     function closeDropdown() { document.getElementById('formDropdown').classList.remove('active'); }
     function closeModal() { document.getElementById('reviewModal').classList.remove('active'); }
     function clearFilters() { document.getElementById('productFilter').value = ''; document.getElementById('photoFilter').checked = false; loadReviews(); }
-    
     document.getElementById('productFilter').onchange = loadReviews;
     document.getElementById('photoFilter').onchange = loadReviews;
     window.onload = loadReviews;
