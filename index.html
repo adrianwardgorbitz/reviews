@@ -40,7 +40,6 @@
     .review-rating { color: #FFB800; font-weight: 600; }
     .review-text { font-size: 13px; line-height: 1.4; color: #555; margin-bottom: 10px; font-style: italic; }
     
-    /* FOTO COMPLETA (AJUSTE SOLICITADO) */
     .review-photos { width: 100%; margin: 10px 0; display: block; }
     .review-photos img { width: 100%; height: auto; border-radius: 6px; background: #f5f5f5; border: 1px solid #eee; display: block; }
 
@@ -153,6 +152,7 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
+    // FUNCIÓN DE ENVÍO
     document.getElementById('reviewForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       const btn = document.getElementById('submitBtn');
@@ -166,10 +166,12 @@
       const photos = document.getElementById('photos').files;
 
       if (rating === '0') return alert('Por favor selecciona estrellas');
+      
       btn.disabled = true;
       btn.textContent = 'Enviando...';
 
       try {
+        // 1. Subir fotos a ImgBB
         let photoUrls = [];
         if (photos.length > 0) {
           const promises = Array.from(photos).map(async (file) => {
@@ -186,36 +188,42 @@
         const waF = wa ? (wa.startsWith('+') ? wa : '+' + wa) : '';
         const igF = ig ? (ig.startsWith('@') ? ig : '@' + ig) : '';
 
-        // 1. Guardar en Firebase (Visible en la Web)
+        // 2. Guardar en Firebase
         await db.collection('reviews').add({
           name, email, instagram: igF, products, rating: parseInt(rating), 
           comment, whatsapp: waF, photoUrls: photoUrls.length ? photoUrls : null,
           timestamp: firebase.firestore.FieldValue.serverTimestamp()
         });
 
-        // 2. Enviar a Google Apps Script (Notificaciones Email/WhatsApp)
-        const sd = new URLSearchParams();
-        sd.append('name', name);
-        sd.append('email', email);
-        sd.append('whatsapp', waF);
-        sd.append('comment', comment);
-        sd.append('products', products.join(', '));
+        // 3. ENVIAR A GOOGLE APPS SCRIPT
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbzHbMZBagU2CIJs_MMAMAC36EDATuExb2zOgKaTH5OZ3GM0csNvKQG8kJM9gLQmrv4D/exec';
+        
+        const params = new URLSearchParams({
+            name: name,
+            email: email,
+            whatsapp: waF,
+            comment: comment,
+            products: products.join(', ')
+        }).toString();
 
-        await fetch('https://script.google.com/macros/s/AKfycbxtuRLUeiyaRGIfgCFt7lR3WtjX5ctL6siR7ReTd_2N1E2fGddbEoQcpNZEp2wZOPWJXw/exec', {
-          method: 'POST',
-          mode: 'no-cors',
-          body: sd
+        await fetch(`${scriptURL}?${params}`, {
+            method: 'GET',
+            mode: 'no-cors'
         });
 
+        // 4. ÉXITO
         btn.textContent = '✅ Enviado';
         setTimeout(() => location.reload(), 1500);
+
       } catch (err) {
-        alert('Error: ' + err.message);
+        console.error('Error:', err);
+        alert('Error al enviar: ' + err.message);
         btn.disabled = false;
         btn.textContent = 'Enviar';
       }
     });
 
+    // CARGAR RESEÑAS
     async function loadReviews() {
       const grid = document.getElementById('reviewsGrid');
       const prodF = document.getElementById('productFilter').value;
@@ -227,55 +235,52 @@
         let total = 0, conFoto = 0;
 
         snap.forEach(doc => {
-          try {
-            const d = doc.data();
-            const products = d.products || [];
-            const photoUrls = d.photoUrls || null;
-            
-            if (prodF && !products.includes(prodF)) return;
-            if (photoF && !photoUrls) return;
-            
-            total++;
-            if (photoUrls && photoUrls.length > 0) conFoto++;
+          const d = doc.data();
+          const pList = d.products || [];
+          const pUrls = d.photoUrls || null;
+          
+          if (prodF && !pList.includes(prodF)) return;
+          if (photoF && !pUrls) return;
+          
+          total++;
+          if (pUrls && pUrls.length > 0) conFoto++;
 
-            const card = document.createElement('div');
-            card.className = 'review-card';
-            const stars = '⭐'.repeat(d.rating || 5);
-            const igHtml = d.instagram ? `<span class="review-instagram">${d.instagram}</span>` : '';
-            const prodHtml = `<span class="review-products-tag">${products.join(', ')}</span>`;
-            const imgHtml = (photoUrls && photoUrls.length > 0) ? `<div class="review-photos"><img src="${photoUrls[0]}"></div>` : '';
-            
-            card.innerHTML = `
-              <div class="review-name">${d.name || 'Anónimo'}</div>
-              ${igHtml}
-              ${prodHtml}
-              <div class="review-meta"><span class="review-rating">${stars}</span></div>
-              ${imgHtml}
-              <p class="review-text">"${(d.comment || '').substring(0, 50)}..."</p>
+          const card = document.createElement('div');
+          card.className = 'review-card';
+          const stars = '⭐'.repeat(d.rating || 5);
+          const imgHtml = (pUrls && pUrls.length > 0) ? `<div class="review-photos"><img src="${pUrls[0]}"></div>` : '';
+          
+          card.innerHTML = `
+            <div class="review-name">${d.name || 'Anónimo'}</div>
+            ${d.instagram ? `<span class="review-instagram">${d.instagram}</span>` : ''}
+            <span class="review-products-tag">${pList.join(', ')}</span>
+            <div class="review-meta"><span class="review-rating">${stars}</span></div>
+            ${imgHtml}
+            <p class="review-text">"${(d.comment || '').substring(0, 60)}..."</p>
+          `;
+          
+          card.onclick = () => {
+            document.getElementById('modalContent').innerHTML = `
+              <h2>${d.name || 'Anónimo'}</h2>
+              ${d.instagram ? `<p style="color:#E1306C; font-weight:600;">${d.instagram}</p>` : ''}
+              <p style="color:#2563eb;">Productos: ${pList.join(', ')}</p>
+              <div style="font-size:20px; margin:10px 0;">${stars}</div>
+              <p style="line-height:1.6;">${d.comment || ''}</p>
+              ${pUrls ? pUrls.map(u => `<img src="${u}" style="width:100%; border-radius:8px; margin-top:10px;">`).join('') : ''}
             `;
-            
-            card.onclick = () => {
-              document.getElementById('modalContent').innerHTML = `
-                <h2 style="margin-bottom:5px;">${d.name || 'Anónimo'}</h2>
-                ${d.instagram ? `<p style="color:#E1306C; font-weight:600; margin-bottom:10px;">${d.instagram}</p>` : ''}
-                <p style="color:#2563eb; font-weight:600;">Productos: ${products.join(', ')}</p>
-                <div style="font-size:20px; margin:15px 0;">${stars}</div>
-                <p style="line-height:1.6; color:#444;">${d.comment || ''}</p>
-                ${photoUrls ? photoUrls.map(u => `<img src="${u}" style="width:100%; border-radius:8px; margin-top:15px;">`).join('') : ''}
-              `;
-              document.getElementById('reviewModal').classList.add('active');
-            };
-            grid.appendChild(card);
-          } catch (e) { console.error(e); }
+            document.getElementById('reviewModal').classList.add('active');
+          };
+          grid.appendChild(card);
         });
         
         document.getElementById('totalCount').textContent = total;
         document.getElementById('photoCount').textContent = conFoto;
       } catch (err) {
-        console.error("Error cargando base de datos:", err);
+        console.error("Error:", err);
       }
     }
 
+    // UTILIDADES
     function setRating(s) {
       document.getElementById('rating').value = s;
       document.querySelectorAll('#starsContainer span').forEach((span, i) => span.classList.toggle('active', i < s));
@@ -288,6 +293,7 @@
       document.getElementById('photoFilter').checked = false;
       loadReviews();
     }
+
     document.getElementById('productFilter').onchange = loadReviews;
     document.getElementById('photoFilter').onchange = loadReviews;
     window.onload = loadReviews;
