@@ -202,6 +202,210 @@
           timestamp: firebase.firestore.FieldValue.serverTimestamp()
         });
 
+       <!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reseñas FuXion</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f8f9fa; color: #333; }
+    
+    header { 
+      background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%); 
+      color: white; padding: 20px; text-align: center; 
+      position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,0.1); 
+    }
+    header h1 { font-size: 24px; margin-bottom: 5px; }
+    header p { font-size: 13px; opacity: 0.9; }
+
+    .container { max-width: 900px; margin: 20px auto; padding: 0 15px; }
+
+    .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+    .stat-card { background: white; padding: 15px; border-radius: 8px; text-align: center; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    .stat-number { font-size: 28px; font-weight: 700; color: #2563eb; }
+    .stat-label { font-size: 12px; color: #666; margin-top: 5px; }
+
+    .filters { background: white; padding: 15px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); text-align: center; }
+    .filters label { display: block; font-weight: 600; margin-bottom: 8px; font-size: 13px; }
+    .filters select { width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px; margin-bottom: 12px; }
+    .checkbox-label { display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; margin-bottom: 12px; font-weight: 600; }
+
+    .reviews-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 30px; align-items: start; }
+    .review-card { background: white; border-radius: 8px; padding: 15px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); cursor: pointer; transition: transform 0.2s; height: fit-content; }
+    .review-card:hover { transform: translateY(-4px); }
+    
+    .review-name { font-weight: 700; font-size: 14px; margin-bottom: 2px; }
+    .review-instagram { color: #E1306C; font-size: 11px; text-decoration: none; display: block; margin-bottom: 4px; font-weight: 600; }
+    .review-products-tag { font-size: 10px; color: #2563eb; font-weight: 600; text-transform: uppercase; margin-bottom: 6px; display: block; }
+    
+    .review-meta { font-size: 12px; color: #999; margin-bottom: 10px; }
+    .review-rating { color: #FFB800; font-weight: 600; }
+    .review-text { font-size: 13px; line-height: 1.4; color: #555; margin-bottom: 10px; font-style: italic; }
+    
+    .review-photos { width: 100%; margin: 10px 0; display: block; }
+    .review-photos img { width: 100%; height: auto; border-radius: 6px; background: #f5f5f5; border: 1px solid #eee; display: block; }
+
+    .cta-button { position: fixed; bottom: 20px; right: 20px; background: #2563eb; color: white; border: none; padding: 15px 20px; border-radius: 50px; font-weight: 600; cursor: pointer; z-index: 99; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3); }
+
+    .form-dropdown { position: fixed; bottom: 0; right: 0; width: 100%; max-width: 400px; height: 0; background: white; border-radius: 12px 12px 0 0; box-shadow: 0 -4px 16px rgba(0,0,0,0.15); overflow-y: auto; transition: height 0.3s ease; z-index: 1000; }
+    .form-dropdown.active { height: 90vh; }
+    .form-header { padding: 20px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; background: #2563eb; color: white; position: sticky; top: 0; }
+    .form-header button { background: none; border: none; color: white; font-size: 24px; cursor: pointer; }
+
+    #reviewForm { padding: 20px; font-size: 13px; }
+    #reviewForm label { font-weight: 700; display: block; margin-top: 10px; }
+    #reviewForm input, #reviewForm textarea, #reviewForm select { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; margin-top: 5px; font-size: 14px; }
+    #reviewForm button#submitBtn { width: 100%; padding: 15px; background: #2563eb; color: white; border: none; border-radius: 6px; font-weight: 700; cursor: pointer; margin-top: 20px; }
+
+    .stars span { cursor: pointer; color: #e0e0e0; font-size: 35px; margin-right: 5px; }
+    .stars span.active { color: #FFB800; }
+
+    .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); align-items: center; justify-content: center; }
+    .modal.active { display: flex; }
+    .modal-content { background: white; padding: 25px; border-radius: 12px; max-width: 500px; width: 95%; max-height: 90vh; overflow-y: auto; position: relative; }
+    .modal-close { position: absolute; top: 10px; right: 15px; font-size: 28px; cursor: pointer; }
+    
+    .loading { text-align: center; color: #666; padding: 20px; grid-column: span 2; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>✨ Reseñas FuXion</h1>
+    <p>Comparte tu experiencia con nuestros productos</p>
+  </header>
+
+  <div class="container">
+    <div class="stats">
+      <div class="stat-card"><div class="stat-number" id="totalCount">0</div><div class="stat-label">Reseñas</div></div>
+      <div class="stat-card"><div class="stat-number" id="photoCount">0</div><div class="stat-label">Con Foto</div></div>
+    </div>
+
+    <div class="filters">
+      <label>Filtrar por producto</label>
+      <select id="productFilter">
+        <option value="">-- Todos los productos --</option>
+        <option value="PRUNEX1">PRUNEX1</option>
+        <option value="FLORA LIV">FLORA LIV</option>
+        <option value="VITA XTRA T+">VITA XTRA T+</option>
+        <option value="THERMO T3">THERMO T3</option>
+        <option value="NOCARB-T">NOCARB-T</option>
+        <option value="BEAUTY-IN">BEAUTY-IN</option>
+      </select>
+      <label class="checkbox-label">
+        <input type="checkbox" id="photoFilter"> <span>Solo con foto</span>
+      </label>
+      <button onclick="clearFilters()" style="width: 100%; padding: 8px; background: #f0f0f0; border: 1px solid #ddd; border-radius: 6px; cursor: pointer; font-size: 11px;">Limpiar filtros</button>
+    </div>
+
+    <div class="reviews-grid" id="reviewsGrid"><div class="loading">Cargando experiencias...</div></div>
+  </div>
+
+  <button class="cta-button" onclick="openDropdown()">✏️ Deja tu reseña</button>
+
+  <div class="form-dropdown" id="formDropdown">
+    <div class="form-header"><h2>Nueva Reseña</h2><button onclick="closeDropdown()">✕</button></div>
+    <form id="reviewForm">
+      <label>Nombre completo *</label><input type="text" id="name" required placeholder="Tu nombre">
+      <label>WhatsApp (opcional)</label><input type="tel" id="whatsapp" placeholder="Ej: 34 600000000">
+      <label>Email * (para enviarte el catálogo)</label><input type="email" id="email" required placeholder="tu@email.com">
+      <label>Instagram (opcional)</label><input type="text" id="instagram" placeholder="@tu_usuario">
+      
+      <label>¿Qué productos probaste? *</label>
+      <select id="product" required multiple style="min-height: 120px;">
+        <option value="PRUNEX1">PRUNEX1</option>
+        <option value="FLORA LIV">FLORA LIV</option>
+        <option value="VITA XTRA T+">VITA XTRA T+</option>
+        <option value="THERMO T3">THERMO T3</option>
+        <option value="NOCARB-T">NOCARB-T</option>
+        <option value="BEAUTY-IN">BEAUTY-IN</option>
+      </select>
+      <small style="color:#666; font-size: 11px;">Manten presionado Ctrl (o Cmd) para seleccionar varios.</small>
+      
+      <label>Añadir fotos de tu resultado</label>
+      <input type="file" id="photos" accept="image/*" multiple>
+      
+      <label>Tu calificación *</label>
+      <div class="stars" id="starsContainer" style="margin-top: 5px;">
+        <span onclick="setRating(1)">★</span><span onclick="setRating(2)">★</span><span onclick="setRating(3)">★</span><span onclick="setRating(4)">★</span><span onclick="setRating(5)">★</span>
+      </div>
+      <input type="hidden" id="rating" value="0">
+
+      <label>Cuéntanos tu experiencia *</label>
+      <textarea id="comment" required style="min-height: 100px;" placeholder="¿Cómo te sentiste? ¿Viste resultados rápidos?"></textarea>
+      
+      <button type="submit" id="submitBtn">Enviar Reseña</button>
+    </form>
+  </div>
+
+  <div class="modal" id="reviewModal">
+    <div class="modal-content">
+      <span class="modal-close" onclick="closeModal()">✕</span>
+      <div id="modalContent"></div>
+    </div>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+  <script>
+    // Configuración Firebase (Correcta)
+    const firebaseConfig = {
+      apiKey: "AIzaSyBZ1iquQo-rcaI25-eStS8ZhwYI-lugCLk",
+      authDomain: "degustaciones.firebaseapp.com",
+      projectId: "degustaciones",
+      storageBucket: "degustaciones.firebasestorage.app",
+      messagingSenderId: "80590754347",
+      appId: "1:80590754347:web:982cd91a00ddccc7f1106e"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    // ENVÍO DE FORMULARIO
+    document.getElementById('reviewForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = document.getElementById('submitBtn');
+      const name = document.getElementById('name').value;
+      const productsArray = Array.from(document.getElementById('product').selectedOptions).map(o => o.value);
+      const rating = document.getElementById('rating').value;
+      const comment = document.getElementById('comment').value;
+      let ig = document.getElementById('instagram').value.trim();
+      let wa = document.getElementById('whatsapp').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const photos = document.getElementById('photos').files;
+
+      if (rating === '0') return alert('Por favor selecciona las estrellas');
+      
+      btn.disabled = true;
+      btn.textContent = 'Enviando...';
+
+      try {
+        // 1. Subir fotos a ImgBB
+        let photoUrls = [];
+        if (photos.length > 0) {
+          const promises = Array.from(photos).map(async (file) => {
+            const fd = new FormData();
+            fd.append('image', file);
+            fd.append('key', 'ba93a9fe70568c8462e67f8c0b6ea70a');
+            const res = await fetch('https://api.imgbb.com/1/upload', { method: 'POST', body: fd });
+            const data = await res.json();
+            return data.success ? data.data.url : null;
+          });
+          photoUrls = (await Promise.all(promises)).filter(u => u);
+        }
+
+        const waF = wa.replace(/\D/g, "");
+        const igF = ig ? (ig.startsWith('@') ? ig : '@' + ig) : '';
+        const productsText = productsArray.join(', ');
+
+        // 2. Guardar en Firebase
+        await db.collection('reviews').add({
+          name, email, instagram: igF, products: productsArray, rating: parseInt(rating), 
+          comment, whatsapp: waF, photoUrls: photoUrls.length ? photoUrls : null,
+          timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        });
+
        // 3. ENVIAR A GOOGLE APPS SCRIPT
         const scriptURL = 'https://script.google.com/macros/s/AKfycbyYHJZZpNXCrQ0b4a39iORD9651UQFbaqvW3VOQAcGwoitW9lPbklmrVz5JpZRX-2X-7Q/exec';
         
@@ -222,6 +426,93 @@
         // 4. ÉXITO (Lo mostramos directamente porque el envío ya salió)
         btn.textContent = '✅ ¡Gracias por tu opinión!';
         setTimeout(() => location.reload(), 2000);
+
+      } catch (err) {
+        console.error('Error:', err);
+        btn.disabled = false;
+        btn.textContent = 'Enviar Reseña';
+      }
+    });
+
+    // CARGAR RESEÑAS
+    async function loadReviews() {
+      const grid = document.getElementById('reviewsGrid');
+      const prodF = document.getElementById('productFilter').value;
+      const photoF = document.getElementById('photoFilter').checked;
+      
+      try {
+        const snap = await db.collection('reviews').orderBy('timestamp', 'desc').get();
+        grid.innerHTML = '';
+        let total = 0, conFoto = 0;
+
+        snap.forEach(doc => {
+          const d = doc.data();
+          const pList = d.products || [];
+          const pUrls = d.photoUrls || null;
+          
+          if (prodF && !pList.includes(prodF)) return;
+          if (photoF && !pUrls) return;
+          
+          total++;
+          if (pUrls && pUrls.length > 0) conFoto++;
+
+          const card = document.createElement('div');
+          card.className = 'review-card';
+          const stars = '⭐'.repeat(d.rating || 5);
+          const imgHtml = (pUrls && pUrls.length > 0) ? `<div class="review-photos"><img src="${pUrls[0]}"></div>` : '';
+          
+          card.innerHTML = `
+            <div class="review-name">${d.name}</div>
+            ${d.instagram ? `<span class="review-instagram">${d.instagram}</span>` : ''}
+            <span class="review-products-tag">${pList.join(', ')}</span>
+            <div class="review-meta"><span class="review-rating">${stars}</span></div>
+            ${imgHtml}
+            <p class="review-text">"${(d.comment || '').substring(0, 70)}..."</p>
+          `;
+          
+          card.onclick = () => {
+            document.getElementById('modalContent').innerHTML = `
+              <h2 style="margin-bottom:10px;">${d.name}</h2>
+              ${d.instagram ? `<p style="color:#E1306C; font-weight:600; margin-bottom:5px;">${d.instagram}</p>` : ''}
+              <p style="color:#2563eb; font-weight:600; font-size:14px;">📦 ${pList.join(', ')}</p>
+              <div style="font-size:24px; margin:15px 0;">${stars}</div>
+              <p style="line-height:1.6; color:#444; font-style:italic;">"${d.comment}"</p>
+              ${pUrls ? pUrls.map(u => `<img src="${u}" style="width:100%; border-radius:8px; margin-top:15px;">`).join('') : ''}
+            `;
+            document.getElementById('reviewModal').classList.add('active');
+          };
+          grid.appendChild(card);
+        });
+        
+        document.getElementById('totalCount').textContent = total;
+        document.getElementById('photoCount').textContent = conFoto;
+      } catch (err) {
+        console.error("Error cargando reseñas:", err);
+      }
+    }
+
+    // UTILIDADES DE INTERFAZ
+    function setRating(s) {
+      document.getElementById('rating').value = s;
+      document.querySelectorAll('#starsContainer span').forEach((span, i) => {
+        span.classList.toggle('active', i < s);
+      });
+    }
+    function openDropdown() { document.getElementById('formDropdown').classList.add('active'); }
+    function closeDropdown() { document.getElementById('formDropdown').classList.remove('active'); }
+    function closeModal() { document.getElementById('reviewModal').classList.remove('active'); }
+    function clearFilters() {
+      document.getElementById('productFilter').value = '';
+      document.getElementById('photoFilter').checked = false;
+      loadReviews();
+    }
+
+    document.getElementById('productFilter').onchange = loadReviews;
+    document.getElementById('photoFilter').onchange = loadReviews;
+    window.onload = loadReviews;
+  </script>
+</body>
+</html>
 
       } catch (err) {
         console.error('Error:', err);
