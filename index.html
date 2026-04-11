@@ -592,8 +592,21 @@ const sd = new URLSearchParams();
 sd.append('name', name);
 sd.append('email', email || '');
 sd.append('whatsapp', whatsappFormatted || '');
-sd.append('products', JSON.stringify(products));
+sd.append('products', JSON.stringify(products)); // Aquí enviamos la lista de productos
 sd.append('comment', comment);
+
+        try {
+    // Usamos fetch con 'no-cors' para evitar bloqueos del navegador
+    await fetch('https://script.google.com/macros/s/AKfycbw6JXfH6HcyPoczRYa7RtmgHDECQmf-nB9cbnZ6M7sdEeW0WqNSybqyvvyMz8ZmtLckJQ/exec', {
+        method: 'POST',
+        mode: 'no-cors', 
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: sd
+    });
+    console.log("Datos enviados a Google Script correctamente");
+} catch (err) {
+    console.error("Error enviando a Google Script:", err);
+}
 
 await fetch('https://script.google.com/macros/s/AKfycbw6JXfH6HcyPoczRYa7RtmgHDECQmf-nB9cbnZ6M7sdEeW0WqNSybqyvvyMz8ZmtLckJQ/exec', {
   method: 'POST',
