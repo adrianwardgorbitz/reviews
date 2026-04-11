@@ -30,17 +30,22 @@
     .review-products-tag { font-size: 10px; color: #2563eb; font-weight: 600; text-transform: uppercase; margin-bottom: 6px; display: block; white-space: normal; line-height: 1.2; }
     .review-text { font-size: 13px; line-height: 1.4; color: #555; margin-bottom: 10px; font-style: italic; }
    /* Foto en la cuadrícula (Miniatura) */
+    /* Contenedor de la foto en la tarjeta (Miniatura) */
     .review-photos { 
       width: 100%; 
-      height: 120px; /* Altura fija para que no crezca la tarjeta */
+      /* Quitamos la altura fija para que la foto decida cuánto medir */
       margin: 10px 0; 
-      overflow: hidden; 
       border-radius: 6px; 
+      background-color: #f3f4f6; /* Un gris muy suave de fondo por si la foto es transparente */
+      overflow: hidden; /* Mantiene los bordes redondeados */
+      border: 1px solid #eee; /* Un borde sutil para definir la foto */
     }
+
+    /* La imagen dentro de la tarjeta */
     .review-photos img { 
-      width: 100%; 
-      height: 100%; 
-      object-fit: cover; /* Recorta la foto para que llene el cuadro sin deformarse */
+      width: 100%; /* Ocupa todo el ancho de la tarjeta */
+      height: auto; /* Mantiene la proporción original de la foto */
+      object-fit: contain; /* Ajusta la foto completa sin recortar nada */
       display: block; 
     }
     
