@@ -202,7 +202,7 @@
           timestamp: firebase.firestore.FieldValue.serverTimestamp()
         });
 
-        // 3. ENVIAR A GOOGLE APPS SCRIPT (CAMBIA LA URL SI ES NECESARIO)
+       // 3. ENVIAR A GOOGLE APPS SCRIPT
         const scriptURL = 'https://script.google.com/macros/s/AKfycbzCs5GOup6vuBpiUgpnQAY2MoBsadmYw2KrpV8UHSmfFK59x2dUwqWD1qcIxNKcEVOkeQ/exec';
         
         const params = new URLSearchParams({
@@ -210,21 +210,21 @@
             email: email,
             whatsapp: waF,
             comment: comment,
-            products: productsText // Enviado como texto para el email
+            products: productsText
         }).toString();
 
-        await fetch(`${scriptURL}?${params}`, {
+        // Enviar y NO esperar respuesta (porque no-cors no la devuelve)
+        fetch(`${scriptURL}?${params}`, {
             method: 'GET',
             mode: 'no-cors'
         });
 
-        // 4. ÉXITO
+        // 4. ÉXITO (Lo mostramos directamente porque el envío ya salió)
         btn.textContent = '✅ ¡Gracias por tu opinión!';
         setTimeout(() => location.reload(), 2000);
 
       } catch (err) {
         console.error('Error:', err);
-        alert('Hubo un error al enviar: ' + err.message);
         btn.disabled = false;
         btn.textContent = 'Enviar Reseña';
       }
