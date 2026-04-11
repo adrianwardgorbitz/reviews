@@ -191,7 +191,7 @@
           photoUrls = (await Promise.all(promises)).filter(u => u);
         }
 
-        const waF = wa ? (wa.startsWith('+') ? wa : '+' + wa) : '';
+        const waF = wa.replace(/\D/g, "");
         const igF = ig ? (ig.startsWith('@') ? ig : '@' + ig) : '';
         const productsText = productsArray.join(', ');
 
@@ -203,7 +203,7 @@
         });
 
         // 3. ENVIAR A GOOGLE APPS SCRIPT (CAMBIA LA URL SI ES NECESARIO)
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbxcKLHPxFfsWqOFN4sfNbrHB7mdjRtLJ597s09wfqDSRZu-EHC80m8H0ux28_nFIz8S_w/exec';
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbzCs5GOup6vuBpiUgpnQAY2MoBsadmYw2KrpV8UHSmfFK59x2dUwqWD1qcIxNKcEVOkeQ/exec';
         
         const params = new URLSearchParams({
             name: name,
