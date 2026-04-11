@@ -62,21 +62,29 @@
     </div>
 
     <div class="filters">
-      <label>Filtrar por producto</label>
-      <select id="productFilter">
-        <option value="">-- Todos los productos --</option>
-        <option value="PRUNEX1">PRUNEX1</option>
-        <option value="FLORA LIV">FLORA LIV</option>
-        <option value="VITA XTRA T+">VITA XTRA T+</option>
-        <option value="THERMO T3">THERMO T3</option>
-        <option value="NOCARB-T">NOCARB-T</option>
-        <option value="BEAUTY-IN">BEAUTY-IN</option>
-      </select>
-      <label class="checkbox-label">
-        <input type="checkbox" id="photoFilter"> <span>Solo con foto</span>
-      </label>
-      <button onclick="clearFilters()" style="width: 100%; padding: 8px; background: #f0f0f0; border: 1px solid #ddd; border-radius: 6px; cursor: pointer; font-size: 11px;">Limpiar filtros</button>
-    </div>
+  <label>Filtrar por producto</label>
+  <select id="productFilter">
+    <option value="">Todos los productos</option>
+    <option value="PRUNEX1">PRUNEX1</option>
+    <option value="FLORA LIV">FLORA LIV</option>
+    <option value="VITA XTRA T+">VITA XTRA T+</option>
+    <option value="VITAENERGIA">VITAENERGIA</option>
+    <option value="GANO+ CAPPUCCINO">GANO+ CAPPUCCINO</option>
+    <option value="NOCARB-T">NOCARB-T</option>
+    <option value="THERMO T3">THERMO T3</option>
+    <option value="BEAUTY-IN">BEAUTY-IN</option>
+    <option value="GOLDEN FLX">GOLDEN FLX</option>
+    <option value="ON">ON</option>
+    <option value="NO STRESS">NO STRESS</option>
+    <option value="PRE SPORT">PRE SPORT</option>
+    <option value="POST SPORT">POST SPORT</option>
+  </select>
+
+  <label class="checkbox-label">
+    <input type="checkbox" id="photoFilter"> <span>Solo con foto</span>
+  </label>
+  <button onclick="clearFilters()" style="width: 100%; padding: 8px; background: #f0f0f0; border: 1px solid #ddd; border-radius: 6px; cursor: pointer; font-size: 11px;">Limpiar filtros</button>
+</div>
 
     <div class="reviews-grid" id="reviewsGrid"><div class="loading">Cargando experiencias...</div></div>
   </div>
