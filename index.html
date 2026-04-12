@@ -8,245 +8,95 @@
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f8f9fa; color: #333; }
     
-    /* HEADER Y FILTROS: Full Width */
-    header { background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%); color: white; padding: 25px 20px; text-align: center; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,0.1); width: 100%; }
-    header h1 { font-size: 24px; margin-bottom: 5px; }
-    header p { font-size: 13px; opacity: 0.9; }
+    /* HEADER: Full Width y NO sticky */
+    header { 
+      background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%); 
+      color: white; 
+      padding: 40px 20px; 
+      text-align: center; 
+      width: 100%; 
+    }
+    header h1 { font-size: 26px; margin-bottom: 8px; }
+    header p { font-size: 14px; opacity: 0.9; }
 
-    .stats { display: grid; grid-template-columns: 1fr 1fr; background: white; width: 100%; border-bottom: 1px solid #eee; }
-    .stat-card { padding: 15px; text-align: center; border-right: 1px solid #eee; }
-    .stat-number { font-size: 28px; font-weight: 700; color: #2563eb; }
-    .stat-label { font-size: 12px; color: #666; margin-top: 5px; }
+    /* STATS: Estilo foto 2 (Línea divisoria central) */
+    .stats { 
+      display: grid; 
+      grid-template-columns: 1fr 1fr; 
+      background: white; 
+      width: 100%; 
+      border-bottom: 1px solid #eee; 
+    }
+    .stat-card { padding: 25px 10px; text-align: center; }
+    .stat-card:first-child { border-right: 1px solid #eee; }
+    .stat-number { font-size: 32px; font-weight: 700; color: #2563eb; display: block; }
+    .stat-label { font-size: 12px; color: #666; margin-top: 5px; text-transform: uppercase; letter-spacing: 0.5px; }
     
-    .filters { background: white; padding: 20px; text-align: center; width: 100%; border-bottom: 1px solid #ddd; margin-bottom: 20px; }
-    .filters label { display: block; font-weight: 600; margin-bottom: 10px; font-size: 14px; }
-    .filters select { width: 100%; max-width: 400px; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 15px; margin-bottom: 15px; }
-    .checkbox-label { display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; margin-bottom: 15px; font-weight: 600; font-size: 14px; }
+    /* FILTROS: Full Width */
+    .filters { 
+      background: white; 
+      padding: 25px 20px; 
+      text-align: center; 
+      width: 100%; 
+      border-bottom: 1px solid #eee;
+      margin-bottom: 25px;
+    }
+    .filters label { display: block; font-weight: 700; margin-bottom: 10px; font-size: 14px; }
+    .filters select { 
+      width: 100%; max-width: 450px; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 16px; margin-bottom: 15px; 
+    }
+    .checkbox-label { display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; font-weight: 600; font-size: 14px; }
 
-    /* CONTENEDOR RESEÑAS */
-    .container { max-width: 900px; margin: 0 auto; padding: 0 12px; }
-    .reviews-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 80px; align-items: start; }
+    /* GRID: 2 Columnas reales */
+    .container { max-width: 1000px; margin: 0 auto; padding: 0 12px; }
+    .reviews-grid { 
+      display: grid; 
+      grid-template-columns: repeat(2, 1fr); 
+      gap: 12px; 
+      margin-bottom: 100px; 
+      align-items: start; 
+    }
     
-    .review-card { background: white; border-radius: 10px; padding: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); cursor: pointer; border: 1px solid #eee; }
-    .review-name { font-weight: 700; font-size: 14px; color: #111; }
-    .review-instagram { color: #E1306C; font-size: 10px; font-weight: 700; display: block; margin-bottom: 4px; }
-    .review-products-tag { font-size: 10px; color: #2563eb; font-weight: 700; text-transform: uppercase; margin-bottom: 6px; display: block; line-height: 1.2; }
+    .review-card { background: white; border-radius: 12px; padding: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: 1px solid #eee; cursor: pointer; }
+    .review-name { font-weight: 700; font-size: 14px; margin-bottom: 2px; }
+    .review-instagram { color: #E1306C; font-size: 10px; font-weight: 700; display: block; margin-bottom: 6px; }
+    .review-products-tag { font-size: 9px; color: #2563eb; font-weight: 700; text-transform: uppercase; margin-bottom: 8px; display: block; }
     
-    .review-photos { width: 100%; margin: 10px 0; border-radius: 6px; overflow: hidden; }
+    .review-photos { width: 100%; margin-bottom: 10px; border-radius: 8px; overflow: hidden; }
     .review-photos img { width: 100%; height: auto; display: block; }
     
-    .review-text { font-size: 12px; line-height: 1.4; color: #555; font-style: italic; }
+    /* TEXTO: Sin recortes */
+    .review-text { font-size: 12px; line-height: 1.5; color: #444; font-style: italic; }
 
-    /* BOTON FLOTANTE */
-    .cta-button { position: fixed; bottom: 20px; right: 20px; background: #2563eb; color: white; border: none; padding: 15px 25px; border-radius: 50px; font-weight: 700; cursor: pointer; z-index: 99; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4); }
+    /* BOTÓN FLOTANTE */
+    .cta-button { position: fixed; bottom: 30px; right: 20px; background: #2563eb; color: white; border: none; padding: 16px 24px; border-radius: 50px; font-weight: 700; z-index: 99; box-shadow: 0 4px 15px rgba(37, 99, 235, 0.4); }
 
-    /* FORMULARIO DROPDOWN */
-    .form-dropdown { position: fixed; bottom: 0; left: 0; width: 100%; height: 0; background: white; border-radius: 20px 20px 0 0; box-shadow: 0 -4px 20px rgba(0,0,0,0.2); overflow-y: auto; transition: height 0.3s ease; z-index: 1000; }
-    .form-dropdown.active { height: 92vh; }
+    /* FORM DROPDOWN */
+    .form-dropdown { position: fixed; bottom: 0; left: 0; width: 100%; height: 0; background: white; border-radius: 20px 20px 0 0; box-shadow: 0 -5px 25px rgba(0,0,0,0.2); overflow-y: auto; transition: height 0.4s ease; z-index: 1000; }
+    .form-dropdown.active { height: 95vh; }
     .form-header { padding: 20px; background: #2563eb; color: white; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; }
     
-    #reviewForm { padding: 20px; }
+    #reviewForm { padding: 25px; }
     #reviewForm label { font-weight: 700; display: block; margin-top: 15px; font-size: 14px; }
-    #reviewForm input, #reviewForm textarea, #reviewForm select { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; margin-top: 5px; font-size: 14px; }
-    #reviewForm button#submitBtn { width: 100%; padding: 16px; background: #2563eb; color: white; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; margin-top: 25px; }
+    #reviewForm input, #reviewForm textarea, #reviewForm select { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; margin-top: 5px; font-size: 15px; }
+    #reviewForm button#submitBtn { width: 100%; padding: 18px; background: #2563eb; color: white; border: none; border-radius: 10px; font-weight: 700; margin-top: 30px; font-size: 16px; }
 
-    .stars span { cursor: pointer; color: #e0e0e0; font-size: 38px; margin-right: 5px; }
+    .stars span { cursor: pointer; color: #e0e0e0; font-size: 35px; margin-right: 5px; }
     .stars span.active { color: #FFB800; }
 
     .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); align-items: center; justify-content: center; padding: 15px; }
     .modal.active { display: flex; }
-    .modal-content { background: white; padding: 25px; border-radius: 12px; max-width: 500px; width: 100%; max-height: 90vh; overflow-y: auto; position: relative; }
-    .modal-close { position: absolute; top: 10px; right: 15px; font-size: 30px; font-weight: bold; cursor: pointer; }
+    .modal-content { background: white; padding: 25px; border-radius: 15px; max-width: 500px; width: 100%; max-height: 85vh; overflow-y: auto; position: relative; }
+    .modal-close { position: absolute; top: 10px; right: 15px; font-size: 30px; cursor: pointer; }
   </style>
 </head>
 <body>
 
   <header>
     <h1>✨ Reseñas FuXion</h1>
-    <p>Comparte tu experiencia con nuestros productos</p>
+    <p>Tu opinión nos ayuda a crecer</p>
   </header>
 
   <div class="stats">
-    <div class="stat-card"><div class="stat-number" id="totalCount">0</div><div class="stat-label">Reseñas</div></div>
-    <div class="stat-card"><div class="stat-number" id="photoCount">0</div><div class="stat-label">Con Foto</div></div>
-  </div>
-
-  <div class="filters">
-    <label>Filtrar por producto</label>
-    <select id="productFilter">
-      <option value="">Todos los productos</option>
-      <option value="PRUNEX1">PRUNEX1</option>
-      <option value="FLORA LIV">FLORA LIV</option>
-      <option value="VITA XTRA T+">VITA XTRA T+</option>
-      <option value="VITAENERGIA">VITAENERGIA</option>
-      <option value="GANO+ CAPPUCCINO">GANO+ CAPPUCCINO</option>
-      <option value="NOCARB-T">NOCARB-T</option>
-      <option value="THERMO T3">THERMO T3</option>
-      <option value="BEAUTY-IN">BEAUTY-IN</option>
-      <option value="GOLDEN FLX">GOLDEN FLX</option>
-      <option value="ON">ON</option>
-      <option value="NO STRESS">NO STRESS</option>
-      <option value="PRE SPORT">PRE SPORT</option>
-      <option value="POST SPORT">POST SPORT</option>
-    </select>
-    <label class="checkbox-label"><input type="checkbox" id="photoFilter"> <span>Solo con foto</span></label>
-    <button onclick="clearFilters()" style="background:none; border:none; color:#2563eb; font-weight:600; text-decoration:underline; font-size:13px; cursor:pointer;">Limpiar filtros</button>
-  </div>
-
-  <div class="container">
-    <div class="reviews-grid" id="reviewsGrid"></div>
-  </div>
-
-  <button class="cta-button" onclick="openDropdown()">✏️ Deja tu reseña</button>
-
-  <div class="form-dropdown" id="formDropdown">
-    <div class="form-header"><h2>Nueva Reseña</h2><button onclick="closeDropdown()">✕</button></div>
-    <form id="reviewForm">
-      <label>Nombre completo *</label><input type="text" id="name" required>
-      <label>WhatsApp *</label><input type="tel" id="whatsapp" required placeholder="Ej: 34 600000000">
-      <label>Email (opcional)</label><input type="email" id="email" placeholder="tu@email.com">
-      <label>Instagram (opcional)</label><input type="text" id="instagram" placeholder="@tu_usuario">
-      
-      <label>¿Qué productos probaste? *</label>
-      <select id="product" required multiple style="min-height: 120px;">
-        <option value="PRUNEX1">PRUNEX1</option>
-        <option value="FLORA LIV">FLORA LIV</option>
-        <option value="VITA XTRA T+">VITA XTRA T+</option>
-        <option value="VITAENERGIA">VITAENERGIA</option>
-        <option value="GANO+ CAPPUCCINO">GANO+ CAPPUCCINO</option>
-        <option value="NOCARB-T">NOCARB-T</option>
-        <option value="THERMO T3">THERMO T3</option>
-        <option value="BEAUTY-IN">BEAUTY-IN</option>
-        <option value="GOLDEN FLX">GOLDEN FLX</option>
-        <option value="ON">ON</option>
-        <option value="NO STRESS">NO STRESS</option>
-        <option value="PRE SPORT">PRE SPORT</option>
-        <option value="POST SPORT">POST SPORT</option>
-      </select>
-      
-      <label>Sube tus fotos de resultados</label>
-      <input type="file" id="photos" accept="image/*" multiple>
-      
-      <label>Tu calificación *</label>
-      <div class="stars" id="starsContainer">
-        <span onclick="setRating(1)">★</span><span onclick="setRating(2)">★</span><span onclick="setRating(3)">★</span><span onclick="setRating(4)">★</span><span onclick="setRating(5)">★</span>
-      </div>
-      <input type="hidden" id="rating" value="0">
-
-      <label>Cuéntanos tu experiencia *</label>
-      <textarea id="comment" required style="min-height: 120px;" placeholder="¿Cómo te ayudó el producto?"></textarea>
-      <button type="submit" id="submitBtn">Enviar Reseña</button>
-    </form>
-  </div>
-
-  <div class="modal" id="reviewModal"><div class="modal-content"><span class="modal-close" onclick="closeModal()">✕</span><div id="modalContent"></div></div></div>
-
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
-  <script>
-    const firebaseConfig = { apiKey: "AIzaSyBZ1iquQo-rcaI25-eStS8ZhwYI-lugCLk", authDomain: "degustaciones.firebaseapp.com", projectId: "degustaciones", storageBucket: "degustaciones.firebasestorage.app", messagingSenderId: "80590754347", appId: "1:80590754347:web:982cd91a00ddccc7f1106e" };
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
-
-    document.getElementById('reviewForm').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const btn = document.getElementById('submitBtn');
-      const rating = document.getElementById('rating').value;
-      if (rating === '0') return alert('Por favor, selecciona una calificación');
-      
-      btn.disabled = true; btn.textContent = 'Enviando...';
-
-      try {
-        const photos = document.getElementById('photos').files;
-        let photoUrls = [];
-        if (photos.length > 0) {
-          const promises = Array.from(photos).map(async (file) => {
-            const fd = new FormData(); fd.append('image', file); fd.append('key', 'ba93a9fe70568c8462e67f8c0b6ea70a');
-            const res = await fetch('https://api.imgbb.com/1/upload', { method: 'POST', body: fd });
-            const data = await res.json(); return data.success ? data.data.url : null;
-          });
-          photoUrls = (await Promise.all(promises)).filter(u => u);
-        }
-
-        const ig = document.getElementById('instagram').value;
-        const igF = ig ? (ig.startsWith('@') ? ig : '@' + ig) : '';
-        const pArray = Array.from(document.getElementById('product').selectedOptions).map(o => o.value);
-
-        await db.collection('reviews').add({
-          name: document.getElementById('name').value,
-          email: document.getElementById('email').value,
-          whatsapp: document.getElementById('whatsapp').value,
-          instagram: igF,
-          products: pArray,
-          rating: parseInt(rating),
-          comment: document.getElementById('comment').value,
-          photoUrls: photoUrls.length ? photoUrls : null,
-          timestamp: firebase.firestore.FieldValue.serverTimestamp()
-        });
-
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbxclOkdwn7x80Af4Q3i8h-dnnxthZyzTIeyKb_f4rDHmBGPM5bKakIqSQVxBRUWQcH9EA/exec';
-        const params = new URLSearchParams({
-            name: document.getElementById('name').value,
-            email: document.getElementById('email').value,
-            whatsapp: document.getElementById('whatsapp').value,
-            comment: document.getElementById('comment').value,
-            products: pArray.join(', ')
-        }).toString();
-        fetch(`${scriptURL}?${params}`, { method: 'GET', mode: 'no-cors' });
-
-        btn.textContent = '✅ ¡Enviado!';
-        setTimeout(() => location.reload(), 2000);
-      } catch (err) { btn.disabled = false; btn.textContent = 'Error al enviar'; }
-    });
-
-    async function loadReviews() {
-      const grid = document.getElementById('reviewsGrid');
-      const prodF = document.getElementById('productFilter').value;
-      const photoF = document.getElementById('photoFilter').checked;
-      try {
-        const snap = await db.collection('reviews').orderBy('timestamp', 'desc').get();
-        grid.innerHTML = ''; let total = 0, conFoto = 0;
-        snap.forEach(doc => {
-          const d = doc.data();
-          if (prodF && !d.products.includes(prodF)) return;
-          if (photoF && !d.photoUrls) return;
-          total++; if (d.photoUrls) conFoto++;
-          
-          const card = document.createElement('div');
-          card.className = 'review-card';
-          const stars = '⭐'.repeat(d.rating || 5);
-          card.innerHTML = `
-            <div class="review-name">${d.name}</div>
-            ${d.instagram ? `<span class="review-instagram">${d.instagram}</span>` : ''}
-            <span class="review-products-tag">${d.products.join(', ')}</span>
-            ${d.photoUrls ? `<div class="review-photos"><img src="${d.photoUrls[0]}"></div>` : ''}
-            <p class="review-text">"${d.comment}"</p>
-          `;
-          card.onclick = () => {
-            document.getElementById('modalContent').innerHTML = `
-                <h2 style="color:#2563eb;">${d.name}</h2>
-                ${d.instagram ? `<p style="color:#E1306C; font-weight:700;">${d.instagram}</p>` : ''}
-                <div style="font-size:20px; margin:10px 0;">${stars}</div>
-                <p style="background:#f9f9f9; padding:15px; border-radius:10px; line-height:1.5;">${d.comment}</p>
-                ${d.photoUrls ? d.photoUrls.map(u => `<img src="${u}" style="width:100%; border-radius:10px; margin-top:15px;">`).join('') : ''}
-            `;
-            document.getElementById('reviewModal').classList.add('active');
-          };
-          grid.appendChild(card);
-        });
-        document.getElementById('totalCount').innerText = total;
-        document.getElementById('photoCount').innerText = conFoto;
-      } catch (e) {}
-    }
-
-    function setRating(s) { document.getElementById('rating').value = s; document.querySelectorAll('#starsContainer span').forEach((span, i) => span.classList.toggle('active', i < s)); }
-    function openDropdown() { document.getElementById('formDropdown').classList.add('active'); }
-    function closeDropdown() { document.getElementById('formDropdown').classList.remove('active'); }
-    function closeModal() { document.getElementById('reviewModal').classList.remove('active'); }
-    function clearFilters() { document.getElementById('productFilter').value = ''; document.getElementById('photoFilter').checked = false; loadReviews(); }
-    document.getElementById('productFilter').onchange = loadReviews;
-    document.getElementById('photoFilter').onchange = loadReviews;
-    window.onload = loadReviews;
-  </script>
-</body>
-</html>
+    <div class="stat-card"><span class="stat-number" id="totalCount">0</span><span class="stat-label">Reseñas</span></div>
+    <div class="stat-card"><span class="stat-number" id="photo
