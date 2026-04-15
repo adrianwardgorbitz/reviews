@@ -51,7 +51,6 @@
             font-weight: 700; margin-bottom: 15px; text-transform: uppercase;
         }
 
-        /* BONUS REINTEGRADO */
         .offer-box {
             border-left: 4px solid var(--fuxion-blue); background: rgba(0, 51, 160, 0.1);
             padding: 20px; border-radius: 0 20px 20px 0; margin-bottom: 25px;
@@ -137,11 +136,12 @@
                 
                 <div class="input-grid">
                     <select id="disponibilidad" required>
-                        <option value="" disabled selected>Horas semanales</option>
+                        <option value="" disabled selected>Horas semanales disponibles</option>
                         <option value="5-10">5-10 horas</option>
                         <option value="10-20">10-20 horas</option>
                         <option value="20+">20+ horas (Full Focus)</option>
                     </select>
+
                     <select id="ritmo" required>
                         <option value="" disabled selected>Nivel de Compromiso</option>
                         <option value="Rápido">Velocidad Diamante 🚀</option>
@@ -149,7 +149,7 @@
                     </select>
                 </div>
 
-                <textarea id="metas" placeholder="¿Cuál es tu meta financiera en 90 días?" rows="2" required></textarea>
+                <textarea id="metas" placeholder="Cuéntame de ti (A qué te dedicas actualmente, tus metas, etc.)" rows="3" required></textarea>
 
                 <button type="submit" class="btn-submit" id="submitBtn">Enviar Aplicación</button>
             </form>
@@ -174,7 +174,7 @@
                 gusto: document.getElementById('gusto').value,
                 disponibilidad: document.getElementById('disponibilidad').value,
                 ritmo: document.getElementById('ritmo').value,
-                experiencia: document.getElementById('metas').value,
+                experiencia: document.getElementById('metas').value, 
                 timestamp: new Date().toLocaleString('es-ES')
             };
 
