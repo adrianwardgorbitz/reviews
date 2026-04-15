@@ -11,70 +11,60 @@
     <style>
         :root {
             --primary: #007AFF;
-            --primary-dark: #0056b3;
-            --accent: #00d4ff; 
             --fuxion-blue: #0033A0;
+            --accent-cyan: #00d4ff;
             --bg-dark: #05070a;
             --text-main: #ffffff;
-            --text-dim: #9ca3af;
             --border: rgba(255, 255, 255, 0.15);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: var(--bg-dark);
-            color: var(--text-main);
-            line-height: 1.6;
-        }
-
+        body { font-family: 'Poppins', sans-serif; background-color: var(--bg-dark); color: var(--text-main); line-height: 1.6; }
         .container { max-width: 800px; margin: 0 auto; padding: 0 20px; }
 
         .hero { text-align: center; padding: 50px 0 20px; }
         .hero h1 { font-size: clamp(32px, 8vw, 56px); font-weight: 800; line-height: 1.1; }
 
-        /* --- STATS --- */
         .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin: 30px 0; }
         .stat-card {
-            background: rgba(255, 255, 255, 0.03); 
-            border: 1px solid var(--border);
+            background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border);
             padding: 20px 10px; border-radius: 20px; text-align: center;
         }
         .stat-number { display: block; font-size: 24px; font-weight: 800; color: #fff; }
-        .stat-label { font-size: 10px; text-transform: uppercase; color: var(--accent); font-weight: 600; }
+        .stat-label { font-size: 10px; text-transform: uppercase; color: var(--accent-cyan); font-weight: 600; }
 
-        /* --- VIDEO --- */
         .video-container {
             margin-bottom: 40px; position: relative; padding-bottom: 56.25%; height: 0;
             border-radius: 25px; overflow: hidden; border: 1px solid var(--border);
-            box-shadow: 0 0 50px rgba(0, 51, 160, 0.2);
+            box-shadow: 0 0 50px rgba(0, 51, 160, 0.3);
         }
         .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
 
-        /* --- BIO --- */
         .bio-section {
-            background: linear-gradient(145deg, rgba(0, 51, 160, 0.1) 0%, rgba(17, 24, 39, 0.8) 100%);
-            border: 1px solid var(--fuxion-blue);
-            border-radius: 30px; padding: 35px; margin-bottom: 40px;
+            background: linear-gradient(145deg, rgba(0, 51, 160, 0.15) 0%, rgba(17, 24, 39, 0.8) 100%);
+            border: 1px solid var(--fuxion-blue); border-radius: 30px; padding: 35px; margin-bottom: 40px;
         }
-        .bio-section h3 { color: var(--accent); font-size: 22px; margin-bottom: 10px; }
+        .bio-section h3 { color: var(--accent-cyan); font-size: 22px; margin-bottom: 10px; }
         .badge {
             display: inline-block; padding: 5px 15px; border-radius: 50px;
             background: var(--fuxion-blue); color: #fff; font-size: 11px;
             font-weight: 700; margin-bottom: 15px; text-transform: uppercase;
         }
 
-        /* --- FORM --- */
+        /* BONUS REINTEGRADO */
+        .offer-box {
+            border-left: 4px solid var(--fuxion-blue); background: rgba(0, 51, 160, 0.1);
+            padding: 20px; border-radius: 0 20px 20px 0; margin-bottom: 25px;
+        }
+
         .glass-card {
-            background: rgba(17, 24, 39, 0.9);
-            border: 1px solid var(--border);
+            background: rgba(17, 24, 39, 0.95); border: 1px solid var(--border);
             border-radius: 35px; padding: 40px; margin-bottom: 60px;
         }
         .input-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
         input, select, textarea {
             width: 100%; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border);
-            padding: 16px; border-radius: 12px; color: white; margin-bottom: 15px; font-family: inherit;
+            padding: 16px; border-radius: 12px; color: white; margin-bottom: 15px; font-family: inherit; font-size: 15px;
         }
         select option { background-color: #05070a; color: white; }
 
@@ -116,13 +106,17 @@
         <section class="bio-section">
             <span class="badge">Tu Mentor</span>
             <h3>Soy Adrian Ward</h3>
-            <p>
-                Más de 12 años en <strong>FuXion</strong>, miembro del Hall Millonario y Top Producer global. He ayudado a miles de personas a transformar su realidad financiera con sistemas duplicables y liderazgo de alto impacto.
-            </p>
+            <p>Más de 12 años en <strong>FuXion</strong>, miembro del Hall Millonario y Top Producer global.</p>
         </section>
 
         <section class="glass-card">
-            <h2 style="text-align: center; margin-bottom: 30px;">Aplica para trabajar conmigo</h2>
+            <h2 style="text-align: center; margin-bottom: 30px;">Aplica ahora</h2>
+
+            <div class="offer-box">
+                <h4 style="color: var(--accent-cyan); margin-bottom: 5px;">💎 BONO DE ESCALAMIENTO</h4>
+                <p style="font-size: 14px;">Si logras +20 clientes en tu primer mes, <strong>¡Yo te pago un Asistente Virtual por 30 días!</strong></p>
+            </div>
+            
             <form id="mentorshipForm">
                 <div class="input-grid">
                     <input type="text" id="nombre" placeholder="Nombre completo" required>
@@ -144,18 +138,18 @@
                 <div class="input-grid">
                     <select id="disponibilidad" required>
                         <option value="" disabled selected>Horas semanales</option>
-                        <option value="5-10">5-10h</option>
-                        <option value="10-20">10-20h</option>
-                        <option value="20+">20h+ (Full Focus)</option>
+                        <option value="5-10">5-10 horas</option>
+                        <option value="10-20">10-20 horas</option>
+                        <option value="20+">20+ horas (Full Focus)</option>
                     </select>
                     <select id="ritmo" required>
-                        <option value="" disabled selected>Tu Compromiso</option>
+                        <option value="" disabled selected>Nivel de Compromiso</option>
                         <option value="Rápido">Velocidad Diamante 🚀</option>
                         <option value="Moderado">Construcción Sólida ⚡</option>
                     </select>
                 </div>
 
-                <textarea id="metas" placeholder="Tu meta financiera en 90 días" rows="2" required></textarea>
+                <textarea id="metas" placeholder="¿Cuál es tu meta financiera en 90 días?" rows="2" required></textarea>
 
                 <button type="submit" class="btn-submit" id="submitBtn">Enviar Aplicación</button>
             </form>
@@ -180,17 +174,20 @@
                 gusto: document.getElementById('gusto').value,
                 disponibilidad: document.getElementById('disponibilidad').value,
                 ritmo: document.getElementById('ritmo').value,
-                experiencia: document.getElementById('metas').value, // Mapeado a la columna 'Experiencia' de tu Sheet
-                timestamp: new Date().toLocaleString()
+                experiencia: document.getElementById('metas').value,
+                timestamp: new Date().toLocaleString('es-ES')
             };
 
-            fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(formData) })
+            fetch(SCRIPT_URL, { 
+                method: 'POST', 
+                mode: 'no-cors', 
+                body: JSON.stringify(formData) 
+            })
             .then(() => {
                 window.location.href = 'https://chat.whatsapp.com/KtBu7mszVBOE2oMdf0bFl1';
             })
             .catch(() => {
-                alert('Error al enviar.');
-                btn.disabled = false; btn.innerHTML = 'Enviar Aplicación';
+                window.location.href = 'https://chat.whatsapp.com/KtBu7mszVBOE2oMdf0bFl1';
             });
         });
     </script>
