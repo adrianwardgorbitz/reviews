@@ -41,8 +41,7 @@
 
         .container { max-width: 800px; margin: 0 auto; padding: 0 20px; }
 
-        /* --- HERO --- */
-        .hero { height: 60vh; display: flex; align-items: center; justify-content: center; text-align: center; }
+        .hero { height: 50vh; display: flex; align-items: center; justify-content: center; text-align: center; }
         .logo-badge {
             background: linear-gradient(135deg, var(--primary), var(--accent));
             width: 70px; height: 70px; margin: 0 auto 25px; border-radius: 20px;
@@ -56,7 +55,18 @@
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
 
-        /* --- VIDEO --- */
+        /* --- STATS BAR --- */
+        .stats-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr);
+            gap: 15px; margin-bottom: 40px; text-align: center;
+        }
+        .stat-card {
+            background: rgba(255,255,255,0.05); border: 1px solid var(--border);
+            padding: 15px; border-radius: 20px;
+        }
+        .stat-number { display: block; font-size: 20px; font-weight: 800; color: var(--accent); }
+        .stat-label { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: var(--text-dim); }
+
         .video-container {
             margin-bottom: 50px; position: relative; padding-bottom: 56.25%; height: 0;
             border-radius: 25px; overflow: hidden; border: 1px solid var(--border);
@@ -64,11 +74,9 @@
         }
         .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
 
-        /* --- BIO SECTION --- */
         .bio-card {
             background: linear-gradient(145deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0) 100%);
             border: 1px solid var(--border); border-radius: 30px; padding: 40px; margin-bottom: 50px;
-            display: flex; align-items: center; gap: 30px; flex-wrap: wrap;
         }
         .bio-text h3 { color: var(--accent); margin-bottom: 10px; font-size: 24px; }
         .badge { 
@@ -77,7 +85,6 @@
             font-size: 12px; font-weight: 700; margin-bottom: 10px;
         }
 
-        /* --- FORM & CARDS --- */
         .glass-card {
             background: rgba(17, 24, 39, 0.8); backdrop-filter: blur(20px);
             border: 1px solid var(--border); border-radius: 35px; padding: 40px; margin-bottom: 60px;
@@ -105,7 +112,7 @@
         }
         .btn-submit:hover { transform: translateY(-3px); box-shadow: 0 15px 35px rgba(0, 122, 255, 0.4); }
 
-        @media (max-width: 600px) { .bio-card { text-align: center; justify-content: center; } }
+        @media (max-width: 600px) { .stats-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
@@ -117,9 +124,24 @@
             <div>
                 <div class="logo-badge">AW</div>
                 <h1>The Diamond<br>Mentorship</h1>
-                <p style="color: var(--text-dim);">Resultados reales para personas ambiciosas.</p>
+                <p style="color: var(--text-dim);">Liderazgo de Clase Mundial con Adrian Ward</p>
             </div>
         </section>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <span class="stat-number">$8M</span>
+                <span class="stat-label">Ventas en 2025</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number">20k+</span>
+                <span class="stat-label">Clientes Activos</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number">TOP</span>
+                <span class="stat-label">Producer Hall Millonario</span>
+            </div>
+        </div>
 
         <div class="video-container">
             <iframe src="https://www.youtube.com/embed/U33TC3cmd5E" allowfullscreen></iframe>
@@ -127,10 +149,10 @@
 
         <div class="bio-card">
             <div class="bio-text">
-                <span class="badge">TU MENTOR DIAMANTE</span>
-                <h3>Soy Adrian Ward</h3>
+                <span class="badge">HALL MILLONARIO FUXION</span>
+                <h3>Trayectoria y Autoridad</h3>
                 <p style="color: var(--text-dim); font-size: 15px;">
-                    No enseño teoría. Enseño a construir imperios. Mi sistema en FuXion está diseñado para que ejecutes con precisión y escales rápido. Si estás aquí, es porque buscas el siguiente nivel.
+                    Como <strong>Top Producer</strong> y miembro del Hall Millonario de FuXion, mi enfoque no es solo el crecimiento, sino la <strong>escalabilidad masiva</strong>. Con más de 12 años en la industria, he pasado de la teoría a liderar una organización con más de 20,000 clientes activos. Si buscas resultados de 7 cifras, necesitas un mentor que ya esté ahí.
                 </p>
             </div>
         </div>
@@ -139,9 +161,9 @@
             <h2 style="text-align: center; margin-bottom: 30px;">Aplica para trabajar conmigo</h2>
             
             <div class="offer-box">
-                <h4 style="color: var(--accent); margin-bottom: 5px;">💎 BONO DE ESCALAMIENTO EXCLUSIVO</h4>
+                <h4 style="color: var(--accent); margin-bottom: 5px;">💎 BONO DE ESCALAMIENTO</h4>
                 <p style="font-size: 16px; font-weight: 600;">Si en 1 mes tienes más de 20 clientes...</p>
-                <p style="color: var(--text-main); font-size: 18px; margin-top: 5px;">¡Yo te pago un Asistente Virtual por 30 días!</p>
+                <p style="color: var(--text-main); font-size: 18px; margin-top: 5px; color: var(--accent);">¡Yo te pago un Asistente Virtual por 30 días!</p>
             </div>
 
             <form id="mentorshipForm">
@@ -149,14 +171,14 @@
                 <input type="tel" id="whatsapp" placeholder="Tu WhatsApp (con código de país)" required>
                 <select id="ritmo" required>
                     <option value="" disabled selected>Selecciona tu nivel de compromiso</option>
-                    <option value="Rápido">Velocidad Diamante (Enfoque Total) 🚀</option>
-                    <option value="Moderado">Construcción Sólida (Ritmo Constante) ⚡</option>
+                    <option value="Rápido">Velocidad Diamante (8M Ventas) 🚀</option>
+                    <option value="Moderado">Construcción Sólida ⚡</option>
                 </select>
                 <textarea id="gusto" placeholder="¿Cuál es tu meta financiera para los próximos 90 días?" rows="3" required></textarea>
 
                 <div class="guarantee-box">
                     <p style="font-size: 14px; color: var(--text-dim);">
-                        🛡️ <strong>GARANTÍA DE HIERRO:</strong> Si en 30 días no has aprendido nada ni has tenido resultados aplicando mi método... <strong>¡Te compro la caja de FuXion que tú quieras!</strong>
+                        🛡️ <strong>GARANTÍA:</strong> Si tras 30 días no hay resultados tras aplicar mi método... <strong>¡Te compro la caja de FuXion que tú quieras!</strong>
                     </p>
                 </div>
 
@@ -171,7 +193,7 @@
         document.getElementById('mentorshipForm').addEventListener('submit', function(e) {
             e.preventDefault();
             const btn = document.getElementById('submitBtn');
-            btn.disabled = true; btn.innerHTML = 'Enviando Aplicación...';
+            btn.disabled = true; btn.innerHTML = 'Enviando...';
 
             const formData = {
                 nombre: document.getElementById('nombre').value,
@@ -186,8 +208,8 @@
                 window.location.href = 'https://chat.whatsapp.com/KtBu7mszVBOE2oMdf0bFl1';
             })
             .catch(() => {
-                alert('Hubo un error al enviar. Inténtalo de nuevo.');
-                btn.disabled = false; btn.innerHTML = 'Enviar Aplicación y Reservar Bono';
+                alert('Error al enviar.');
+                btn.disabled = false; btn.innerHTML = 'Enviar Aplicación';
             });
         });
     </script>
