@@ -40,7 +40,7 @@
 
         .container { max-width: 800px; margin: 0 auto; padding: 0 20px; }
 
-        .hero { height: 35vh; display: flex; align-items: center; justify-content: center; text-align: center; }
+        .hero { height: 30vh; display: flex; align-items: center; justify-content: center; text-align: center; }
         .logo-badge {
             background: linear-gradient(135deg, var(--primary), var(--accent));
             width: 70px; height: 70px; margin: 0 auto 25px; border-radius: 20px;
@@ -54,6 +54,7 @@
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
 
+        /* --- STATS --- */
         .stats-grid {
             display: grid; grid-template-columns: repeat(3, 1fr);
             gap: 15px; margin-bottom: 40px; text-align: center;
@@ -65,6 +66,7 @@
         .stat-number { display: block; font-size: 20px; font-weight: 800; color: var(--accent); }
         .stat-label { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: var(--text-dim); }
 
+        /* --- VIDEO --- */
         .video-container {
             margin-bottom: 50px; position: relative; padding-bottom: 56.25%; height: 0;
             border-radius: 25px; overflow: hidden; border: 1px solid var(--border);
@@ -72,6 +74,7 @@
         }
         .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
 
+        /* --- FORM --- */
         .glass-card {
             background: rgba(17, 24, 39, 0.8); backdrop-filter: blur(20px);
             border: 1px solid var(--border); border-radius: 35px; padding: 40px; margin-bottom: 60px;
@@ -82,7 +85,6 @@
             padding: 20px; border-radius: 0 20px 20px 0; margin-bottom: 25px;
         }
 
-        /* --- FORM STYLES --- */
         .input-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
         
         input, select, textarea {
@@ -157,18 +159,18 @@
                     <input type="text" id="ciudad" placeholder="Ciudad / País" required>
                 </div>
 
-                <textarea id="experiencia" placeholder="¿Tienes experiencia en negocios o ventas? (Cuéntame brevemente)" rows="2" required></textarea>
+                <textarea id="gusto" placeholder="Cuéntame qué fue lo que más te gustó del video" rows="2" required></textarea>
                 
                 <div class="input-grid">
                     <input type="text" id="disponibilidad" placeholder="Horas disponibles/semana" required>
                     <select id="ritmo" required>
-                        <option value="" disabled selected>Selecciona tu ritmo</option>
+                        <option value="" disabled selected>Selecciona tu compromiso</option>
                         <option value="Rápido">Velocidad Diamante 🚀</option>
                         <option value="Moderado">Construcción Sólida ⚡</option>
                     </select>
                 </div>
 
-                <textarea id="gusto" placeholder="¿Cuál es tu meta financiera en 90 días?" rows="2" required></textarea>
+                <textarea id="metas" placeholder="¿Cuál es tu meta financiera en 90 días?" rows="2" required></textarea>
 
                 <button type="submit" class="btn-submit" id="submitBtn">Enviar Aplicación</button>
             </form>
@@ -176,7 +178,6 @@
     </div>
 
     <script>
-        // REEMPLAZA ESTO con la URL que te dio Google Apps Script después de hacer "Deploy"
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxSqodbU59bzdyC7s7x7oesdvevh2yQOO0xO3k4wbGzOTOmET7pBXTS1C0lDxobn94ilQ/exec';
 
         document.getElementById('mentorshipForm').addEventListener('submit', function(e) {
@@ -191,10 +192,10 @@
                 instagram: document.getElementById('instagram').value,
                 edad: document.getElementById('edad').value,
                 ciudad: document.getElementById('ciudad').value,
-                experiencia: document.getElementById('experiencia').value,
+                gusto: document.getElementById('gusto').value, // Sincronizado con el campo "Qué gustó" del script
                 disponibilidad: document.getElementById('disponibilidad').value,
                 ritmo: document.getElementById('ritmo').value,
-                gusto: document.getElementById('gusto').value,
+                metas: document.getElementById('metas').value,
                 timestamp: new Date().toLocaleString('es-ES')
             };
 
@@ -203,7 +204,7 @@
                 window.location.href = 'https://chat.whatsapp.com/KtBu7mszVBOE2oMdf0bFl1';
             })
             .catch(() => {
-                alert('Error al enviar. Intenta de nuevo.');
+                alert('Error al enviar.');
                 btn.disabled = false; btn.innerHTML = 'Enviar Aplicación';
             });
         });
