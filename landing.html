@@ -12,13 +12,12 @@
         :root {
             --primary: #007AFF;
             --primary-dark: #0056b3;
-            /* AZUL FUXION REEMPLAZANDO AL VERDE */
-            --accent: #0033A0; 
+            --accent: #00d4ff; 
+            --fuxion-blue: #0033A0;
             --bg-dark: #05070a;
-            --card-bg: #111827;
             --text-main: #ffffff;
             --text-dim: #9ca3af;
-            --border: rgba(255, 255, 255, 0.1);
+            --border: rgba(255, 255, 255, 0.15);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -28,101 +27,84 @@
             background-color: var(--bg-dark);
             color: var(--text-main);
             line-height: 1.6;
-            overflow-x: hidden;
-        }
-
-        .bg-glow {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            /* RESPLANDOR AJUSTADO A AZUL */
-            background: radial-gradient(circle at 50% -20%, #1e3a8a 0%, transparent 50%),
-                        radial-gradient(circle at 0% 100%, #001a57 0%, transparent 40%);
-            z-index: -1;
-            opacity: 0.6;
         }
 
         .container { max-width: 800px; margin: 0 auto; padding: 0 20px; }
 
-        /* --- HERO (LOGO ELIMINADO) --- */
-        .hero { height: 30vh; display: flex; align-items: center; justify-content: center; text-align: center; }
-
-        .hero h1 {
-            font-size: clamp(32px, 8vw, 60px); line-height: 1.1; margin-bottom: 20px;
-            background: linear-gradient(to bottom, #fff 50%, #888);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-        }
+        .hero { text-align: center; padding: 60px 0 20px; }
+        .hero h1 { font-size: clamp(32px, 8vw, 56px); font-weight: 800; line-height: 1.1; }
 
         /* --- STATS --- */
-        .stats-grid {
-            display: grid; grid-template-columns: repeat(3, 1fr);
-            gap: 15px; margin-bottom: 40px; text-align: center;
-        }
+        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin: 30px 0; }
         .stat-card {
-            background: rgba(255,255,255,0.05); border: 1px solid var(--border);
-            padding: 15px; border-radius: 20px;
+            background: rgba(255, 255, 255, 0.03); 
+            border: 1px solid var(--border);
+            padding: 20px 10px; border-radius: 20px; text-align: center;
         }
-        .stat-number { display: block; font-size: 20px; font-weight: 800; color: var(--text-main); }
-        /* COLOR DE ACENTO AZUL EN LABELS */
-        .stat-label { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: var(--accent); }
+        .stat-number { display: block; font-size: 24px; font-weight: 800; color: #fff; }
+        .stat-label { font-size: 10px; text-transform: uppercase; color: var(--accent); font-weight: 600; }
 
         /* --- VIDEO --- */
         .video-container {
-            margin-bottom: 50px; position: relative; padding-bottom: 56.25%; height: 0;
+            margin-bottom: 40px; position: relative; padding-bottom: 56.25%; height: 0;
             border-radius: 25px; overflow: hidden; border: 1px solid var(--border);
-            box-shadow: 0 0 50px rgba(0, 51, 160, 0.15);
+            box-shadow: 0 0 50px rgba(0, 51, 160, 0.2);
         }
         .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
 
+        /* --- SECCIÓN DE BIOGRAFÍA (REINTEGRADA) --- */
+        .bio-section {
+            background: linear-gradient(145deg, rgba(0, 51, 160, 0.1) 0%, rgba(17, 24, 39, 0.8) 100%);
+            border: 1px solid var(--fuxion-blue);
+            border-radius: 30px;
+            padding: 35px;
+            margin-bottom: 40px;
+        }
+        .bio-section h3 { color: var(--accent); font-size: 22px; margin-bottom: 10px; }
+        .bio-section p { color: var(--text-main); font-size: 15px; opacity: 0.9; }
+        .badge {
+            display: inline-block; padding: 5px 15px; border-radius: 50px;
+            background: var(--fuxion-blue); color: #fff; font-size: 12px;
+            font-weight: 700; margin-bottom: 15px; text-transform: uppercase;
+        }
+
         /* --- FORM --- */
         .glass-card {
-            background: rgba(17, 24, 39, 0.8); backdrop-filter: blur(20px);
-            border: 1px solid var(--border); border-radius: 35px; padding: 40px; margin-bottom: 60px;
+            background: rgba(17, 24, 39, 0.9);
+            border: 1px solid var(--border);
+            border-radius: 35px; padding: 40px; margin-bottom: 60px;
         }
-
-        /* CAJA DE BONO CON ACENTO AZUL */
-        .offer-box {
-            border-left: 4px solid var(--accent); background: rgba(0, 51, 160, 0.05);
-            padding: 20px; border-radius: 0 20px 20px 0; margin-bottom: 25px;
-        }
-
         .input-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        
         input, select, textarea {
-            width: 100%; background: rgba(255,255,255,0.05); border: 1px solid var(--border);
-            padding: 15px; border-radius: 12px; color: white; margin-bottom: 15px; font-family: inherit;
+            width: 100%; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border);
+            padding: 18px; border-radius: 15px; color: white; margin-bottom: 15px; font-family: inherit;
         }
-
-        select option { background-color: #111827; color: white; }
+        select option { background-color: #05070a; color: white; }
 
         .btn-submit {
-            width: 100%; padding: 22px; background: linear-gradient(90deg, var(--primary), var(--primary-dark));
+            width: 100%; padding: 22px; background: linear-gradient(90deg, var(--fuxion-blue), var(--primary));
             border: none; border-radius: 18px; color: white; font-weight: 700; font-size: 18px;
-            cursor: pointer; transition: 0.4s; text-transform: uppercase; letter-spacing: 1px;
+            cursor: pointer; transition: 0.4s; text-transform: uppercase;
         }
-        .btn-submit:hover { transform: translateY(-3px); box-shadow: 0 15px 35px rgba(0, 122, 255, 0.4); }
 
-        @media (max-width: 600px) { .input-grid { grid-template-columns: 1fr; } .stats-grid { grid-template-columns: 1fr; } }
+        @media (max-width: 600px) { .stats-grid, .input-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
 
-    <div class="bg-glow"></div>
-
     <div class="container">
-        <section class="hero">
-            <div>
-                <h1>The Diamond<br>Mentorship</h1>
-            </div>
-        </section>
+        <header class="hero">
+            <h1>The Diamond Mentorship</h1>
+        </header>
 
         <div class="stats-grid">
             <div class="stat-card">
                 <span class="stat-number">$8M</span>
-                <span class="stat-label">Ventas en 2025</span>
+                <span class="stat-label">Ventas 2025</span>
             </div>
             <div class="stat-card">
                 <span class="stat-number">20k+</span>
-                <span class="stat-label">Clientes Activos</span>
+                <span class="stat-label">Clientes</span>
             </div>
             <div class="stat-card">
                 <span class="stat-number">TOP</span>
@@ -134,48 +116,39 @@
             <iframe src="https://www.youtube.com/embed/U33TC3cmd5E" allowfullscreen></iframe>
         </div>
 
-        <section class="glass-card">
-            <h2 style="text-align: center; margin-bottom: 30px;">Aplica ahora</h2>
-            
-            <div class="offer-box">
-                <h4 style="color: var(--accent); margin-bottom: 5px;">💎 BONO DE ESCALAMIENTO</h4>
-                <p style="color: var(--text-main); font-size: 15px;">Si logras +20 clientes en 1 mes, <strong>¡Yo te pago un Asistente Virtual por 30 días!</strong></p>
-            </div>
+        <section class="bio-section">
+            <span class="badge">Tu Mentor</span>
+            <h3>Soy Adrian Ward</h3>
+            <p>
+                No solo enseño negocios; construyo legados. Con más de 12 años en <strong>FuXion</strong>, he liderado organizaciones que mueven millones de dólares anualmente. Mi propósito es darte el sistema exacto que me permitió entrar al Hall Millonario, para que tú también puedas escalar con velocidad y precisión.
+            </p>
+        </section>
 
+        <section class="glass-card">
+            <h2 style="text-align: center; margin-bottom: 30px;">Aplica para trabajar conmigo</h2>
             <form id="mentorshipForm">
                 <div class="input-grid">
                     <input type="text" id="nombre" placeholder="Nombre completo" required>
                     <input type="email" id="email" placeholder="Email" required>
                 </div>
-                
-                <div class="input-grid">
-                    <input type="tel" id="whatsapp" placeholder="WhatsApp" required>
-                    <input type="text" id="instagram" placeholder="Instagram (Opcional)">
-                </div>
-
-                <div class="input-grid">
-                    <input type="number" id="edad" placeholder="Tu Edad" required>
-                    <input type="text" id="ciudad" placeholder="Ciudad / País" required>
-                </div>
-
-                <textarea id="gusto" placeholder="Cuéntame qué fue lo que más te gustó del video" rows="2" required></textarea>
+                <input type="tel" id="whatsapp" placeholder="WhatsApp" required>
                 
                 <div class="input-grid">
                     <select id="disponibilidad" required>
-                        <option value="" disabled selected>Horas semanales disponibles</option>
-                        <option value="5-10 horas">5 a 10 horas (Extra)</option>
-                        <option value="10-20 horas">10 a 20 horas (Part-time)</option>
-                        <option value="Más de 20 horas">Más de 20 horas (Full Focus)</option>
+                        <option value="" disabled selected>Horas semanales</option>
+                        <option value="5-10">5-10h</option>
+                        <option value="10-20">10-20h</option>
+                        <option value="20+">20h+ (Full Focus)</option>
                     </select>
-
                     <select id="ritmo" required>
-                        <option value="" disabled selected>Selecciona tu compromiso</option>
+                        <option value="" disabled selected>Tu Compromiso</option>
                         <option value="Rápido">Velocidad Diamante 🚀</option>
                         <option value="Moderado">Construcción Sólida ⚡</option>
                     </select>
                 </div>
 
-                <textarea id="metas" placeholder="¿Cuál es tu meta financiera en 90 días?" rows="2" required></textarea>
+                <textarea id="gusto" placeholder="¿Qué fue lo que más te gustó del video?" rows="2"></textarea>
+                <textarea id="metas" placeholder="Tu meta financiera en 90 días" rows="2"></textarea>
 
                 <button type="submit" class="btn-submit" id="submitBtn">Enviar Aplicación</button>
             </form>
@@ -184,24 +157,21 @@
 
     <script>
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxSqodbU59bzdyC7s7x7oesdvevh2yQOO0xO3k4wbGzOTOmET7pBXTS1C0lDxobn94ilQ/exec';
-
+        
         document.getElementById('mentorshipForm').addEventListener('submit', function(e) {
             e.preventDefault();
             const btn = document.getElementById('submitBtn');
-            btn.disabled = true; btn.innerHTML = 'Enviando...';
+            btn.disabled = true; btn.innerHTML = 'Enviando Aplicación...';
 
             const formData = {
                 nombre: document.getElementById('nombre').value,
                 email: document.getElementById('email').value,
                 whatsapp: document.getElementById('whatsapp').value,
-                instagram: document.getElementById('instagram').value,
-                edad: document.getElementById('edad').value,
-                ciudad: document.getElementById('ciudad').value,
-                gusto: document.getElementById('gusto').value,
                 disponibilidad: document.getElementById('disponibilidad').value,
                 ritmo: document.getElementById('ritmo').value,
+                gusto: document.getElementById('gusto').value,
                 metas: document.getElementById('metas').value,
-                timestamp: new Date().toLocaleString('es-ES')
+                timestamp: new Date().toLocaleString()
             };
 
             fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(formData) })
