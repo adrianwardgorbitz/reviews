@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mentoría con Adrian Ward - FuXion</title>
+    <title>The Diamond Mentorship - Adrian Ward</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
@@ -14,6 +14,7 @@
             --primary-dark: #0056b3;
             --accent: #00F5A0;
             --bg-dark: #05070a;
+            --card-bg: #111827;
             --text-main: #ffffff;
             --text-dim: #9ca3af;
             --border: rgba(255, 255, 255, 0.1);
@@ -38,107 +39,78 @@
             opacity: 0.6;
         }
 
-        .container { max-width: 850px; margin: 0 auto; padding: 0 20px; }
+        .container { max-width: 800px; margin: 0 auto; padding: 0 20px; }
 
         /* --- HERO --- */
-        .hero {
-            height: 70vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-        }
-
+        .hero { height: 60vh; display: flex; align-items: center; justify-content: center; text-align: center; }
         .logo-badge {
             background: linear-gradient(135deg, var(--primary), var(--accent));
-            width: 70px; height: 70px;
-            margin: 0 auto 25px;
-            border-radius: 20px;
+            width: 70px; height: 70px; margin: 0 auto 25px; border-radius: 20px;
             display: flex; align-items: center; justify-content: center;
-            font-weight: 800; font-size: 28px;
-            box-shadow: 0 10px 30px rgba(0, 122, 255, 0.3);
+            font-weight: 800; font-size: 28px; box-shadow: 0 10px 30px rgba(0, 122, 255, 0.3);
         }
 
         .hero h1 {
-            font-size: clamp(32px, 8vw, 60px);
-            line-height: 1.1;
-            margin-bottom: 20px;
+            font-size: clamp(32px, 8vw, 60px); line-height: 1.1; margin-bottom: 20px;
             background: linear-gradient(to bottom, #fff 50%, #888);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
 
-        /* --- VIDEO VSL --- */
+        /* --- VIDEO --- */
         .video-container {
-            margin-bottom: 50px;
-            position: relative;
-            padding-bottom: 56.25%;
-            height: 0;
-            border-radius: 25px;
-            overflow: hidden;
-            box-shadow: 0 0 40px rgba(0, 122, 255, 0.2);
-            border: 1px solid var(--border);
+            margin-bottom: 50px; position: relative; padding-bottom: 56.25%; height: 0;
+            border-radius: 25px; overflow: hidden; border: 1px solid var(--border);
+            box-shadow: 0 0 50px rgba(0, 122, 255, 0.15);
+        }
+        .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
+
+        /* --- BIO SECTION (THE MENTOR) --- */
+        .bio-card {
+            background: linear-gradient(145deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0) 100%);
+            border: 1px solid var(--border); border-radius: 30px; padding: 40px; margin-bottom: 50px;
+            display: flex; align-items: center; gap: 30px; flex-wrap: wrap;
+        }
+        .bio-img {
+            width: 120px; height: 120px; border-radius: 50%; 
+            background: url('https://via.placeholder.com/150') center/cover; /* Reemplazar con tu foto real */
+            border: 3px solid var(--accent); flex-shrink: 0;
+        }
+        .bio-text h3 { color: var(--accent); margin-bottom: 10px; font-size: 24px; }
+        .badge { 
+            display: inline-block; padding: 4px 12px; border-radius: 20px; 
+            background: rgba(0, 245, 160, 0.1); color: var(--accent); 
+            font-size: 12px; font-weight: 700; margin-bottom: 10px;
         }
 
-        .video-container iframe {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;
-        }
-
-        /* --- CARDS --- */
+        /* --- FORM & CARDS --- */
         .glass-card {
-            background: rgba(17, 24, 39, 0.7);
-            backdrop-filter: blur(15px);
-            border: 1px solid var(--border);
-            border-radius: 30px;
-            padding: 35px;
-            margin-bottom: 40px;
+            background: rgba(17, 24, 39, 0.8); backdrop-filter: blur(20px);
+            border: 1px solid var(--border); border-radius: 35px; padding: 40px; margin-bottom: 60px;
         }
 
-        /* --- BONOS & GARANTIA --- */
         .offer-box {
-            border-left: 4px solid var(--primary);
-            background: rgba(0, 122, 255, 0.08);
-            padding: 20px;
-            border-radius: 0 20px 20px 0;
-            margin-bottom: 25px;
+            border-left: 4px solid var(--primary); background: rgba(0, 122, 255, 0.1);
+            padding: 20px; border-radius: 0 20px 20px 0; margin-bottom: 25px;
         }
 
         .guarantee-box {
-            border: 2px dashed var(--accent);
-            background: rgba(0, 245, 160, 0.05);
-            padding: 20px;
-            border-radius: 20px;
-            margin-top: 30px;
-            text-align: center;
+            border: 2px dashed var(--accent); background: rgba(0, 245, 160, 0.05);
+            padding: 20px; border-radius: 20px; margin-top: 30px; text-align: center;
         }
 
-        /* --- FORM --- */
         input, select, textarea {
-            width: 100%; background: rgba(255,255,255,0.05);
-            border: 1px solid var(--border);
-            padding: 15px; border-radius: 12px;
-            color: white; margin-bottom: 15px;
-            font-family: inherit;
+            width: 100%; background: rgba(255,255,255,0.05); border: 1px solid var(--border);
+            padding: 18px; border-radius: 15px; color: white; margin-bottom: 15px; font-family: inherit;
         }
 
         .btn-submit {
-            width: 100%; padding: 20px;
-            background: linear-gradient(90deg, var(--primary), var(--primary-dark));
-            border: none; border-radius: 15px;
-            color: white; font-weight: 700; font-size: 18px;
-            cursor: pointer; transition: 0.3s;
-            text-transform: uppercase;
+            width: 100%; padding: 22px; background: linear-gradient(90deg, var(--primary), var(--primary-dark));
+            border: none; border-radius: 18px; color: white; font-weight: 700; font-size: 18px;
+            cursor: pointer; transition: 0.4s; text-transform: uppercase; letter-spacing: 1px;
         }
+        .btn-submit:hover { transform: translateY(-3px); box-shadow: 0 15px 35px rgba(0, 122, 255, 0.4); }
 
-        .btn-submit:hover { transform: scale(1.02); box-shadow: 0 10px 25px rgba(0, 122, 255, 0.4); }
-
-        .success-overlay {
-            display: none; position: fixed; inset: 0;
-            background: rgba(0,0,0,0.9); z-index: 9999;
-            align-items: center; justify-content: center; text-align: center;
-        }
-        .success-overlay.active { display: flex; }
-
+        @media (max-width: 600px) { .bio-card { text-align: center; justify-content: center; } }
     </style>
 </head>
 <body>
@@ -150,48 +122,52 @@
             <div>
                 <div class="logo-badge">AW</div>
                 <h1>The Diamond<br>Mentorship</h1>
-                <p style="color: var(--text-dim);">Un sistema probado para escalar tu negocio.</p>
+                <p style="color: var(--text-dim);">Liderazgo. Resultados. Libertad.</p>
             </div>
         </section>
 
-        <h3 style="text-align: center; margin-bottom: 20px; color: var(--accent);">Paso 1: Mira este video completo</h3>
+        <h3 style="text-align: center; margin-bottom: 20px; color: var(--accent);">MIRA ESTE VIDEO PRIMERO</h3>
         <div class="video-container">
-            <iframe src="https://www.youtube.com/embed/U33TC3cmd5E" allowfullscreen loading="lazy"></iframe>
+            <iframe src="https://www.youtube.com/embed/U33TC3cmd5E" allowfullscreen></iframe>
+        </div>
+
+        <div class="bio-card">
+            <div class="bio-img"></div> <div class="bio-text">
+                <span class="badge">MENTOR DIAMANTE</span>
+                <h3>Soy Adrian Ward</h3>
+                <p style="color: var(--text-dim); font-size: 15px;">
+                    Ayudo a emprendedores ambiciosos a construir negocios sólidos con FuXion. Mi enfoque no es la teoría, sino la <strong>ejecución masiva</strong>. He diseñado este sistema para que no tengas que adivinar, solo seguir el plan.
+                </p>
+            </div>
         </div>
 
         <section class="glass-card">
-            <h2 style="text-align: center; margin-bottom: 30px;">Paso 2: Aplica a la Mentoría</h2>
+            <h2 style="text-align: center; margin-bottom: 30px;">Aplica a mi Círculo Interno</h2>
             
             <div class="offer-box">
-                <h4 style="color: var(--primary); margin-bottom: 5px;">🎁 BONO DE VELOCIDAD</h4>
-                <p style="font-size: 14px; color: var(--text-dim);">Si logras 20 clientes en tu primer mes, <strong>yo pago tu Asistente Virtual</strong> por 30 días.</p>
+                <h4 style="color: var(--primary);">🚀 BONO: Asistente Virtual</h4>
+                <p style="font-size: 14px; color: var(--text-dim);">Si escalas a 20 clientes en tu primer mes, yo financio tu primer mes de asistencia delegada.</p>
             </div>
 
             <form id="mentorshipForm">
                 <input type="text" id="nombre" placeholder="Nombre completo" required>
-                <input type="tel" id="whatsapp" placeholder="WhatsApp (Ej: +51...)" required>
+                <input type="tel" id="whatsapp" placeholder="Tu WhatsApp (con código de país)" required>
                 <select id="ritmo" required>
-                    <option value="" disabled selected>Selecciona tu ritmo</option>
-                    <option value="Rápido">Rápido 🚀 (Quiero resultados ya)</option>
-                    <option value="Moderado">Moderado ⚡ (Poco a poco)</option>
+                    <option value="" disabled selected>Selecciona tu compromiso</option>
+                    <option value="Rápido">Velocidad Diamante 🚀</option>
+                    <option value="Moderado">Construcción Sólida ⚡</option>
                 </select>
-                <textarea id="gusto" placeholder="¿Por qué quieres ser parte del equipo?" rows="3" required></textarea>
+                <textarea id="gusto" placeholder="¿Cuál es tu meta financiera en los próximos 90 días?" rows="3" required></textarea>
 
                 <div class="guarantee-box">
-                    <p style="font-size: 14px;">🛡️ <strong>GARANTÍA:</strong> Si en 30 días no hay resultados tras aplicar todo, <strong>¡Te regalo la caja de FuXion que quieras!</strong></p>
+                    <p style="font-size: 14px; color: var(--text-main);">
+                        🛡️ <strong>MI PROMESA:</strong> Si en 30 días no has tenido resultados aplicando el sistema, <strong>te compro la caja de FuXion que elijas.</strong> El riesgo es mío.
+                    </p>
                 </div>
 
                 <button type="submit" class="btn-submit" id="submitBtn" style="margin-top: 25px;">Enviar Aplicación</button>
             </form>
         </section>
-    </div>
-
-    <div class="success-overlay" id="successOverlay">
-        <div>
-            <div style="font-size: 50px;">💎</div>
-            <h2>¡Casi listo!</h2>
-            <p style="color: var(--text-dim);">Entrando al grupo de WhatsApp...</p>
-        </div>
     </div>
 
     <script>
@@ -200,7 +176,7 @@
         document.getElementById('mentorshipForm').addEventListener('submit', function(e) {
             e.preventDefault();
             const btn = document.getElementById('submitBtn');
-            btn.disabled = true; btn.innerHTML = 'Procesando...';
+            btn.disabled = true; btn.innerHTML = 'Enviando...';
 
             const formData = {
                 nombre: document.getElementById('nombre').value,
@@ -212,8 +188,7 @@
 
             fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(formData) })
             .then(() => {
-                document.getElementById('successOverlay').classList.add('active');
-                setTimeout(() => { window.location.href = 'https://chat.whatsapp.com/KtBu7mszVBOE2oMdf0bFl1'; }, 2000);
+                window.location.href = 'https://chat.whatsapp.com/KtBu7mszVBOE2oMdf0bFl1';
             })
             .catch(() => {
                 alert('Error al enviar.');
