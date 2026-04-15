@@ -31,7 +31,7 @@
 
         .container { max-width: 800px; margin: 0 auto; padding: 0 20px; }
 
-        .hero { text-align: center; padding: 60px 0 20px; }
+        .hero { text-align: center; padding: 50px 0 20px; }
         .hero h1 { font-size: clamp(32px, 8vw, 56px); font-weight: 800; line-height: 1.1; }
 
         /* --- STATS --- */
@@ -52,19 +52,16 @@
         }
         .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
 
-        /* --- SECCIÓN DE BIOGRAFÍA (REINTEGRADA) --- */
+        /* --- BIO --- */
         .bio-section {
             background: linear-gradient(145deg, rgba(0, 51, 160, 0.1) 0%, rgba(17, 24, 39, 0.8) 100%);
             border: 1px solid var(--fuxion-blue);
-            border-radius: 30px;
-            padding: 35px;
-            margin-bottom: 40px;
+            border-radius: 30px; padding: 35px; margin-bottom: 40px;
         }
         .bio-section h3 { color: var(--accent); font-size: 22px; margin-bottom: 10px; }
-        .bio-section p { color: var(--text-main); font-size: 15px; opacity: 0.9; }
         .badge {
             display: inline-block; padding: 5px 15px; border-radius: 50px;
-            background: var(--fuxion-blue); color: #fff; font-size: 12px;
+            background: var(--fuxion-blue); color: #fff; font-size: 11px;
             font-weight: 700; margin-bottom: 15px; text-transform: uppercase;
         }
 
@@ -77,7 +74,7 @@
         .input-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
         input, select, textarea {
             width: 100%; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border);
-            padding: 18px; border-radius: 15px; color: white; margin-bottom: 15px; font-family: inherit;
+            padding: 16px; border-radius: 12px; color: white; margin-bottom: 15px; font-family: inherit;
         }
         select option { background-color: #05070a; color: white; }
 
@@ -120,7 +117,7 @@
             <span class="badge">Tu Mentor</span>
             <h3>Soy Adrian Ward</h3>
             <p>
-                No solo enseño negocios; construyo legados. Con más de 12 años en <strong>FuXion</strong>, he liderado organizaciones que mueven millones de dólares anualmente. Mi propósito es darte el sistema exacto que me permitió entrar al Hall Millonario, para que tú también puedas escalar con velocidad y precisión.
+                Más de 12 años en <strong>FuXion</strong>, miembro del Hall Millonario y Top Producer global. He ayudado a miles de personas a transformar su realidad financiera con sistemas duplicables y liderazgo de alto impacto.
             </p>
         </section>
 
@@ -131,7 +128,18 @@
                     <input type="text" id="nombre" placeholder="Nombre completo" required>
                     <input type="email" id="email" placeholder="Email" required>
                 </div>
-                <input type="tel" id="whatsapp" placeholder="WhatsApp" required>
+                
+                <div class="input-grid">
+                    <input type="tel" id="whatsapp" placeholder="WhatsApp" required>
+                    <input type="text" id="instagram" placeholder="Instagram (Opcional)">
+                </div>
+
+                <div class="input-grid">
+                    <input type="number" id="edad" placeholder="Edad" required>
+                    <input type="text" id="ciudad" placeholder="Ciudad / País" required>
+                </div>
+
+                <textarea id="gusto" placeholder="¿Qué fue lo que más te gustó del video?" rows="2" required></textarea>
                 
                 <div class="input-grid">
                     <select id="disponibilidad" required>
@@ -147,8 +155,7 @@
                     </select>
                 </div>
 
-                <textarea id="gusto" placeholder="¿Qué fue lo que más te gustó del video?" rows="2"></textarea>
-                <textarea id="metas" placeholder="Tu meta financiera en 90 días" rows="2"></textarea>
+                <textarea id="metas" placeholder="Tu meta financiera en 90 días" rows="2" required></textarea>
 
                 <button type="submit" class="btn-submit" id="submitBtn">Enviar Aplicación</button>
             </form>
@@ -167,10 +174,13 @@
                 nombre: document.getElementById('nombre').value,
                 email: document.getElementById('email').value,
                 whatsapp: document.getElementById('whatsapp').value,
+                instagram: document.getElementById('instagram').value,
+                edad: document.getElementById('edad').value,
+                ciudad: document.getElementById('ciudad').value,
+                gusto: document.getElementById('gusto').value,
                 disponibilidad: document.getElementById('disponibilidad').value,
                 ritmo: document.getElementById('ritmo').value,
-                gusto: document.getElementById('gusto').value,
-                metas: document.getElementById('metas').value,
+                experiencia: document.getElementById('metas').value, // Mapeado a la columna 'Experiencia' de tu Sheet
                 timestamp: new Date().toLocaleString()
             };
 
