@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mentoría con Adrian Ward - FuXion</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #007AFF;
+            --primary-dark: #0056b3;
+            --accent: #00F5A0;
+            --bg-dark: #05070a;
+            --card-bg: #111827;
+            --text-main: #ffffff;
+            --text-dim: #9ca3af;
+            --border: rgba(255, 255, 255, 0.1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .bg-glow {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at 50% -20%, #1e3a8a 0%, transparent 50%),
+                        radial-gradient(circle at 0% 100%, #064e3b 0%, transparent 40%);
+            z-index: -1;
+            opacity: 0.6;
+        }
+
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 20px; }
+
+        .hero {
+            height: 85vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .logo-badge {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            width: 80px; height: 80px;
+            margin: 0 auto 30px;
+            border-radius: 22px;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 800; font-size: 32px;
+            box-shadow: 0 10px 30px rgba(0, 122, 255, 0.4);
+        }
+
+        .hero h1 {
+            font-size: clamp(40px, 10vw, 72px);
+            line-height: 1.1;
+            margin-bottom: 20px;
+            background: linear-gradient(to bottom, #fff 40%, #a5a5a5);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .glass-card {
+            background: rgba(17, 24, 39, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border);
+            border-radius: 30px;
+            padding: 40px;
+            margin-bottom: 40px;
+        }
+
+        /* --- STYLES FOR BONOS & GARANTIA --- */
+        .offer-box {
+            border: 2px solid var(--primary);
+            background: rgba(0, 122, 255, 0.05);
+            padding: 25px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .offer-box::before {
+            content: 'REGALO EXCLUSIVO';
+            position: absolute;
+            top: 10px; right: -30px;
+            background: var(--primary);
+            color: white;
+            font-size: 10px;
+            font-weight: 800;
+            padding: 5px 40px;
+            transform: rotate(45deg);
+        }
+
+        .guarantee-box {
+            border: 2px solid var(--accent);
+            background: rgba(0, 245, 160, 0.05);
+            padding: 25px;
+            border-radius: 20px;
+            margin-bottom: 30px;
+        }
+
+        .icon-circle {
+            width: 50px; height: 50px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 24px; flex-shrink: 0;
+        }
+
+        /* --- FORM STYLES --- */
+        .input-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px; margin-bottom: 20px;
+        }
+
+        input, textarea, select {
+            width: 100%; background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border);
+            padding: 15px 20px; border-radius: 15px;
+            color: white; font-family: inherit; transition: 0.3s;
+        }
+
+        .btn-submit {
+            width: 100%; padding: 20px;
+            background: linear-gradient(90deg, var(--primary), var(--primary-dark));
+            border: none; border-radius: 18px;
+            color: white; font-weight: 700; font-size: 18px;
+            cursor: pointer; transition: 0.4s;
+            text-transform: uppercase; letter-spacing: 1px;
+        }
+
+        .btn-submit:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(0, 122, 255, 0.4); }
+
+        .success-overlay {
+            display: none; position: fixed; inset: 0;
+            background: rgba(0,0,0,0.95); z-index: 9999;
+            align-items: center; justify-content: center; text-align: center;
+        }
+        .success-overlay.active { display: flex; }
+
+        @media (max-width: 600px) { .glass-card { padding: 20px; } }
+    </style>
+</head>
+<body>
+
+    <div class="bg-glow"></div>
+
+    <section class="hero">
+        <div class="hero-content">
+            <div class="logo-badge">AW</div>
+            <h1>The Diamond<br>Mentorship</h1>
+            <p>Aprende el sistema para facturar millones en la industria del bienestar.</p>
+            <a href="#form" style="text-decoration: none;"><button class="btn-submit" style="width:auto; padding: 15px 40px;">Aplicar ahora</button></a>
+        </div>
+    </section>
+
+    <div class="container">
+        
+        <section id="form" class="glass-card">
+            <h2 style="text-align: center; margin-bottom: 40px; font-size: 32px;">Tu Camino al Diamante</h2>
+            
+            <div class="offer-box">
+                <div style="display: flex; gap: 15px;">
+                    <div class="icon-circle">🤖</div>
+                    <div>
+                        <h4 style="color: var(--primary);">Bono de Escalamiento</h4>
+                        <p style="font-size: 14px; color: var(--text-dim);">Si en tu primer mes logras más de <strong>20 clientes</strong>, yo cubro el costo de un <strong>Asistente Virtual gratis</strong> para ti durante un mes completo. Tú creces, yo te doy el equipo.</p>
+                    </div>
+                </div>
+            </div>
+
+            <form id="mentorshipForm">
+                <div class="input-grid">
+                    <input type="text" id="nombre" required placeholder="Nombre Completo">
+                    <input type="tel" id="whatsapp" required placeholder="WhatsApp (con código de país)">
+                </div>
+                <div class="input-grid">
+                    <input type="email" id="email" required placeholder="Tu mejor Email">
+                    <select id="ritmo" required>
+                        <option value="" disabled selected>¿A qué ritmo quieres ir?</option>
+                        <option value="Rápido">Rápido 🚀 (Quiero resultados ya)</option>
+                        <option value="Moderado">Moderado ⚡ (Tengo otras actividades)</option>
+                    </select>
+                </div>
+                <textarea id="gusto" required placeholder="¿Por qué quieres trabajar conmigo?" style="margin-bottom: 25px;"></textarea>
+
+                <div class="guarantee-box">
+                    <div style="display: flex; gap: 15px; align-items: center;">
+                        <div class="icon-circle" style="background: rgba(0, 245, 160, 0.1);">🛡️</div>
+                        <div>
+                            <h4 style="color: var(--accent); font-size: 14px;">GARANTÍA DE HIERRO ADRIAN WARD</h4>
+                            <p style="font-size: 13px;">Si en 30 días no has aprendido el método ni has tenido resultados aplicando todo... <strong>¡Te compro la caja de FuXion que tú quieras!</strong></p>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-submit" id="submitBtn">Enviar Aplicación y Reservar Bono</button>
+            </form>
+        </section>
+    </div>
+
+    <div class="success-overlay" id="successOverlay">
+        <div>
+            <div style="font-size: 60px;">🚀</div>
+            <h2 style="margin: 20px 0;">¡Aplicación Exitosa!</h2>
+            <p style="color: var(--text-dim);">Redirigiéndote al grupo VIP de Adrian Ward...</p>
+        </div>
+    </div>
+
+    <script>
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxSqodbU59bzdyC7s7x7oesdvevh2yQOO0xO3k4wbGzOTOmET7pBXTS1C0lDxobn94ilQ/exec';
+
+        document.getElementById('mentorshipForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const btn = document.getElementById('submitBtn');
+            btn.disabled = true; btn.innerHTML = 'Enviando...';
+
+            const formData = {
+                nombre: document.getElementById('nombre').value,
+                email: document.getElementById('email').value,
+                whatsapp: document.getElementById('whatsapp').value,
+                gusto: document.getElementById('gusto').value,
+                ritmo: document.getElementById('ritmo').value,
+                timestamp: new Date().toLocaleString()
+            };
+
+            fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(formData) })
+            .then(() => {
+                document.getElementById('successOverlay').classList.add('active');
+                setTimeout(() => { window.location.href = 'https://chat.whatsapp.com/KtBu7mszVBOE2oMdf0bFl1'; }, 2000);
+            })
+            .catch(() => {
+                alert('Error al enviar. Intenta de nuevo.');
+                btn.disabled = false; btn.innerHTML = 'Enviar Aplicación';
+            });
+        });
+    </script>
+</body>
+</html>
