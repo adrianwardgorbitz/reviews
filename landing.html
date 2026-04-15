@@ -64,16 +64,11 @@
         }
         .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
 
-        /* --- BIO SECTION (THE MENTOR) --- */
+        /* --- BIO SECTION --- */
         .bio-card {
             background: linear-gradient(145deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0) 100%);
             border: 1px solid var(--border); border-radius: 30px; padding: 40px; margin-bottom: 50px;
             display: flex; align-items: center; gap: 30px; flex-wrap: wrap;
-        }
-        .bio-img {
-            width: 120px; height: 120px; border-radius: 50%; 
-            background: url('https://via.placeholder.com/150') center/cover; /* Reemplazar con tu foto real */
-            border: 3px solid var(--accent); flex-shrink: 0;
         }
         .bio-text h3 { color: var(--accent); margin-bottom: 10px; font-size: 24px; }
         .badge { 
@@ -89,12 +84,12 @@
         }
 
         .offer-box {
-            border-left: 4px solid var(--primary); background: rgba(0, 122, 255, 0.1);
+            border-left: 4px solid var(--accent); background: rgba(0, 245, 160, 0.05);
             padding: 20px; border-radius: 0 20px 20px 0; margin-bottom: 25px;
         }
 
         .guarantee-box {
-            border: 2px dashed var(--accent); background: rgba(0, 245, 160, 0.05);
+            border: 2px dashed var(--accent); background: rgba(0, 245, 160, 0.02);
             padding: 20px; border-radius: 20px; margin-top: 30px; text-align: center;
         }
 
@@ -122,50 +117,50 @@
             <div>
                 <div class="logo-badge">AW</div>
                 <h1>The Diamond<br>Mentorship</h1>
-                <p style="color: var(--text-dim);">Liderazgo. Resultados. Libertad.</p>
+                <p style="color: var(--text-dim);">Resultados reales para personas ambiciosas.</p>
             </div>
         </section>
 
-        <h3 style="text-align: center; margin-bottom: 20px; color: var(--accent);">MIRA ESTE VIDEO PRIMERO</h3>
         <div class="video-container">
             <iframe src="https://www.youtube.com/embed/U33TC3cmd5E" allowfullscreen></iframe>
         </div>
 
         <div class="bio-card">
-            <div class="bio-img"></div> <div class="bio-text">
-                <span class="badge">MENTOR DIAMANTE</span>
+            <div class="bio-text">
+                <span class="badge">TU MENTOR DIAMANTE</span>
                 <h3>Soy Adrian Ward</h3>
                 <p style="color: var(--text-dim); font-size: 15px;">
-                    Ayudo a emprendedores ambiciosos a construir negocios sólidos con FuXion. Mi enfoque no es la teoría, sino la <strong>ejecución masiva</strong>. He diseñado este sistema para que no tengas que adivinar, solo seguir el plan.
+                    No enseño teoría. Enseño a construir imperios. Mi sistema en FuXion está diseñado para que ejecutes con precisión y escales rápido. Si estás aquí, es porque buscas el siguiente nivel.
                 </p>
             </div>
         </div>
 
         <section class="glass-card">
-            <h2 style="text-align: center; margin-bottom: 30px;">Aplica a mi Círculo Interno</h2>
+            <h2 style="text-align: center; margin-bottom: 30px;">Aplica para trabajar conmigo</h2>
             
             <div class="offer-box">
-                <h4 style="color: var(--primary);">🚀 BONO: Asistente Virtual</h4>
-                <p style="font-size: 14px; color: var(--text-dim);">Si escalas a 20 clientes en tu primer mes, yo financio tu primer mes de asistencia delegada.</p>
+                <h4 style="color: var(--accent); margin-bottom: 5px;">💎 BONO DE ESCALAMIENTO EXCLUSIVO</h4>
+                <p style="font-size: 16px; font-weight: 600;">Si en 1 mes tienes más de 20 clientes...</p>
+                <p style="color: var(--text-main); font-size: 18px; margin-top: 5px;">¡Yo te pago un Asistente Virtual por 30 días!</p>
             </div>
 
             <form id="mentorshipForm">
                 <input type="text" id="nombre" placeholder="Nombre completo" required>
                 <input type="tel" id="whatsapp" placeholder="Tu WhatsApp (con código de país)" required>
                 <select id="ritmo" required>
-                    <option value="" disabled selected>Selecciona tu compromiso</option>
-                    <option value="Rápido">Velocidad Diamante 🚀</option>
-                    <option value="Moderado">Construcción Sólida ⚡</option>
+                    <option value="" disabled selected>Selecciona tu nivel de compromiso</option>
+                    <option value="Rápido">Velocidad Diamante (Enfoque Total) 🚀</option>
+                    <option value="Moderado">Construcción Sólida (Ritmo Constante) ⚡</option>
                 </select>
-                <textarea id="gusto" placeholder="¿Cuál es tu meta financiera en los próximos 90 días?" rows="3" required></textarea>
+                <textarea id="gusto" placeholder="¿Cuál es tu meta financiera para los próximos 90 días?" rows="3" required></textarea>
 
                 <div class="guarantee-box">
-                    <p style="font-size: 14px; color: var(--text-main);">
-                        🛡️ <strong>MI PROMESA:</strong> Si en 30 días no has tenido resultados aplicando el sistema, <strong>te compro la caja de FuXion que elijas.</strong> El riesgo es mío.
+                    <p style="font-size: 14px; color: var(--text-dim);">
+                        🛡️ <strong>GARANTÍA DE HIERRO:</strong> Si en 30 días no has aprendido nada ni has tenido resultados aplicando mi método... <strong>¡Te compro la caja de FuXion que tú quieras!</strong>
                     </p>
                 </div>
 
-                <button type="submit" class="btn-submit" id="submitBtn" style="margin-top: 25px;">Enviar Aplicación</button>
+                <button type="submit" class="btn-submit" id="submitBtn" style="margin-top: 25px;">Enviar Aplicación y Reservar Bono</button>
             </form>
         </section>
     </div>
@@ -176,7 +171,7 @@
         document.getElementById('mentorshipForm').addEventListener('submit', function(e) {
             e.preventDefault();
             const btn = document.getElementById('submitBtn');
-            btn.disabled = true; btn.innerHTML = 'Enviando...';
+            btn.disabled = true; btn.innerHTML = 'Enviando Aplicación...';
 
             const formData = {
                 nombre: document.getElementById('nombre').value,
@@ -191,8 +186,8 @@
                 window.location.href = 'https://chat.whatsapp.com/KtBu7mszVBOE2oMdf0bFl1';
             })
             .catch(() => {
-                alert('Error al enviar.');
-                btn.disabled = false; btn.innerHTML = 'Enviar Aplicación';
+                alert('Hubo un error al enviar. Inténtalo de nuevo.');
+                btn.disabled = false; btn.innerHTML = 'Enviar Aplicación y Reservar Bono';
             });
         });
     </script>
