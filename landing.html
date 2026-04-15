@@ -14,7 +14,6 @@
             --primary-dark: #0056b3;
             --accent: #00F5A0;
             --bg-dark: #05070a;
-            --card-bg: #111827;
             --text-main: #ffffff;
             --text-dim: #9ca3af;
             --border: rgba(255, 255, 255, 0.1);
@@ -41,7 +40,7 @@
 
         .container { max-width: 800px; margin: 0 auto; padding: 0 20px; }
 
-        .hero { height: 40vh; display: flex; align-items: center; justify-content: center; text-align: center; }
+        .hero { height: 35vh; display: flex; align-items: center; justify-content: center; text-align: center; }
         .logo-badge {
             background: linear-gradient(135deg, var(--primary), var(--accent));
             width: 70px; height: 70px; margin: 0 auto 25px; border-radius: 20px;
@@ -84,18 +83,14 @@
         }
 
         /* --- FORM STYLES --- */
+        .input-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        
         input, select, textarea {
             width: 100%; background: rgba(255,255,255,0.05); border: 1px solid var(--border);
-            padding: 18px; border-radius: 15px; color: white; margin-bottom: 15px; font-family: inherit;
-            appearance: none; -webkit-appearance: none;
+            padding: 15px; border-radius: 12px; color: white; margin-bottom: 15px; font-family: inherit;
         }
 
-        /* SOLUCIÓN AL DROPDOWN INVISIBLE */
-        select option {
-            background-color: #111827; /* Fondo oscuro para las opciones */
-            color: white;
-            padding: 10px;
-        }
+        select option { background-color: #111827; color: white; }
 
         .btn-submit {
             width: 100%; padding: 22px; background: linear-gradient(90deg, var(--primary), var(--primary-dark));
@@ -104,7 +99,7 @@
         }
         .btn-submit:hover { transform: translateY(-3px); box-shadow: 0 15px 35px rgba(0, 122, 255, 0.4); }
 
-        @media (max-width: 600px) { .stats-grid { grid-template-columns: 1fr; } }
+        @media (max-width: 600px) { .input-grid { grid-template-columns: 1fr; } .stats-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
@@ -130,7 +125,7 @@
             </div>
             <div class="stat-card">
                 <span class="stat-number">TOP</span>
-                <span class="stat-label">Producer Hall Millonario</span>
+                <span class="stat-label">Hall Millonario</span>
             </div>
         </div>
 
@@ -139,34 +134,49 @@
         </div>
 
         <section class="glass-card">
-            <h2 style="text-align: center; margin-bottom: 30px;">Aplica para trabajar conmigo</h2>
+            <h2 style="text-align: center; margin-bottom: 30px;">Aplica ahora</h2>
             
             <div class="offer-box">
                 <h4 style="color: var(--accent); margin-bottom: 5px;">💎 BONO DE ESCALAMIENTO</h4>
-                <p style="color: var(--text-main); font-size: 16px;">Si en 1 mes tienes más de 20 clientes, <strong>¡Yo te pago un Asistente Virtual por 30 días!</strong></p>
+                <p style="color: var(--text-main); font-size: 15px;">Si logras +20 clientes en 1 mes, <strong>¡Yo te pago un Asistente Virtual por 30 días!</strong></p>
             </div>
 
             <form id="mentorshipForm">
-                <input type="text" id="nombre" placeholder="Nombre completo" required>
+                <div class="input-grid">
+                    <input type="text" id="nombre" placeholder="Nombre completo" required>
+                    <input type="email" id="email" placeholder="Email" required>
+                </div>
                 
-                <input type="email" id="email" placeholder="Tu mejor correo electrónico" required>
-                
-                <input type="tel" id="whatsapp" placeholder="Tu WhatsApp (con código de país)" required>
-                
-                <select id="ritmo" required>
-                    <option value="" disabled selected style="color: #666;">Selecciona tu nivel de compromiso</option>
-                    <option value="Rápido">Velocidad Diamante (8M Ventas) 🚀</option>
-                    <option value="Moderado">Construcción Sólida ⚡</option>
-                </select>
+                <div class="input-grid">
+                    <input type="tel" id="whatsapp" placeholder="WhatsApp" required>
+                    <input type="text" id="instagram" placeholder="Instagram (Opcional)">
+                </div>
 
-                <textarea id="gusto" placeholder="¿Cuál es tu meta financiera para los próximos 90 días?" rows="3" required></textarea>
+                <div class="input-grid">
+                    <input type="number" id="edad" placeholder="Tu Edad" required>
+                    <input type="text" id="ciudad" placeholder="Ciudad / País" required>
+                </div>
 
-                <button type="submit" class="btn-submit" id="submitBtn">Enviar Aplicación y Reservar Bono</button>
+                <textarea id="experiencia" placeholder="¿Tienes experiencia en negocios o ventas? (Cuéntame brevemente)" rows="2" required></textarea>
+                
+                <div class="input-grid">
+                    <input type="text" id="disponibilidad" placeholder="Horas disponibles/semana" required>
+                    <select id="ritmo" required>
+                        <option value="" disabled selected>Selecciona tu ritmo</option>
+                        <option value="Rápido">Velocidad Diamante 🚀</option>
+                        <option value="Moderado">Construcción Sólida ⚡</option>
+                    </select>
+                </div>
+
+                <textarea id="gusto" placeholder="¿Cuál es tu meta financiera en 90 días?" rows="2" required></textarea>
+
+                <button type="submit" class="btn-submit" id="submitBtn">Enviar Aplicación</button>
             </form>
         </section>
     </div>
 
     <script>
+        // REEMPLAZA ESTO con la URL que te dio Google Apps Script después de hacer "Deploy"
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxSqodbU59bzdyC7s7x7oesdvevh2yQOO0xO3k4wbGzOTOmET7pBXTS1C0lDxobn94ilQ/exec';
 
         document.getElementById('mentorshipForm').addEventListener('submit', function(e) {
@@ -176,11 +186,16 @@
 
             const formData = {
                 nombre: document.getElementById('nombre').value,
-                email: document.getElementById('email').value, // Dato de correo incluido en el envío
+                email: document.getElementById('email').value,
                 whatsapp: document.getElementById('whatsapp').value,
+                instagram: document.getElementById('instagram').value,
+                edad: document.getElementById('edad').value,
+                ciudad: document.getElementById('ciudad').value,
+                experiencia: document.getElementById('experiencia').value,
+                disponibilidad: document.getElementById('disponibilidad').value,
                 ritmo: document.getElementById('ritmo').value,
                 gusto: document.getElementById('gusto').value,
-                timestamp: new Date().toLocaleString()
+                timestamp: new Date().toLocaleString('es-ES')
             };
 
             fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(formData) })
@@ -188,7 +203,7 @@
                 window.location.href = 'https://chat.whatsapp.com/KtBu7mszVBOE2oMdf0bFl1';
             })
             .catch(() => {
-                alert('Error al enviar.');
+                alert('Error al enviar. Intenta de nuevo.');
                 btn.disabled = false; btn.innerHTML = 'Enviar Aplicación';
             });
         });
